@@ -26,7 +26,7 @@ Nutzer, die beispielsweise vor dem Kauf eines Autos stehen, können im Forum Fra
 - Dominik Henning (Maintainer, Frontend, Schnittstelle Client/Server)
     - Matrikelnummer: 934954
     - E-Mail: s88126@bht-berlin.de
-- Maximilian Diek (UML-Diagramme, Frontend, Schnittstelle Client/Server)
+- Maximilian Diek (Maintainer, UML-Diagramme, Frontend, Schnittstelle Client/Server)
     - Matrikelnummer: 928836
     - E-Mail: s87999@bht-berlin.de
 - Mohammad Hammad (Backend)
@@ -91,3 +91,5 @@ https://www.oracle.com/java/technologies/javase/codeconventions-introduction.htm
 
 Außerdem verwenden wir das Prinzip der Guard Clauses, um den Code möglichst von überflüssigen Schachtelungen zu befreien:<br>
 https://en.wikipedia.org/wiki/Guard_(computer_science)
+
+Vorgesehen ist, dass die Jest-Tests für das Backend stets eine Code-Coverage von 100 Prozent aufweisen.
