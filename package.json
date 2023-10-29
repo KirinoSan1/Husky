@@ -1,0 +1,13 @@
+{
+    "name": "husky",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "backend": "node ./backend/src/index.ts",
+        "frontend": "npm start --prefix frontend",
+        "start": "concurrently \"npm run backend\" \"npm run frontend\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
