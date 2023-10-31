@@ -1,5 +1,9 @@
 .vscode
+.idea
 node_modules
+
+# not recommended but pleasant
+package-lock.json
 
 # dependencies
 /.pnp
