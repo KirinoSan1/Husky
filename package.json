@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "backend": "node ./backend/src/index.ts",
+        "backend": "nodemon ./backend/src/index.ts",
         "frontend": "npm start --prefix frontend",
         "start": "concurrently \"npm run backend\" \"npm run frontend\"",
         "update": "npm install && cd frontend && npm install && cd ../backend && npm install && echo Updated dependencies for all 3 directories"
