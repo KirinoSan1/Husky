@@ -1,0 +1,23 @@
+import { model, Schema, Types } from "mongoose"
+
+/*
+ * cf. https://mongoosejs.com/docs/typescript.html
+ */
+
+export interface IPost {
+    content: string
+    author: Types.ObjectId
+    upvotes?: number
+    downvotes?: number
+    createdAt: Date
+}
+
+const postSchema = new Schema<IPost>({
+    content: { type: String, required: true },
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    upvotes: { type: Number, default: 0 },
+    downvotes: { type: Number, default: 0 }
+}, { timestamps: true });
+
+
+export const Post = model<IPost>("Post", postSchema);
