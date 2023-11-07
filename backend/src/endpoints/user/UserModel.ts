@@ -1,11 +1,11 @@
-import {Model, model, Query, Schema} from "mongoose"
+import { Model, model, Query, Schema } from "mongoose"
 //import bcrypt from "bcrypt-ts"
 import { hash, compare } from "bcryptjs";
 
 /**
  * Interface with the appointed properties
  */
-export interface IUser{
+export interface IUser {
     name: string
     email: string
     password: string
@@ -17,7 +17,7 @@ export interface IUser{
 /**
  * Interface contains instance methods of the user document from the schema.
  */
-export interface IUserMethods{
+export interface IUserMethods {
     isPasswordCorrect(c: string): Promise<boolean>
 }
 
@@ -28,14 +28,14 @@ export interface IUserMethods{
 type UserModel = Model<IUser, {}, IUserMethods>
 
 const userSchema = new Schema<IUser, IUserMethods>({
-    name: {type: String, required: true, unique: true},
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    mod: {type: Boolean, default: false},
-    admin: {type: Boolean, default: false},
-    createdAt: {type: Date}
+    name: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    mod: { type: Boolean, default: false },
+    admin: { type: Boolean, default: false },
+    createdAt: { type: Date }
 
-},{timestamps: true})
+}, { timestamps: true })
 
 /**
 * Compares the passowrd of the user with the hashed passwordCandidate.
@@ -46,16 +46,16 @@ const userSchema = new Schema<IUser, IUserMethods>({
 * @returns an either fullfilled or not fullfilled Promise
 */
 
-userSchema.method("isPasswordCorrect", async function(passwordCandidate: string): Promise<boolean>{
-    if(this.isModified()){
+userSchema.method("isPasswordCorrect", async function (passwordCandidate: string): Promise<boolean> {
+    if (this.isModified()) {
         throw new Error("User has been modified")
     }
     const result = await compare(passwordCandidate, this.password)
     return result
 })
 
-userSchema.pre("save", async function (next){
-    if(this.isModified("password")){
+userSchema.pre("save", async function (next) {
+    if (this.isModified("password")) {
         const hashedPassword = await hash(this.password, 10)
         this.password = hashedPassword
     }

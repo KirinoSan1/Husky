@@ -127,11 +127,9 @@
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,7 +154,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -175,7 +175,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,22 +183,22 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">26x</span>
-<span class="cline-any cline-yes">21x</span>
-<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">import {Model, model, Query, Schema} from "mongoose"
+<span class="cline-any cline-yes">3x</span></td><td class="text"><pre class="prettyprint lang-js">import { Model, model, Query, Schema } from "mongoose"
 //import bcrypt from "bcrypt-ts"
 import { hash, compare } from "bcryptjs";
 &nbsp;
 /**
  * Interface with the appointed properties
  */
-export interface IUser{
+export interface IUser {
     name: string
     email: string
     password: string
@@ -210,7 +210,7 @@ export interface IUser{
 /**
  * Interface contains instance methods of the user document from the schema.
  */
-export interface IUserMethods{
+export interface IUserMethods {
     isPasswordCorrect(c: string): Promise&lt;boolean&gt;
 }
 &nbsp;
@@ -221,14 +221,14 @@ export interface IUserMethods{
 type UserModel = Model&lt;IUser, {}, IUserMethods&gt;
 &nbsp;
 const userSchema = new Schema&lt;IUser, IUserMethods&gt;({
-    name: {type: String, required: true, unique: true},
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    mod: {type: Boolean, default: false},
-    admin: {type: Boolean, default: false},
-    createdAt: {type: Date}
+    name: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    mod: { type: Boolean, default: false },
+    admin: { type: Boolean, default: false },
+    createdAt: { type: Date }
 &nbsp;
-},{timestamps: true})
+}, { timestamps: true })
 &nbsp;
 /**
 * Compares the passowrd of the user with the hashed passwordCandidate.
@@ -239,16 +239,16 @@ const userSchema = new Schema&lt;IUser, IUserMethods&gt;({
 * @returns an either fullfilled or not fullfilled Promise
 */
 &nbsp;
-userSchema.method("isPasswordCorrect", async function(passwordCandidate: string): Promise&lt;boolean&gt;{
-    if(this.isModified()){
+userSchema.method("isPasswordCorrect", async function (passwordCandidate: string): Promise&lt;boolean&gt; {
+    if (this.isModified()) {
         throw new Error("User has been modified")
     }
     const result = await compare(passwordCandidate, this.password)
     return result
 })
 &nbsp;
-userSchema.pre("save", async function (next){
-    if(this.isModified("password")){
+userSchema.pre("save", async function (next) {
+    if (this.isModified("password")) {
         const hashedPassword = await hash(this.password, 10)
         this.password = hashedPassword
     }
@@ -262,7 +262,7 @@ export const User = model&lt;IUser, UserModel&gt;("User", userSchema)</pre></td>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-03T18:28:09.898Z
+                at 2023-11-07T19:51:23.129Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

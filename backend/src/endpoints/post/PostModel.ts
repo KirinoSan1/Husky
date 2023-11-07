@@ -12,7 +12,7 @@ export interface IPost {
     createdAt: Date
 }
 
-const postSchema = new Schema<IPost>({
+export const postSchema = new Schema<IPost>({
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     upvotes: { type: Number, default: 0 },
