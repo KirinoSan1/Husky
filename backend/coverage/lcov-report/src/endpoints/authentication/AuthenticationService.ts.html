@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>14/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>6/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>14/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -95,69 +95,69 @@
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { User } from "../user/UserModel"</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { User } from "../user/UserModel"
 &nbsp;
 /**
  * Checks email and password and upon success returns the user's id and name, with success set to true. 
  * If no user with the given email exists or the password is incorrect, only success is returned as false. 
  */
-<span class="cstat-no" title="statement not covered" >export async function <span class="fstat-no" title="function not covered" >l</span>ogin(</span>email: string, password: string): Promise&lt;{ success: boolean, id?: string, name?: string, role?: "u" | "a" | "m" }&gt; {
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (email.length &lt; 6) {</span>
+export async function login(email: string, password: string): Promise&lt;{ success: boolean, id?: string, name?: string, role?: "u" | "a" | "m" }&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (email.length &lt; 6) {
 <span class="cstat-no" title="statement not covered" >        throw new Error("email is not defined")</span>
     }
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!password) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!password) {
 <span class="cstat-no" title="statement not covered" >        throw new Error("password is not defined")</span>
     }
-    const user = <span class="cstat-no" title="statement not covered" >await User.findOne({ email: email.toLowerCase() }).exec()</span>
+    const user = await User.findOne({ email: email.toLowerCase() }).exec()
     //check if user exists
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user) {</span>
-<span class="cstat-no" title="statement not covered" >        return { success: false }</span>
+    if (!user) {
+        return { success: false }
     }
     //check if password is correct
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!(await user.isPasswordCorrect(password))) {</span>
-<span class="cstat-no" title="statement not covered" >        return { success: false }</span>
+    if (!(await user.isPasswordCorrect(password))) {
+        return { success: false }
     }
-<span class="cstat-no" title="statement not covered" >    if (user.admin) {</span>
+    if (user.admin) {
         //if admin give role "a"
-<span class="cstat-no" title="statement not covered" >        return { success: true, id: user.id, name: user.name, role: "a" }</span>
-    } else <span class="cstat-no" title="statement not covered" >if (user.mod) {</span>
+        return { success: true, id: user.id, name: user.name, role: "a" }
+    } else if (user.mod) {
         //if mod give role "m"
-<span class="cstat-no" title="statement not covered" >        return { success: true, id: user.id, name: user.name, role: "m" }</span>
+        return { success: true, id: user.id, name: user.name, role: "m" }
     } else {
         //if not admin nor mod give role "u" for normal user
-<span class="cstat-no" title="statement not covered" >        return { success: true, id: user.id, name: user.name, role: "u" }</span>
+        return { success: true, id: user.id, name: user.name, role: "u" }
     }
 }</pre></td></tr></table></pre>
 
@@ -166,7 +166,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-08T22:16:41.100Z
+                at 2023-11-08T22:34:02.960Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
