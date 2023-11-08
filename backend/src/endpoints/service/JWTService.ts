@@ -1,6 +1,7 @@
 import { JwtPayload, sign, verify } from "jsonwebtoken";
 import { User } from "../user/UserModel";
 import dotenv from "dotenv";
+import { login } from "../authentication/AuthenticationService";
 dotenv.config() 
 
 
@@ -14,28 +15,16 @@ export async function verifyPasswordAndCreateJWT(email: string, password: string
     if (!ttl) {
         throw new Error("JWT_TTL is not set.")
     }
-    const users = await User.find({ email: email }).exec();
-    if (!users || users.length != 1) {
-        return undefined;
-    }
-    const user = users[0];
-    if (! await user.isPasswordCorrect(password)) {
-        return undefined;
+    const loginnn = await login(email, password)
+    if((loginnn).success === false){
+        return undefined
     }
     const timeInSec = Math.floor(Date.now() / 1000);
-    let roles = "";
-    if (user.admin) {
-        roles = 'a'
-    } else if (user.mod) {
-        roles= 'm'
-    } else {
-        roles = 'u'
-    }
-
+  
     const payload: JwtPayload = {
-        sub: user.id,
+        sub: loginnn.id,
         iat: timeInSec,//Issued At	
-        roles: roles
+        roles: loginnn.role
     }
     const jwtString = sign(payload, geheim!, { algorithm: "HS256", expiresIn: ttl });
     return jwtString;
