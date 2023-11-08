@@ -1,4 +1,4 @@
-import { Model, model, Query, Schema } from "mongoose"
+import { Model, model, Query, Schema } from "mongoose";
 //import bcrypt from "bcrypt-ts"
 import { hash, compare } from "bcryptjs";
 

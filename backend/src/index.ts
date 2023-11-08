@@ -1,2 +1,7 @@
-const hello: string = "Hello, world!";
-console.log(hello);
+import express from 'express';
+import { connect, disconnect } from "./database/database";
+
+const app = express();
+
+// Anknüpfung mit der Datenbank
+connect();

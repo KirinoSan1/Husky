@@ -9,12 +9,6 @@
         "update": "npm install && cd frontend && npm install && cd ../backend && npm install && echo Updated dependencies for all 3 directories"
     },
     "devDependencies": {
-        "@types/bcryptjs": "^2.4.5",
-        "@types/jest": "^29.5.7",
-        "concurrently": "^8.2.2",
-        "ts-jest": "^29.1.1"
-    },
-    "dependencies": {
-        "mongodb-memory-server": "^9.0.1"
+        "concurrently": "^8.2.2"
     }
 }
