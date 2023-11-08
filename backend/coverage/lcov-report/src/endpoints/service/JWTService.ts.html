@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/endpoints/user/UserModel.ts</title>
+    <title>Code coverage report for src/endpoints/service/JWTService.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/endpoints/user</a> UserModel.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/endpoints/service</a> JWTService.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">92.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>39/42</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">94.44% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>17/18</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">92.85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>39/42</span>
             </div>
         
             
@@ -127,135 +127,150 @@
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">55x</span>
-<span class="cline-any cline-yes">50x</span>
-<span class="cline-any cline-yes">50x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">55x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span></td><td class="text"><pre class="prettyprint lang-js">import { Model, model, Query, Schema } from "mongoose";
-//import bcrypt from "bcrypt-ts"
-import { hash, compare } from "bcryptjs";
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { JwtPayload, sign, verify } from "jsonwebtoken";
+import { User } from "../user/UserModel";
+import dotenv from "dotenv";
+dotenv.config() 
 &nbsp;
-/**
- * Interface with the appointed properties
- */
-export interface IUser {
-    name: string
-    email: string
-    password: string
-    admin?: boolean
-    mod?: boolean
-    createdAt?: Date
+&nbsp;
+&nbsp;
+export async function verifyPasswordAndCreateJWT(email: string, password: string): Promise&lt;string | undefined&gt; {
+    const geheim = process.env.JWT_SECRET;
+    if (!geheim) {
+        throw Error("JWT_SECRET not set");
+    }
+    const ttl = process.env.JWT_TTL
+    if (!ttl) {
+        throw new Error("JWT_TTL is not set.")
+    }
+    const users = await User.find({ email: email }).exec();
+    if (!users || users.length != 1) {
+        return undefined;
+    }
+    const user = users[0];
+    if (! await user.isPasswordCorrect(password)) {
+        return undefined;
+    }
+    const timeInSec = Math.floor(Date.now() / 1000);
+    let roles = "";
+    if (user.admin) {
+        roles = 'a'
+    } else if (user.mod) {
+        roles= 'm'
+    } else {
+        roles = 'u'
+    }
+&nbsp;
+    const payload: JwtPayload = {
+        sub: user.id,
+        iat: timeInSec,//Issued At	
+        roles: roles
+    }
+    const jwtString = sign(payload, geheim!, { algorithm: "HS256", expiresIn: ttl });
+    return jwtString;
 }
 &nbsp;
-/**
- * Interface contains instance methods of the user document from the schema.
- */
-export interface IUserMethods {
-    isPasswordCorrect(c: string): Promise&lt;boolean&gt;
+&nbsp;
+&nbsp;
+&nbsp;
+export function verifyJWT(jwtString: string | undefined): { userId: string, role: "u" | "a" | "m" } {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw Error("JWT_SECRET not set");
+    }
+    const ttl = process.env.JWT_TTL;
+    if (!ttl) {
+        throw new Error("JWT_TTL is not set.")
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!jwtString) {
+<span class="cstat-no" title="statement not covered" >        throw new Error("invalid_token");</span>
+    } else {
+        try {
+            const payload = verify(jwtString, secret);
+            if (typeof payload === 'object' &amp;&amp; "sub" in payload &amp;&amp; payload.sub) {
+                return { userId: payload.sub, role: payload.roles };
+            }
+        } catch (err: any) {
+<span class="cstat-no" title="statement not covered" >            throw new Error(err.message)</span>
+        }
+    }
+<span class="cstat-no" title="statement not covered" >    throw new Error("invalid_token");</span>
 }
-&nbsp;
-/**
-* Definition the 'UserModel' type for the database model that includes 
-* user properties (IUser) and instance methods (IUserMethods).
-*/
-type UserModel = Model&lt;IUser, {}, IUserMethods&gt;
-&nbsp;
-const userSchema = new Schema&lt;IUser, IUserMethods&gt;({
-    name: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    mod: { type: Boolean, default: false },
-    admin: { type: Boolean, default: false },
-    createdAt: { type: Date }
-&nbsp;
-}, { timestamps: true })
-&nbsp;
-/**
-* Compares the passowrd of the user with the hashed passwordCandidate.
-* If the passwords are not equal, the promise will not be fullfilled.
-* If the passwords are equal, the promise will be fullfilled.
-*
-* @throws an Error if the User has been modified
-* @returns an either fullfilled or not fullfilled Promise
-*/
-&nbsp;
-userSchema.method("isPasswordCorrect", async function (passwordCandidate: string): Promise&lt;boolean&gt; {
-    if (this.isModified()) {
-        throw new Error("User has been modified")
-    }
-    const result = await compare(passwordCandidate, this.password)
-    return result
-})
-&nbsp;
-userSchema.pre("save", async function (next) {
-    if (this.isModified("password")) {
-        const hashedPassword = await hash(this.password, 10)
-        this.password = hashedPassword
-    }
-    next()
-})
-&nbsp;
-export const User = model&lt;IUser, UserModel&gt;("User", userSchema)</pre></td></tr></table></pre>
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
