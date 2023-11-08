@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1699469422274" clover="3.2.0">
-  <project timestamp="1699469422274" name="All files">
-    <metrics statements="62" coveredstatements="20" conditionals="5" coveredconditionals="2" methods="17" coveredmethods="2" elements="84" coveredelements="24" complexity="0" loc="62" ncloc="62" packages="5" files="6" classes="6"/>
+<coverage generated="1699481801117" clover="3.2.0">
+  <project timestamp="1699481801117" name="All files">
+    <metrics statements="101" coveredstatements="59" conditionals="31" coveredconditionals="19" methods="10" coveredmethods="4" elements="142" coveredelements="82" complexity="0" loc="101" ncloc="101" packages="7" files="7" classes="7"/>
     <package name="src">
       <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="index.ts" path="C:\projekt\husky\backend\src\index.ts">
+      <file name="index.ts" path="D:\Anders\PDF\Random Uni PDF und etc\Projekt\husky\backend\src\index.ts">
         <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -13,64 +13,112 @@
       </file>
     </package>
     <package name="src.database">
-      <metrics statements="38" coveredstatements="0" conditionals="3" coveredconditionals="0" methods="15" coveredmethods="0"/>
-      <file name="database.ts" path="C:\projekt\husky\backend\src\database\database.ts">
+      <metrics statements="19" coveredstatements="0" conditionals="3" coveredconditionals="0" methods="5" coveredmethods="0"/>
+      <file name="database.ts" path="D:\Anders\PDF\Random Uni PDF und etc\Projekt\husky\backend\src\database\database.ts">
         <metrics statements="19" coveredstatements="0" conditionals="3" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="3" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="44" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="45" count="0" type="stmt"/>
-      </file>
-      <file name="databaseTest.ts" path="C:\projekt\husky\backend\src\database\databaseTest.ts">
-        <metrics statements="19" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="0"/>
-        <line num="1" count="0" type="stmt"/>
-        <line num="2" count="0" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
-        <line num="6" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
+        <line num="39" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="40" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.endpoints.authentication">
+      <metrics statements="16" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="AuthenticationService.ts" path="D:\Anders\PDF\Random Uni PDF und etc\Projekt\husky\backend\src\endpoints\authentication\AuthenticationService.ts">
+        <metrics statements="16" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="11" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="16" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="20" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="23" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.endpoints.post">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="PostModel.ts" path="C:\projekt\husky\backend\src\endpoints\post\PostModel.ts">
+      <file name="PostModel.ts" path="D:\Anders\PDF\Random Uni PDF und etc\Projekt\husky\backend\src\endpoints\post\PostModel.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="15" count="2" type="stmt"/>
         <line num="23" count="2" type="stmt"/>
       </file>
     </package>
+    <package name="src.endpoints.service">
+      <metrics statements="42" coveredstatements="39" conditionals="18" coveredconditionals="17" methods="2" coveredmethods="2"/>
+      <file name="JWTService.ts" path="D:\Anders\PDF\Random Uni PDF und etc\Projekt\husky\backend\src\endpoints\service\JWTService.ts">
+        <metrics statements="42" coveredstatements="39" conditionals="18" coveredconditionals="17" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+        <line num="10" count="9" type="cond" truecount="1" falsecount="0"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="14" count="8" type="cond" truecount="1" falsecount="0"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="17" count="7" type="stmt"/>
+        <line num="18" count="7" type="cond" truecount="3" falsecount="0"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="22" count="6" type="cond" truecount="1" falsecount="0"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="5" type="stmt"/>
+        <line num="27" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="3" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="5" type="stmt"/>
+        <line num="40" count="5" type="stmt"/>
+        <line num="41" count="5" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="48" count="5" type="stmt"/>
+        <line num="49" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="52" count="4" type="stmt"/>
+        <line num="53" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="56" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
+        <line num="60" count="3" type="stmt"/>
+        <line num="61" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="62" count="3" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+      </file>
+    </package>
     <package name="src.endpoints.threadpage">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="ThreadPageModel.ts" path="C:\projekt\husky\backend\src\endpoints\threadpage\ThreadPageModel.ts">
+      <file name="ThreadPageModel.ts" path="D:\Anders\PDF\Random Uni PDF und etc\Projekt\husky\backend\src\endpoints\threadpage\ThreadPageModel.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
@@ -79,22 +127,22 @@
     </package>
     <package name="src.endpoints.user">
       <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
-      <file name="UserModel.ts" path="C:\projekt\husky\backend\src\endpoints\user\UserModel.ts">
+      <file name="UserModel.ts" path="D:\Anders\PDF\Random Uni PDF und etc\Projekt\husky\backend\src\endpoints\user\UserModel.ts">
         <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="3" count="3" type="stmt"/>
-        <line num="30" count="3" type="stmt"/>
-        <line num="49" count="3" type="stmt"/>
-        <line num="50" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="30" count="4" type="stmt"/>
+        <line num="49" count="4" type="stmt"/>
+        <line num="50" count="8" type="cond" truecount="1" falsecount="0"/>
         <line num="51" count="1" type="stmt"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="57" count="3" type="stmt"/>
-        <line num="58" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="59" count="23" type="stmt"/>
-        <line num="60" count="23" type="stmt"/>
-        <line num="62" count="28" type="stmt"/>
-        <line num="65" count="3" type="stmt"/>
+        <line num="53" count="7" type="stmt"/>
+        <line num="54" count="7" type="stmt"/>
+        <line num="57" count="4" type="stmt"/>
+        <line num="58" count="55" type="cond" truecount="1" falsecount="0"/>
+        <line num="59" count="50" type="stmt"/>
+        <line num="60" count="50" type="stmt"/>
+        <line num="62" count="55" type="stmt"/>
+        <line num="65" count="4" type="stmt"/>
       </file>
     </package>
   </project>
