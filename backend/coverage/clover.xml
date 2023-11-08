@@ -1,18 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1699386683146" clover="3.2.0">
-  <project timestamp="1699386683146" name="All files">
-    <metrics statements="22" coveredstatements="20" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2" elements="26" coveredelements="24" complexity="0" loc="22" ncloc="22" packages="4" files="4" classes="4"/>
+<coverage generated="1699469422274" clover="3.2.0">
+  <project timestamp="1699469422274" name="All files">
+    <metrics statements="62" coveredstatements="20" conditionals="5" coveredconditionals="2" methods="17" coveredmethods="2" elements="84" coveredelements="24" complexity="0" loc="62" ncloc="62" packages="5" files="6" classes="6"/>
     <package name="src">
-      <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="index.ts" path="C:\Users\Admin\Desktop\Bht\husky\backend\src\index.ts">
-        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="index.ts" path="C:\projekt\husky\backend\src\index.ts">
+        <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.database">
+      <metrics statements="38" coveredstatements="0" conditionals="3" coveredconditionals="0" methods="15" coveredmethods="0"/>
+      <file name="database.ts" path="C:\projekt\husky\backend\src\database\database.ts">
+        <metrics statements="19" coveredstatements="0" conditionals="3" coveredconditionals="0" methods="5" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="45" count="0" type="stmt"/>
+      </file>
+      <file name="databaseTest.ts" path="C:\projekt\husky\backend\src\database\databaseTest.ts">
+        <metrics statements="19" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.endpoints.post">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="PostModel.ts" path="C:\Users\Admin\Desktop\Bht\husky\backend\src\endpoints\post\PostModel.ts">
+      <file name="PostModel.ts" path="C:\projekt\husky\backend\src\endpoints\post\PostModel.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="15" count="2" type="stmt"/>
@@ -21,7 +70,7 @@
     </package>
     <package name="src.endpoints.threadpage">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="ThreadPageModel.ts" path="C:\Users\Admin\Desktop\Bht\husky\backend\src\endpoints\threadpage\ThreadPageModel.ts">
+      <file name="ThreadPageModel.ts" path="C:\projekt\husky\backend\src\endpoints\threadpage\ThreadPageModel.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
@@ -30,7 +79,7 @@
     </package>
     <package name="src.endpoints.user">
       <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
-      <file name="UserModel.ts" path="C:\Users\Admin\Desktop\Bht\husky\backend\src\endpoints\user\UserModel.ts">
+      <file name="UserModel.ts" path="C:\projekt\husky\backend\src\endpoints\user\UserModel.ts">
         <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="1" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
