@@ -1,42 +1,40 @@
-import { IUser, User } from "../endpoints/user/UserModel";
-
-const mgoose = require("mongoose");
+import { User } from "../endpoints/user/UserModel";
+import mongoose, { Connection } from "mongoose";
 
 const connectionString: string = "mongodb://127.0.0.1/Husky";
-const connectionOptions: {
-    useNewUrlParser: boolean,
-    useUnifiedTopology: boolean
-} = {
-    "useNewUrlParser": true,
-    "useUnifiedTopology": true
-};
 
-let databaseConnection: any;
+let connection: Connection;
 
 export function connect() {
-    if (databaseConnection) {
+    if (connection) {
         throw new Error("Database connection has already been established");
     }
 
-    mgoose.connect(connectionString, connectionOptions);
-    databaseConnection = mgoose.connection;
-    databaseConnection.on("error", console.error.bind(console, "MongoDB connection error: "));
+    mongoose.connect(connectionString);
+    connection = mongoose.connection;
 
-    databaseConnection.once("open", async function() {
+    connection.on("error", console.error.bind(console, "MongoDB connection error: "));
+    connection.once("open", async function() {
         console.log("Successfully connected to MongoDB: " + connectionString);
+
         await User.findOne({ admin: true }).then(async (user: any) => {
             if (user) { 
                 return;
             }
+
             await User.create({
-                email:"admin@husky.de", name: "Husky Admin", password: "123", admin: true
-            })
+                email: "admin@husky.de",
+                name: "Husky Admin",
+                password: "123",
+                admin: true
+            });
+            console.log("Successfully created default admin");
         });
     });
 }
 
 export function disconnect() {
-    if (databaseConnection) {
-        databaseConnection.close();
+    if (connection) {
+        connection.close();
     }
 }
