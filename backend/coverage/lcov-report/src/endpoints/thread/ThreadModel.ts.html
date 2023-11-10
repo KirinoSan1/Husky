@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/endpoints/authentication/AuthenticationService.ts</title>
+    <title>Code coverage report for src/endpoints/thread/ThreadModel.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/endpoints/authentication</a> AuthenticationService.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/endpoints/thread</a> ThreadModel.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/16</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/8</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/16</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -86,80 +86,53 @@
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L24'></a><a href='#L24'>24</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { User } from "../user/UserModel"
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Model, model, Schema, Types } from "mongoose";
 &nbsp;
-/**
- * Checks email and password and upon success returns the user's id and name, with success set to true. 
- * If no user with the given email exists or the password is incorrect, only success is returned as false. 
- */
-export async function login(email: string, password: string): Promise&lt;{ success: boolean, id?: string, name?: string, role?: "u" | "a" | "m" }&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (email.length &lt; 6) {
-<span class="cstat-no" title="statement not covered" >        throw new Error("email is not defined")</span>
-    }
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!password) {
-<span class="cstat-no" title="statement not covered" >        throw new Error("password is not defined")</span>
-    }
-    const user = await User.findOne({ email: email.toLowerCase() }).exec()
-    //check if user exists
-    if (!user) {
-        return { success: false }
-    }
-    //check if password is correct
-    if (!(await user.isPasswordCorrect(password))) {
-        return { success: false }
-    }
-    if (user.admin) {
-        //if admin give role "a"
-        return { success: true, id: user.id, name: user.name, role: "a" }
-    } else if (user.mod) {
-        //if mod give role "m"
-        return { success: true, id: user.id, name: user.name, role: "m" }
-    } else {
-        //if not admin nor mod give role "u" for normal user
-        return { success: true, id: user.id, name: user.name, role: "u" }
-    }
-}</pre></td></tr></table></pre>
+export interface IThread {
+    title: string;
+    creator: Types.ObjectId;
+    subForum: string;
+    numPosts?: number;
+    pages: Types.ObjectId[]; // Array von ThreadPage IDs
+    createdAt: Date;
+}
+&nbsp;
+type threadOverride = { pages: Types.DocumentArray&lt;Types.ObjectId&gt; };
+type ThreadModel = Model&lt;IThread, {}, threadOverride&gt;;
+&nbsp;
+const threadSchema = new Schema&lt;IThread, ThreadModel&gt;({
+    title: { type: String, required: true },
+    creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    subForum: { type: String, required: true },
+    numPosts: { type: Number, default: 0 },
+    pages: {type: [{ type: Schema.Types.ObjectId, ref: "ThreadPage", required: true }], required: true},
+}, { timestamps: true });
+&nbsp;
+export const Thread = model&lt;IThread, ThreadModel&gt;("Thread", threadSchema);
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
