@@ -33,46 +33,46 @@ export default function LoginDialog() {
     }
 
     if (loggedIn)
-        return <Button variant="secondary" id="LoginDialog.Button.Logout" onClick={handleLogout}>Logout</Button>;
+        return <Button variant="secondary" id="logindialog-button-logout" onClick={handleLogout}>Logout</Button>;
 
     return (
         <>
-            <Button id="LoginDialog.Button.Login" onClick={handleShow}>Login</Button>
+            <Button id="logindialog-button-login" onClick={handleShow}>Login</Button>
 
-            <Modal id="LoginDialog.Modal" show={showDialog} onHide={handleClose}>
-                <Modal.Header id="LoginDialog.Modal.Header" closeButton>
-                    <Modal.Title id="LoginDialog.Modal.Header.Title">Login</Modal.Title>
+            <Modal id="logindialog-modal" show={showDialog} onHide={handleClose}>
+                <Modal.Header id="logindialog-modal-header" closeButton>
+                    <Modal.Title id="logindialog-modal-header-title">Login</Modal.Title>
                 </Modal.Header>
-                <Modal.Body id="LoginDialog.Modal.Body">
-                    <Alert id="LoginDialog.Modal.Body.Alert" show={showError} variant="danger">{"An error occurred, please try again.\n" + error}</Alert>
-                    <Form id="LoginDialog.Modal.Body.Form">
-                        <Form.Group id="LoginDialog.Modal.Body.Form.Group1">
-                            <Form.Label id="LoginDialog.Modal.Body.Form.Group1.Label">E-Mail</Form.Label>
+                <Modal.Body id="logindialog-modal-body">
+                    <Alert id="logindialog-modal-body-alert" show={showError} variant="danger">{"An error occurred, please try again.\n" + error}</Alert>
+                    <Form id="logindialog-modal-body-form">
+                        <Form.Group id="logindialog-modal-body-form-group1">
+                            <Form.Label id="logindialog-modal-body-form-group1-label">E-Mail</Form.Label>
                             <Form.Control
                                 type="email"
                                 name="email"
                                 onChange={handleUpdate}
                                 placeholder="name@example.com"
                                 autoFocus
-                                id="LoginDialog.Modal.Body.Form.Group1.Control"
+                                id="logindialog-modal-body-form-group1-control"
                             ></Form.Control>
                         </Form.Group>
-                        <Form.Group id="LoginDialog.Modal.Body.Form.Group2">
-                            <Form.Label id="LoginDialog.Modal.Body.Form.Group2.Label">Passwort</Form.Label>
+                        <Form.Group id="logindialog-modal-body-form-group2">
+                            <Form.Label id="logindialog-modal-body-form-group2-label">Passwort</Form.Label>
                             <Form.Control
                                 type="password"
                                 name="password"
                                 onChange={handleUpdate}
                                 placeholder="password"
-                                id="LoginDialog.Modal.Body.Form.Group2.Control"
+                                id="logindialog-modal-body-form-group2-control"
                             ></Form.Control>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer id="LoginDialog.Modal.Footer">
+                <Modal.Footer id="logindialog-modal-footer">
                     {loggingIn ? <LoadingIndicator></LoadingIndicator> : <></>}
-                    <Button id="LoginDialog.Modal.Footer.Button.Cancel" variant="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button id="LoginDialog.Modal.Footer.Button.Submit" disabled={loggingIn} onClick={handleSubmit}>Submit</Button>
+                    <Button id="logindialog-modal-footer-button-cancel" variant="secondary" onClick={handleClose}>Cancel</Button>
+                    <Button id="logindialog-modal-footer-button-submit" disabled={loggingIn} onClick={handleSubmit}>Submit</Button>
                 </Modal.Footer>
             </Modal>
         </>
