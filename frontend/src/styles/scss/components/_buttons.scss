@@ -1,0 +1,13 @@
+@use "../theme/theme";
+
+.btn {
+    &-primary {
+        background-color: theme.$first-color;
+    }
+    &-secondary {
+        background-color: theme.$seventh-color;
+    }
+    &-close {
+        background-color: theme.$seventh-color;
+    }
+}
