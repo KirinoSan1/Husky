@@ -8,6 +8,9 @@ export default function App() {
 
     return (
         <>
+            <div id="app-background">
+                <div id="app-background-gradient"></div>
+            </div>
             <LoginContext.Provider value={[loggedIn, setLoggedIn]}>
                 <LoginDialog></LoginDialog>
             </LoginContext.Provider>

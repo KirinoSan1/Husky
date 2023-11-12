@@ -1,0 +1,13 @@
+@use "../theme/theme";
+
+.form-label {
+    color: theme.$fourth-color;
+}
+
+.form-control {
+    background-color: theme.$seventh-color;
+    color: theme.$fifth-color;
+    &::placeholder {
+        color: theme.$sixth-color;
+    }
+}
