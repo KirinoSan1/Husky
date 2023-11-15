@@ -2,7 +2,7 @@ import mongoose, { Types } from "mongoose"
 import DB from "../TestDB";
 import { IUser, User } from "../../src/endpoints/user/UserModel"
 import { getUser, createUser, updateUser, deleteUser } from "../../src/endpoints/user/UserService"
-import { UserResource } from "../../src/Resources"
+import { UserResource } from "../../src/types/Resources";
 
 const jinxData: IUser = { email: "jinx@gmail.com", name: "Jinx", password: "Hello", admin: false }
 let idJinx: string
@@ -64,7 +64,7 @@ test("createUser and getUsers are consistent", async () => {
 
 test("updateUser, name can be changed", async () => {
     const userResource = await getUser(idJinx);
-    let a: UserResource = {id: idJinx, name: "Vitawelt", email: "jinx2@gmail.com", password: "thisISstrong!!22", admin: true, mod: false}
+    let a: UserResource = {id: idJinx, name: "Vitawelt", email: "jinx2@gmail.com", password: "thisISstrong!!22", admin: true, mod: true}
     const updatedResource = await updateUser(a);
     expect(updatedResource.name).toBe("Vitawelt");
 })
