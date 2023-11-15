@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 import { User } from "../../src/endpoints/user/UserModel";
-import { LoginResource, UserResource, UsersResource } from "../../src/Resources";
 import { createUser } from "../../src/endpoints/user/UserService";
 import app from "../../src/testIndex";
 import supertest from "supertest";
 import TestDB from "../TestDB";
 import mongoose, { Types } from "mongoose";
+import { LoginResource, UserResource } from "../../src/types/Resources";
 dotenv.config();
 let token: string
 let john: UserResource
@@ -26,7 +26,7 @@ beforeEach(async () => {
     // Login um Token zu erhalten
     const request = supertest(app);
     const loginData = { email: "johnathan@jonathan.de", password: "123asdf!ABCD"};
-    const response = await request.post(`/api/login`).send(loginData).set("Authorization", `Bearer ${token}`);
+    const response = await request.post(`/api/login`).send(loginData)
     const loginResource = response.body as LoginResource;
     token = loginResource.access_token;
     expect(token).toBeDefined();
@@ -37,7 +37,7 @@ beforeEach(async () => {
     // Login um Token zu erhalten
     const request2 = supertest(app);
     const loginData2 = { email: "umi@jonatahan.de", password: "123asdf!ABCDs"};
-    const response2 = await request2.post(`/api/login`).send(loginData2).set("Authorization", `Bearer ${tokenB}`);
+    const response2 = await request2.post(`/api/login`).send(loginData2)
     const loginResource2 = response2.body as LoginResource;
     tokenB = loginResource2.access_token;
     expect(tokenB).toBeDefined();
@@ -53,7 +53,7 @@ test("users GET, positive test", async () => {
     const response = await request.get(`/api/user/${john.id}`).send(john).set("Authorization", `Bearer ${token}`);;
     expect(response.statusCode).toBe(200);
 
-    const usersRes = response.body as UsersResource;
+    const usersRes = response.body as UserResource;
     expect(usersRes).toEqual(john);
 });
 
@@ -80,14 +80,12 @@ test("user POST, positive test", async () => {
     const request = supertest(app);
     const jane: UserResource = { name: "Jane", email: "jane@jana.de", password: "abHBJHBHB!!9324923!gikbfk???c" };
     const response = await request.post(`/api/user`).send(jane).set("Authorization", `Bearer ${token}`);
-
     const janeModel = await User.findOne({ email: "jane@jana.de" });
     expect(janeModel).toBeDefined();
-
     expect(response.statusCode).toBe(201);
-    const userRes = response.body as UserResource;
-    const { password, ...expected } = { ...jane, id: janeModel!.id, mod: false, admin: false };
-    expect(userRes).toEqual(expected);
+    const userRes = response.body as LoginResource;
+    expect(userRes.access_token).toBeDefined();
+    expect(userRes.token_type).toBeDefined();
 });
 
 test("users post negativ 400", async () => {

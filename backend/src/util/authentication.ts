@@ -26,29 +26,26 @@ declare global {
  */
 export async function requiresAuthentication(req: Request, res: Response, next: NextFunction) {
     req.userId = undefined;
-    const auth = req.header("Authorization")
+    req.role = "u";
+    const auth = req.header("Authorization");
     if (auth && auth.startsWith("Bearer ")) {
         try {
             const jwtString = auth.substring("Bearer ".length);
-            // const {email, password} = req.body
-            // const userId = await verifyPasswordAndCreateJWT(email, password);
-            const userId = verifyJWT(jwtString)
-            if (userId) {
-                req.userId = userId.userId;
-                req.role = userId.role;
-            }
-            // next()
-        } catch (err) {
+            const result = verifyJWT(jwtString);
+            req.userId = result.userId
+            req.role = result.role;
+            next();
+        } catch (error) {
             res.status(401); // Unauthorized
-            res.setHeader("WWW-Authenticate", ['Bearer', 'realm = "app"', 'error="invalid_token"']);
-            next(err);
+            res.setHeader("WWW-Authenticate", ['Bearer', 'realm="app"', 'error="invalid_token"']);
+            next(error);
         }
+
     } else {
         res.status(401); // Unauthorized
-        res.setHeader("WWW-Authenticate", [`Bearer`, 'realm = "app"']);
+        res.setHeader("WWW-Authenticate", ['Bearer', 'realm="app"']);
         next("Authentication required");
     }
-    next()
 }
 
 /**
@@ -57,29 +54,10 @@ export async function requiresAuthentication(req: Request, res: Response, next: 
  * In case authentication fails, an error (401) is generated.
  */
 export async function optionalAuthentication(req: Request, res: Response, next: NextFunction) {
-    req.userId = undefined;
-    const auth = req.header("Authorization")
-    if (auth && auth.startsWith("Bearer ")) {
-        try {
-            const jwtString = auth.substring("Bearer ".length);
-            // const {email, password} = req.body
-            // const userId = await verifyPasswordAndCreateJWT(email, password);
-            const userId = verifyJWT(jwtString)
-            if (userId) {
-                req.userId = userId.userId;
-                req.role = userId.role;
-            }
-            // next()
-        } catch (err) {
-            res.status(401); // Unauthorized
-            res.setHeader("WWW-Authenticate", ['Bearer', 'realm = "app"', 'error="invalid_token"']);
-            next(err);
-        }
+    if (req.header("Authorization")) {
+        requiresAuthentication(req, res, next);
+    } else {
+        next();
     }
-    // } else {
-    //     res.status(401); // Unauthorized
-    //     res.setHeader("WWW-Authenticate", [`Bearer`, 'realm = "app"']);
-    //     next("Authentication required");
-    // }
     next()
 }

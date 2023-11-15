@@ -38,7 +38,7 @@ userRouter.post("/",
                 // could not create jwt for newly created user - something went seriously wrong
                 // better delete the new user
                 await deleteUser(newUser.id!);
-                return res.status(400).json({ message: "Konnte keine JWT-Datei erstellen." });
+                return res.status(400).json({ message: "Can't create a JWT." });
             }
             const LoginRes: LoginResource = { token_type: "Bearer", access_token: jwtString };
             res.status(201).send(LoginRes);

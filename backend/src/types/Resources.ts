@@ -1,6 +1,6 @@
-export type UsersResource = {
-    users: UserResource[]
-} 
+// export type UsersResource = {
+//     users: UserResource[]
+// } 
 
 export type UserResource = {
     id?: string
