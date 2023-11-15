@@ -1,5 +1,5 @@
 import express from "express";
-import { LoginResource } from "../../Resources";
+import { LoginResource } from "../../types/Resources";
 import { verifyPasswordAndCreateJWT } from "../service/JWTService";
 
 const loginRouter = express.Router();
@@ -19,4 +19,3 @@ loginRouter.post("/", async (req, res, next) => {
 });
 
 export default loginRouter;
-

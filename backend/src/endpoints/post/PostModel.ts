@@ -19,5 +19,4 @@ export const postSchema = new Schema<IPost>({
     downvotes: { type: Number, default: 0 }
 }, { timestamps: true });
 
-
 export const Post = model<IPost>("Post", postSchema);
