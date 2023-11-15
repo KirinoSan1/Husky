@@ -1,6 +1,7 @@
 import { JwtPayload, sign, verify } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { login } from "../authentication/AuthenticationService";
+
 dotenv.config();
 
 export async function verifyPasswordAndCreateJWT(email: string, password: string): Promise<string | undefined> {
@@ -8,22 +9,25 @@ export async function verifyPasswordAndCreateJWT(email: string, password: string
     if (!secret) {
         throw Error("JWT_SECRET not set");
     }
+
     const ttl = process.env.JWT_TTL;
     if (!ttl) {
         throw new Error("JWT_TTL not set");
     }
+
     const loginResult = await login(email, password);
     if ((loginResult).success === false) {
         return undefined;
     }
+
     const timeInSec = Math.floor(Date.now() / 1000);
     const payload: JwtPayload = {
         sub: loginResult.id,
         iat: timeInSec, //Issued At	
         role: loginResult.role
     };
-    const jwtString = sign(payload, secret, { algorithm: "HS256", expiresIn: ttl });
-    return jwtString;
+
+    return sign(payload, secret, { algorithm: "HS256", expiresIn: ttl });
 }
 
 export function verifyJWT(jwtString: string | undefined): { userId: string, role: "u" | "a" | "m" } {
@@ -31,6 +35,7 @@ export function verifyJWT(jwtString: string | undefined): { userId: string, role
     if (!secret) {
         throw Error("JWT_SECRET not set");
     }
+
     const ttl = process.env.JWT_TTL;
     if (!ttl) {
         throw new Error("JWT_TTL not set");

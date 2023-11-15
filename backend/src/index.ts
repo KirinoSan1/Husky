@@ -1,21 +1,15 @@
 import express from "express";
-import * as database from "./database/database";
-import http from "http";
-import loginRouter from "./endpoints/login/LoginRouter";
 import bodyParser from "body-parser";
 import cors from "cors";
+import loginRouter from "./endpoints/login/LoginRouter";
+import * as server from "./server";
 
-const PORTNUM = "3001";
-const app = express();
+const app: any = express();
+const port: number = 3001;
 
 app.use("*", express.json());
 app.use(bodyParser.json());
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use("/api/login", loginRouter);
 
-database.connect();
-
-const httpServer = http.createServer(app);
-httpServer.listen(PORTNUM, () => {
-    console.log(`Listening for HTTP at http://localhost:${PORTNUM}`);
-});
+server.start(app, port);
