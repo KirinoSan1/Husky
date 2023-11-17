@@ -18,3 +18,13 @@ export type LoginResource = {
     /** Constant value */
     "token_type": "Bearer"
 }
+
+// Should Author be String or an ID?
+export type PostResource = {
+    id?:string
+    content: string
+    author: string
+    upvotes?: number
+    downvotes?: number
+    createdAt?: Date
+}
