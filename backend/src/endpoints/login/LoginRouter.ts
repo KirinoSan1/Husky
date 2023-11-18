@@ -1,14 +1,12 @@
 import express from "express";
-import { LoginResource } from "../../types/Resources";
 import { verifyPasswordAndCreateJWT } from "../service/JWTService";
-import { optionalAuthentication } from "../../util/authentication";
 import { body, validationResult } from "express-validator";
 
 const loginRouter = express.Router();
 
 loginRouter.post("/",
     body('email').isEmail().normalizeEmail().isLength({ min: 1, max: 100 }),
-    body('password').isStrongPassword().isLength({ min: 1, max: 100 }),
+    // body('password').isStrongPassword().isLength({ min: 1, max: 100 }), // TODO: leads to inconsistencies - should only get checked on register
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
