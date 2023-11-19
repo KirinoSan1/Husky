@@ -28,6 +28,10 @@ export function setJWT(jwt: string): void {
     localStorage.setItem(JWT_NAME, jwt);
 }
 
+export function getJWT(): string | null {
+    return localStorage.getItem(JWT_NAME);
+}
+
 export function removeJWT(): void {
     localStorage.removeItem(JWT_NAME);
 }

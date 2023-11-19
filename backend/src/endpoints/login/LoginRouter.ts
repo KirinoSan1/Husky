@@ -15,13 +15,13 @@ loginRouter.post("/",
         try {
             const jwtString = await verifyPasswordAndCreateJWT(req.body.email, req.body.password);
             if (!jwtString) {
-                res.status(401).json({ message: "Can't create a JWT." });
+                return res.status(401).json({ message: "Can't create a JWT." });
             } else {
                 const LoginRes = { token_type: "Bearer", access_token: jwtString };
-                res.status(201).json(LoginRes);
+                return res.status(201).json(LoginRes);
             }
         } catch (error) {
-            res.sendStatus(400); //changed to res.sendStatus()
+            res.sendStatus(400);
             next(error);
         }
     });

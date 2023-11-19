@@ -25,7 +25,7 @@ export function connect() {
             await User.create({
                 email: "admin@husky.de",
                 name: "Husky Admin",
-                password: "123",
+                password: "abcABC123!",
                 admin: true
             });
             console.log("Successfully created default admin");
