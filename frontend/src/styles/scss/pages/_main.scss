@@ -16,7 +16,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    #logindialog-button-login {
+    #logincontext-provider-buttons {
+        display: inline-flex;
+        gap: 12px;
         margin-top: 50px;
     }
 }
