@@ -2,6 +2,8 @@
 //     users: UserResource[]
 // } 
 
+import { IPost } from "../endpoints/post/PostModel"
+
 export type UserResource = {
     id?: string
     name: string
@@ -9,6 +11,12 @@ export type UserResource = {
     password?: string
     admin?: boolean
     mod?: boolean
+    createdAt?: Date
+}
+
+export type ThreadPageResource = {
+    id?: string,
+    posts: IPost[],
     createdAt?: Date
 }
 

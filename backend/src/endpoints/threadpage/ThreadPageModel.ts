@@ -1,4 +1,4 @@
-import { Model, model, Query, Schema, Types } from "mongoose"
+import { Model, model, Mongoose, Query, Schema, Types } from "mongoose"
 import { IPost, Post, postSchema } from "../post/PostModel"
 
 /**
