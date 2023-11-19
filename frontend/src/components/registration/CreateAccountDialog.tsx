@@ -1,36 +1,34 @@
 import { Alert, Button, Form, Modal } from "react-bootstrap";
-import { LoginContext, setJWT } from "../login/LoginContext";
+import { LoginContext, getLoginInfo, setJWT } from "../login/LoginContext";
 import React, { useState } from "react";
 import LoadingIndicator from "../util/LoadingIndicator";
 import { register } from "../../api/api";
 
 export default function CreateAccountDialog() {
-    const [loggedIn, setLoggedIn] = React.useContext(LoginContext);
+    const [loginInfo, setLoginInfo] = React.useContext(LoginContext);
     const [showDialog, setShowDialog] = useState(false);
-    const [showError, setShowError] = useState(false);
     const [registrationData, setRegistrationData] = useState({ username: "", email: "", password1: "", password2: "" });
-    const [creatingAccount, setCreatingAccount] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     const handleShow = () => { setShowDialog(true); };
-    const handleClose = () => { setShowDialog(false); setShowError(false); setError(""); setRegistrationData({ username: "", email: "", password1: "", password2: "" }); };
+    const handleClose = () => { setShowDialog(false); setError(""); setRegistrationData({ username: "", email: "", password1: "", password2: "" }); };
     const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>) => { setRegistrationData({ ...registrationData, [e.target.name]: e.target.value }); };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setCreatingAccount(true);
+        setLoading(true);
         try {
             const response = await register(registrationData);
             setJWT(response.access_token);
-            setLoggedIn(true);
+            setLoginInfo(getLoginInfo());
             handleClose();
         } catch (error) {
             setError(String(error));
-            setShowError(true);
         }
-        setCreatingAccount(false);
+        setLoading(false);
     };
 
-    if (loggedIn)
+    if (loginInfo)
         return <></>;
 
     return (
@@ -42,7 +40,7 @@ export default function CreateAccountDialog() {
                     <Modal.Title id="createaccount-modal-header-title">Create Account</Modal.Title>
                 </Modal.Header>
                 <Modal.Body id="createaccount-modal-body">
-                    <Alert id="createaccount-modal-body-alert" show={showError} variant="danger">{`An error occurred, please try again.\n${error}`}</Alert>
+                    <Alert id="createaccount-modal-body-alert" show={!!error} variant="danger">{`An error occurred, please try again.\n${error}`}</Alert>
                     <Form id="createaccount-modal-body-form">
                         <Form.Group id="createaccount-modal-body-form-group1">
                             <Form.Label id="createaccount-modal-body-form-group1-label">Username</Form.Label>
@@ -50,6 +48,7 @@ export default function CreateAccountDialog() {
                                 type="text"
                                 name="username"
                                 onChange={handleUpdate}
+                                value={registrationData.username}
                                 placeholder="username"
                                 autoFocus
                                 id="createaccount-modal-body-form-group1-control"
@@ -61,6 +60,7 @@ export default function CreateAccountDialog() {
                                 type="email"
                                 name="email"
                                 onChange={handleUpdate}
+                                value={registrationData.email}
                                 placeholder="name@example.com"
                                 id="createaccount-modal-body-form-group2-control"
                             ></Form.Control>
@@ -71,6 +71,7 @@ export default function CreateAccountDialog() {
                                 type="password"
                                 name="password1"
                                 onChange={handleUpdate}
+                                value={registrationData.password1}
                                 placeholder="password"
                                 id="createaccount-modal-body-form-group3-control"
                             ></Form.Control>
@@ -81,6 +82,7 @@ export default function CreateAccountDialog() {
                                 type="password"
                                 name="password2"
                                 onChange={handleUpdate}
+                                value={registrationData.password2}
                                 placeholder="password"
                                 id="createaccount-modal-body-form-group4-control"
                             ></Form.Control>
@@ -88,9 +90,9 @@ export default function CreateAccountDialog() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer id="createaccount-modal-footer">
-                    {creatingAccount ? <LoadingIndicator></LoadingIndicator> : <></>}
+                    {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
                     <Button id="createaccount-modal-footer-button-cancel" variant="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button id="createaccount-modal-footer-button-submit" disabled={creatingAccount} onClick={handleSubmit}>Submit</Button>
+                    <Button id="createaccount-modal-footer-button-submit" disabled={loading} onClick={handleSubmit}>Submit</Button>
                 </Modal.Footer>
             </Modal>
         </>
