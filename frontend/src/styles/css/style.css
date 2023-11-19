@@ -11,6 +11,11 @@
 
 .form-label {
   color: #FFFFFF;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+form > div:first-of-type > .form-label {
+  margin-top: 0;
 }
 
 .form-control {
@@ -19,6 +24,14 @@
 }
 .form-control::placeholder {
   color: #B5B5B5;
+}
+
+.modal-content {
+  background-color: #2C3033;
+}
+
+.modal-title {
+  color: #FFFFFF;
 }
 
 .btn-primary {
@@ -48,15 +61,10 @@ body {
   align-items: center;
   justify-content: center;
 }
-#root #logindialog-button-login {
+#root #logincontext-provider-buttons {
+  display: inline-flex;
+  gap: 12px;
   margin-top: 50px;
-}
-
-#logindialog-modal > :first-child {
-  background-color: #2C3033;
-}
-#logindialog-modal-header {
-  color: #FFFFFF;
 }
 
 /*# sourceMappingURL=style.css.map */

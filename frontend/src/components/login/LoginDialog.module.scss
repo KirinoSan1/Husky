@@ -1,7 +1,0 @@
-@use "../../styles/scss/theme/theme";
-
-#logindialog-modal {
-    & > :first-child {
-        background-color: theme.$eighth-color;
-    }
-}
