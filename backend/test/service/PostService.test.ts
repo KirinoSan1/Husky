@@ -18,7 +18,7 @@ beforeEach(async () => {
     await User.syncIndexes();
     const user = await User.create(userData);
     dataID = user.id;
-    postData = { content: "Random Content.Yes.", author: dataID, upvotes: 0, downvotes: 2, createdAt: new Date() };
+    postData = { content: "Random Content.Yes.", author: dataID, createdAt: new Date() };
     // const post = await Post.create(postData)
     const post = await createPost(postData);
     postID = post.id!;
@@ -33,7 +33,7 @@ test("getPost test", async () => {
     expect(postTest.content).toBe("Random Content.Yes.");
     expect(postTest.author).toBe(dataID);
     expect(postTest.upvotes).toBe(0)
-    expect(postTest.downvotes).toBe(2);
+    expect(postTest.downvotes).toBe(0);
     expect(postTest.id).toStrictEqual(postID)
 })
 
