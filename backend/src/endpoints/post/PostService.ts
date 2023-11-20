@@ -1,30 +1,28 @@
 import { Types } from "mongoose";
 import { PostResource } from "../../types/Resources";
 import { Post } from "./PostModel";
-import { ThreadPage } from "../threadpage/ThreadPageModel";
 
 export async function getPost(id: string): Promise<PostResource> {
     const post = await Post.findById(id).exec();
     if (!post) {
         throw new Error("Post not found.")
     }
-    return { id: post.id, content: post.content, author: post.author.toString(), upvotes: post.upvotes, downvotes: post.downvotes, createdAt: post.createdAt }
+    return { id: post.id, content: post.content, author: post.author.toString(), upvotes: post.upvotes, 
+        downvotes: post.downvotes, createdAt: post.createdAt }
 }
 
 /**
  * Creates a post.
  */
 export async function createPost(postResource: PostResource): Promise<PostResource> {
+
     const post = await Post.create({
-        id: Types.ObjectId,
         content: postResource.content,
-        author: postResource.author,
-        upvotes: postResource.upvotes,
-        downvotes: postResource.downvotes,
-        createdAt: postResource.createdAt
+        author: postResource.author
     });
+
     return {
-        id: post._id.toString(),
+        id: post.id,
         content: post.content, author: post.author.toString(), upvotes: post.upvotes,
         downvotes: post.downvotes, createdAt: post.createdAt
     }
@@ -42,10 +40,12 @@ export async function updatePost(postResource: PostResource): Promise<PostResour
     if (postResource.author) post.author = new Types.ObjectId(postResource.author);
     if (postResource.upvotes) post.upvotes = postResource.upvotes;
     if (postResource.downvotes) post.downvotes = postResource.downvotes;
-    const savedPost = await post.save();
+    //Debug at this point to see if Id change 
+    await post.save();
+
     return {
-        id: savedPost.id, content: savedPost.content, author: savedPost.author.toString(), upvotes: savedPost.upvotes,
-        downvotes: savedPost.downvotes, createdAt: savedPost.createdAt
+        id: post.id, content: post.content, author: post.author.toString(), upvotes: post.upvotes,
+        downvotes: post.downvotes, createdAt: post.createdAt
     }
 }
 
