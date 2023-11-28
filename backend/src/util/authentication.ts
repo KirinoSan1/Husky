@@ -59,5 +59,4 @@ export async function optionalAuthentication(req: Request, res: Response, next: 
     } else {
         next();
     }
-    next()
 }
