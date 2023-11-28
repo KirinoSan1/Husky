@@ -1,7 +1,4 @@
-// export type UsersResource = {
-//     users: UserResource[]
-// } 
-
+import { Types } from "mongoose"
 import { IPost } from "../endpoints/post/PostModel"
 
 export type UserResource = {
@@ -36,3 +33,15 @@ export type PostResource = {
     downvotes?: number
     createdAt?: Date
 }
+
+export type ThreadResource = {
+    id?: string
+    title: string
+    creator: string
+    creatorName?: string
+    subForum: string
+    numPosts?: number
+    pages?: Types.ObjectId[]
+    createdAt?: string
+}
+
