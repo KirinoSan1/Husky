@@ -17,7 +17,6 @@ afterEach(async () => await DB.clear())
 afterAll(async () => await DB.close())
 
 
-
 // getUsers-Tests
 
 test("getUsers with pre-existing users", async () => {

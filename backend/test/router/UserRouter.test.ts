@@ -1,11 +1,12 @@
 import dotenv from "dotenv";
 import { User } from "../../src/endpoints/user/UserModel";
 import { createUser } from "../../src/endpoints/user/UserService";
-import app from "../../src/testIndex";
+
 import supertest from "supertest";
 import TestDB from "../TestDB";
 import mongoose, { Types } from "mongoose";
 import { LoginResource, UserResource } from "../../src/types/Resources";
+import app from "../../src/testIndex";
 dotenv.config();
 let token: string
 let john: UserResource
