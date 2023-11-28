@@ -11,9 +11,29 @@ export type UserResource = {
     createdAt?: Date
 }
 
+export type ThreadResource = {
+    id?: string
+    title: string
+    creator: string
+    subForum: string
+    numPosts?: number
+    pages: Types.ObjectId[]
+    createdAt?: string
+}
+
 export type ThreadPageResource = {
     id?: string,
     posts: IPost[],
+    createdAt?: Date
+}
+
+// Should Author be String or an ID?
+export type PostResource = {
+    id?: string
+    content: string
+    author: string
+    upvotes?: number
+    downvotes?: number
     createdAt?: Date
 }
 
@@ -44,4 +64,3 @@ export type ThreadResource = {
     pages?: Types.ObjectId[]
     createdAt?: string
 }
-
