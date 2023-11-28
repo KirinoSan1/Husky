@@ -14,8 +14,8 @@ postRouter.get("/:id", requiresAuthentication,
             return res.status(400).json({ errors: errors.array() });
         }
         try {
-            const users = await getPost(req.params.id);
-            return res.send(users); // 200 by default
+            const post = await getPost(req.params.id);
+            return res.send(post); // 200 by default
         } catch (err) {
             res.status(400);
             next(err)
