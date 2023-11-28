@@ -57,6 +57,6 @@ export async function optionalAuthentication(req: Request, res: Response, next: 
     if (req.header("Authorization")) {
         requiresAuthentication(req, res, next);
     } else {
-        next();
+        next()
     }
 }
