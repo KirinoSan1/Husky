@@ -47,6 +47,53 @@ form > div:first-of-type > .form-label {
   background-color: #3A3D40;
 }
 
+/* TODO:
+    - align text (account name) vertically
+    - text gets dragged by the profile picture size 
+*/
+.navbar {
+  width: 95%;
+  justify-content: left;
+}
+.navbar a {
+  color: #D9D9D9;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 500;
+  margin: 10px;
+}
+.navbar a img { /* TODO: make width dynamic */
+  width: 30px;
+  margin-left: 10px;
+}
+.navbar a:focus { /* TODO: make permanent for currently selected page/element */
+  color: #FFFFFF;
+}
+.navbar #account-section {
+  margin-left: auto;
+}
+.navbar .dropdown-toggle:hover {
+  color: #FFFFFF;
+}
+.navbar .dropdown-menu {
+  background-color: #3A3D40;
+}
+.navbar .dropdown-menu a {
+  margin: 0;
+  padding: 5px 10px;
+  text-transform: none;
+  color: #D9D9D9;
+}
+.navbar .dropdown-menu a:hover, .navbar .dropdown-menu a:active, .navbar .dropdown-menu a:focus {
+  background-color: rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+  transition: ease-in 200ms;
+}
+.navbar .dropdown-menu button {
+  width: calc(100% - 20px) !important;
+  margin: 0px 10px;
+}
+
 :root {
   background-color: #1C2225;
   color: #FFFFFF;
@@ -67,7 +114,6 @@ body {
 #root #logincontext-provider-buttons {
   display: inline-flex;
   gap: 12px;
-  margin-top: 50px;
 }
 
 /*# sourceMappingURL=style.css.map */

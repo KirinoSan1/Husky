@@ -14,11 +14,14 @@ export function getLoginInfo(): LoginInfo | null {
     const jwt = localStorage.getItem(JWT_NAME);
     if (!jwt)
         return null;
+
     const payload: JwtPayload & { role: "u" | "m" | "a" } = jwtDecode(jwt);
-    const userID = payload.sub;
-    const role = payload.role;
+    const userID: string | undefined = payload.sub;
+    const role: "a" | "u" | "m" = payload.role;
+
     if (!userID || !role)
         return null;
+
     return { userID: userID, role: role };
 }
 

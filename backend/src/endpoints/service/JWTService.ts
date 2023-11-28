@@ -23,7 +23,7 @@ export async function verifyPasswordAndCreateJWT(email: string, password: string
     const timeInSec = Math.floor(Date.now() / 1000);
     const payload: JwtPayload = {
         sub: loginResult.id,
-        iat: timeInSec, //Issued At	
+        iat: timeInSec, // Issued At
         role: loginResult.role
     };
 
@@ -42,16 +42,21 @@ export function verifyJWT(jwtString: string | undefined): { userId: string, role
     }
 
     if (!jwtString) {
-        throw new Error("invalid_token");
+        throw new Error("Invalid token");
     }
 
     try {
         const payload = verify(jwtString, secret);
-        if (typeof payload === 'object' && "sub" in payload && payload.sub && "role" in payload && payload.role) {
+        if (
+            typeof payload === 'object' &&
+            "sub" in payload && payload.sub &&
+            "role" in payload && payload.role
+        ) {
             return { userId: payload.sub, role: payload.role };
         }
-        throw new Error("Invalid Payload."); 
     } catch (err: any) {
-        throw new Error(err.message)
+        throw new Error(err.message);
     }
+
+    throw new Error("Invalid payload");
 }
