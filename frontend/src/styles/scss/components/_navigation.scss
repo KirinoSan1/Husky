@@ -1,0 +1,60 @@
+@use "../theme/theme";
+
+/* TODO:
+    - align text (account name) vertically
+    - text gets dragged by the profile picture size 
+*/
+
+.navbar {
+    width: 95%;
+    justify-content: left;
+
+    a {
+        color: theme.$fifth-color;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-weight: 500;
+        margin: 10px;
+
+        img { /* TODO: make width dynamic */
+            width: 30px;
+            margin-left: 10px;
+        }
+
+        &:focus { /* TODO: make permanent for currently selected page/element */
+            color: theme.$fourth-color;
+        }
+    }
+
+    #account-section {
+        margin-left: auto;
+    }
+
+    .dropdown-toggle:hover {
+        color: theme.$fourth-color;
+    }
+
+    .dropdown-menu {
+        background-color: theme.$seventh-color;
+
+        a {
+            margin: 0;
+            padding: 5px 10px;
+            text-transform: none;
+            color: theme.$fifth-color;
+
+            &:hover,
+            &:active,
+            &:focus {
+                background-color: rgba($color: #000, $alpha: 0.0);
+                color: theme.$fourth-color;
+                transition: ease-in 200ms;
+            }
+        }
+
+        button {
+            width: calc(100% - 20px) !important;
+            margin: 0px 10px;
+        }
+    }
+}
