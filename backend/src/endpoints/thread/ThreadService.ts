@@ -1,52 +1,50 @@
-import { ThreadResource } from "../../Resources";
 import { Thread } from "./ThreadModel";
 import { ThreadPage } from "../threadpage/ThreadPageModel";
 import { User } from "../user/UserModel";
-
-/**
- * Helper function for the createdAt-field
- */
-export function dateToString(date: Date) {
-    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-}
+import { ThreadResource } from "../../types/Resources";
 
 /**
  * Returns the thread with the specified ID.
  * Throws an error if no thread is found.
  */
 export async function getThread(id: string): Promise<ThreadResource> {
-    const thread = await Thread.findById(id).populate("creator").exec();
+    const thread = await Thread.findById(id).exec();
     if (!thread) {
         throw new Error(`Thread with ID ${id} not found`)
     }
-
     const creator = await User.findById(thread.creator).exec();
     if (!creator) {
         throw new Error(`Creator not found`);
     }
 
-    return { id: thread.id, title: thread.title, creator: thread.creator.id.toString(), creatorName: creator.name, 
-        subForum: thread.subForum, numPosts: thread.numPosts, pages: thread.pages, createdAt: dateToString(thread.createdAt!) };
+    return {
+        id: thread.id, title: thread.title, creator: thread.creator.toString(),
+        subForum: thread.subForum, numPosts: thread.numPosts, pages: thread.pages, createdAt: thread.createdAt.toString()
+    };
 }
 
 /**
- * Create the Thread.
+ * Create the Thread
  */
 export async function createThread(threadResource: ThreadResource): Promise<ThreadResource> {
-    const thread = new Thread({ 
-        title: threadResource.title, 
+    const thread = await Thread.create({
+        title: threadResource.title,
         creator: threadResource.creator,
-        subForum: threadResource.subForum 
+        subForum: threadResource.subForum,
+        pages: threadResource.pages,
+        numPosts: threadResource.numPosts,
+        createdAt: Date.now()
     });
-
     const creator = await User.findById(thread.creator).exec();
     if (!creator) {
-        throw new Error(`Creator not found`);
+        throw new Error(`Creator with ID ${thread.creator} not found`)
     }
-
     await thread.save();
-    return { id: thread.id, title: thread.title, creator: thread.creator.id.toString(), creatorName: creator.name, 
-        subForum: thread.subForum, numPosts: thread.numPosts, pages: thread.pages, createdAt: dateToString(thread.createdAt!) };
+
+    return {
+        id: thread.id, title: thread.title, creator: thread.creator.toString(),
+        subForum: thread.subForum, numPosts: thread.numPosts, pages: thread.pages, createdAt: thread.createdAt.toString()
+    };
 }
 
 /**
@@ -66,8 +64,8 @@ export async function updateThread(threadResource: ThreadResource): Promise<Thre
         thread.subForum = threadResource.subForum;
     }
     await thread.save();
-
-    return { id: thread.id, title: thread.title, subForum: thread.subForum, creator: thread.creator.id.toString() };
+    
+    return { id: thread.id, title: thread.title, subForum: thread.subForum, creator: thread.creator.toString(), pages: thread.pages };
 }
 
 /**
