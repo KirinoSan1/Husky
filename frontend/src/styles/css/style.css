@@ -47,6 +47,14 @@ form > div:first-of-type > .form-label {
   background-color: #3A3D40;
 }
 
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  background-color: #B5B5B5;
+}
+
+.nav-link, .nav-link:focus, .nav-link:hover {
+  color: #FFFFFF;
+}
+
 /* TODO:
     - align text (account name) vertically
     - text gets dragged by the profile picture size 
@@ -92,6 +100,25 @@ form > div:first-of-type > .form-label {
 .navbar .dropdown-menu button {
   width: calc(100% - 20px) !important;
   margin: 0px 10px;
+}
+
+#logindialog-button-logout {
+  margin-bottom: 24px;
+}
+
+[id*=settings-tabs-tabpane] > form > div:first-of-type .form-label {
+  margin-top: 16px;
+}
+[id*=settings-tabs-tabpane] .btn {
+  margin-top: 24px;
+}
+
+#settings-tabs-tabpane-Profile {
+  margin-top: 16px;
+}
+#settings-tabs-tabpane-Profile .list-group-item {
+  background-color: #3A3D40;
+  color: #FFFFFF;
 }
 
 :root {
