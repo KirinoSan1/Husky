@@ -12,3 +12,18 @@ export type UserResource = {
     mod?: boolean
     createdAt?: Date
 }
+
+export type AuthorResource = {
+    id?: string
+    name: string
+    admin?: boolean
+    mod?: boolean
+    createdAt: Date
+}
+
+export type PostResource = {
+    id?: string
+    content: string
+    author: string
+    createdAt: Date
+}
