@@ -6,6 +6,8 @@ import { UserContext } from './components/settings/UserContext';
 import { getUser } from './api/api';
 import { UserResource } from './types/Resources';
 import { Outlet } from 'react-router-dom';
+import ThreadPage from './components/threadpage/ThreadPage';
+import { threadPage1 } from './data/testingData';
 
 export default function App() {
     const [loginInfo, setLoginInfo] = useState(getLoginInfo());
@@ -20,7 +22,7 @@ export default function App() {
             } catch (error) { }
         }
         getUserData();
-    }, [loginInfo]); // if you see a warning here - ignore it  // temporary fix (nesting the function)
+    }, [loginInfo]);
 
     return (
         <>
@@ -33,6 +35,7 @@ export default function App() {
                     <main>
                         <Outlet />
                     </main>
+                    <ThreadPage pageNum={0} threadPage={threadPage1}></ThreadPage>
                 </UserContext.Provider>
             </LoginContext.Provider>
         </>

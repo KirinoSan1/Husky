@@ -24,10 +24,10 @@ export default function Post({ postNum, post, user }: { post: PostResource, user
                             <Button id={`post${postNum}-div2-div-button2`}>Delete</Button>
                         </>
                     }
-                    <p id={`post${postNum}-div2-div-p2`}>{`#${postNum}`}</p>
+                    <p id={`post${postNum}-div2-div-p2`}>{`#${postNum + 1}`}</p>
                 </div>
                 <hr id={`post${postNum}-div2-hr`}></hr>
-                <p id={`post${postNum}-div2-p`}>{post.content}</p>
+                <pre id={`post${postNum}-div2-pre`}>{post.content}</pre>
             </div>
         </>
     );
