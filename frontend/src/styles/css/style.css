@@ -102,10 +102,11 @@ form > div:first-of-type > .form-label {
   margin: 0px 10px;
 }
 
+/*
 #logindialog-button-logout {
-  margin-bottom: 24px;
+    margin-bottom: 24px;
 }
-
+*/
 [id*=settings-tabs-tabpane] > form > div:first-of-type .form-label {
   margin-top: 16px;
 }
