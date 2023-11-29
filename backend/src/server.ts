@@ -1,9 +1,16 @@
 import * as database from "./database/database";
-import http from "http";
+import https from "https";
+import { readFileSync } from "fs";
 
 export function start(app: any, port: number) {
     database.connect();
-    http.createServer(app).listen(port, () => {
-        console.log(`Listening for HTTP at http://localhost:${port}`);
+    https.createServer(
+        {
+            key: readFileSync("./certificates/private.key"),
+            cert: readFileSync("./certificates/public.crt")
+        },
+        app
+    ).listen(port, () => {
+        console.log(`Listening for HTTPS at https://127.0.0.1:${port}`);
     });
 }

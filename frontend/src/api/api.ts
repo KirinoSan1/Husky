@@ -1,7 +1,7 @@
 import { getJWT, getLoginInfo } from "../components/login/LoginContext";
 import { LoginResource, UserResource } from "../types/Resources";
 
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "https://127.0.0.1";
 
 export async function login(loginData: { email: string, password: string }): Promise<LoginResource> {
     try {
