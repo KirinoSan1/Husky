@@ -27,3 +27,9 @@ export type PostResource = {
     author: string
     createdAt: Date
 }
+
+export type ThreadPageResource = {
+    id?: string,
+    posts: PostResource[],
+    createdAt?: Date
+}
