@@ -11,7 +11,7 @@ const app = express();
 
 app.use("*", express.json());
 app.use(bodyParser.json());
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "http://127.0.0.1:3000" }));
 app.use("/api/login", loginRouter);
 app.use("/api/user", userRouter)
 app.use("/api/post", postRouter)

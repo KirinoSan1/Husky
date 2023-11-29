@@ -5,6 +5,9 @@ node_modules
 # not recommended but pleasant
 package-lock.json
 
+# keys, certificates, ...
+certificates
+
 # dependencies
 /.pnp
 .pnp.js
