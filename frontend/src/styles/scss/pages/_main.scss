@@ -1,4 +1,6 @@
 @use "../theme/theme";
+@use "../../../components/login/LoginDialog.module";
+@use "../../../components/settings/Settings.module";
 
 :root {
     background-color: theme.$third-color;

@@ -1,0 +1,22 @@
+@use "../../styles/scss/theme/theme";
+
+[id*="settings-tabs-tabpane"] {
+    & > form {
+        & > div:first-of-type {
+            .form-label {
+                margin-top: 16px;
+            }
+        }
+    }
+    .btn {
+        margin-top: 24px;
+    }
+}
+
+#settings-tabs-tabpane-Profile {
+    margin-top: 16px;
+    .list-group-item {
+        background-color: theme.$seventh-color;
+        color: theme.$fourth-color;
+    }
+}

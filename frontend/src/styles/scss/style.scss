@@ -6,10 +6,9 @@
 @use "./layout/modal";
 
 @use "./components/buttons";
+@use "./components/nav-link";
 @use "./components/navigation";
 
 @use "./pages/main";
 
 @use "./theme/theme";
-
-@use "../../components/login/LoginDialog.module.scss";
