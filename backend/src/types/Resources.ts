@@ -43,24 +43,3 @@ export type LoginResource = {
     /** Constant value */
     "token_type": "Bearer"
 }
-
-// Should Author be String or an ID?
-export type PostResource = {
-    id?:string
-    content: string
-    author: string
-    upvotes?: number
-    downvotes?: number
-    createdAt?: Date
-}
-
-export type ThreadResource = {
-    id?: string
-    title: string
-    creator: string
-    creatorName?: string
-    subForum: string
-    numPosts?: number
-    pages?: Types.ObjectId[]
-    createdAt?: string
-}
