@@ -1,5 +1,5 @@
-import { Model, model, Mongoose, Query, Schema, Types } from "mongoose"
-import { IPost, Post, postSchema } from "../post/PostModel"
+import { Model, model, Schema, Types } from "mongoose"
+import { IPost } from "../post/PostModel"
 
 /**
  * Interface with the appointed properties
@@ -23,7 +23,7 @@ const threadpageSchema = new Schema<IThreadPage, ThreadPageModel>({
         author: { type: Schema.Types.ObjectId, ref: "User", required: true },
         upvotes: { type: Number, default: 0 },
         downvotes: { type: Number, default: 0 }
-    })]
+    }, { timestamps: true })]
 
 }, { timestamps: true })
 
