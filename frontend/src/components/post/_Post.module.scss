@@ -1,0 +1,56 @@
+@use "../../styles/scss/theme/theme";
+
+.threadpage-post {
+    display: flex;
+    flex-direction: row;
+    margin: {
+        top: 8px;
+        bottom: 24px;
+        left: 8px;
+        right: 8px;
+    }
+    height: 300px;
+    background-color: theme.$eighth-color;
+    border: 8px solid theme.$eighth-color;
+    border-radius: 16px;
+    & > [id*="div1"] {
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        & > img {
+            align-self: center;
+            margin: 8px auto;
+        }
+        & > p:first-of-type {
+            align-self: center;
+        }
+        & > p:last-of-type {
+            color: theme.$sixth-color;
+            margin-left: 8px;
+        }
+    }
+    & > [id*="div2"] {
+        width: 80%;
+        padding: {
+            left: 16px;
+            right: 8px;
+            top: 8px;
+            bottom: 8px
+        }
+        & > :first-child {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            color: theme.$sixth-color;
+            & > :last-child {
+                margin-left: 32px;
+            }
+        }
+    }
+}
+
+.post-vertical-line {
+    height: 100%;
+    width: 2px;
+    background-color: theme.$seventh-color;
+}

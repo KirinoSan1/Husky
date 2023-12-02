@@ -8,14 +8,15 @@ export default function Post({ postNum, post, user }: { post: PostResource, user
 
     return (
         <>
-            <div id={`post${postNum}-div1`} style={{ backgroundColor: "white" }}>
+            <div id={`post${postNum}-div1`}>
                 <img id={`post${postNum}-div1-img`} src="images/logo.png" alt={"Profile Pic"} width="100" height="100"></img>
                 <p id={`post${postNum}-div1-p1`}>{user.name}</p>
                 <p id={`post${postNum}-div1-p2`}>{`Mitglied seit: ${user.createdAt.toLocaleDateString()}`}</p>
                 {user.mod && !user.admin && <p id={`post${postNum}-div1-p3`}>Moderator</p>}
                 {user.admin && <p id={`post${postNum}-div1-p4`}>Admin</p>}
             </div>
-            <div id={`post${postNum}-div2`} style={{ backgroundColor: "white" }}>
+            <div className="post-vertical-line"></div>
+            <div id={`post${postNum}-div2`}>
                 <div id={`post${postNum}-div2-div`}>
                     <p id={`post${postNum}-div2-div-p1`}>{`Geschrieben am ${post.createdAt.toLocaleDateString()} um ${post.createdAt.getHours()}:${post.createdAt.getMinutes()} Uhr`}</p>
                     {loginInfo && loginInfo.userID === post.author &&
@@ -26,8 +27,7 @@ export default function Post({ postNum, post, user }: { post: PostResource, user
                     }
                     <p id={`post${postNum}-div2-div-p2`}>{`#${postNum + 1}`}</p>
                 </div>
-                <hr id={`post${postNum}-div2-hr`}></hr>
-                <pre id={`post${postNum}-div2-pre`}>{post.content}</pre>
+                <p id={`post${postNum}-div2-p3`}>{post.content}</p>
             </div>
         </>
     );

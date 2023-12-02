@@ -107,6 +107,57 @@ form > div:first-of-type > .form-label {
     margin-bottom: 24px;
 }
 */
+.threadpage-post {
+  display: flex;
+  flex-direction: row;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  margin-left: 8px;
+  margin-right: 8px;
+  height: 300px;
+  background-color: #2C3033;
+  border: 8px solid #2C3033;
+  border-radius: 16px;
+}
+.threadpage-post > [id*=div1] {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+}
+.threadpage-post > [id*=div1] > img {
+  align-self: center;
+  margin: 8px auto;
+}
+.threadpage-post > [id*=div1] > p:first-of-type {
+  align-self: center;
+}
+.threadpage-post > [id*=div1] > p:last-of-type {
+  color: #B5B5B5;
+  margin-left: 8px;
+}
+.threadpage-post > [id*=div2] {
+  width: 80%;
+  padding-left: 16px;
+  padding-right: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.threadpage-post > [id*=div2] > :first-child {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  color: #B5B5B5;
+}
+.threadpage-post > [id*=div2] > :first-child > :last-child {
+  margin-left: 32px;
+}
+
+.post-vertical-line {
+  height: 100%;
+  width: 2px;
+  background-color: #3A3D40;
+}
+
 [id*=settings-tabs-tabpane] > form > div:first-of-type .form-label {
   margin-top: 16px;
 }
@@ -120,6 +171,20 @@ form > div:first-of-type > .form-label {
 #settings-tabs-tabpane-Profile .list-group-item {
   background-color: #3A3D40;
   color: #FFFFFF;
+}
+
+[id*=threadpage] {
+  color: #FFFFFF;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.threadpage-number {
+  margin-bottom: 0;
+  padding-right: 24px;
+  text-align: right;
+  width: 100%;
 }
 
 :root {
