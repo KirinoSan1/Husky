@@ -237,3 +237,44 @@ test("Thread DELETE, Negative test for not Creator", async () => {
     expect(response.status).toBe(403);
     expect(response.body.message).toBe("You are not the Creator.");
 });
+
+
+test("Thread GET Title, Positive Test", async () => {
+    const request = supertest(app);
+    const sth = await createThread({ title: "Jinxs Store", creator: idJinx!, subForum: "computer science", numPosts: 3, pages: [postid, post2id] });
+    const response = await request.get(`/api/thread/${sth.id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.title).toBe("Jinxs Store");
+    const SearchResponse = await request.get(`/api/thread/find/jinx`)
+    expect(SearchResponse.status).toBe(200)
+    expect(SearchResponse.body[0].pages[0]).toEqual(sth.pages[0].toString())
+});
+
+test("Thread GETTitle more than one Object, Positive Test", async () => {
+    const request = supertest(app);
+    const sth = await createThread({ title: "Jinxs Store", creator: idJinx!, subForum: "computer science", numPosts: 3, pages: [postid, post2id] });
+    const sth2 = await createThread({ title: "Store", creator: idJinx!, subForum: "science", numPosts: 3, pages: [postid, post2id] });
+    const response = await request.get(`/api/thread/${sth2.id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.title).toBe("Store");
+    const SearchResponse = await request.get(`/api/thread//find/${"store"}`)
+    expect(SearchResponse.status).toBe(200)
+    expect(SearchResponse.body[0].title).toEqual(sth.title)
+    expect(SearchResponse.body[1].title).toEqual(sth2.title)
+    expect(SearchResponse.body[1].pages.length).toEqual(sth2.pages.length)
+    expect(SearchResponse.body[1].pages[0]).toEqual(sth2.pages[0].toString())
+    expect(SearchResponse.body[0].pages.length).toEqual(sth.pages.length)
+    expect(SearchResponse.body[0].pages[1]).toEqual(sth.pages[1].toString())
+});
+
+
+test("Thread GET Title, Negative Test", async () => {
+    const request = supertest(app);
+    const sth = await createThread({ title: "Jinxs Store", creator: idJinx!, subForum: "computer science", numPosts: 3, pages: [postid, post2id] });
+    const response = await request.get(`/api/thread/${sth.id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.title).toBe("Jinxs Store");
+    const x : number = 4
+    const SearchResponse = await request.get(`/api/thread/find/${x}`)
+    expect(SearchResponse.status).toBe(400)
+});

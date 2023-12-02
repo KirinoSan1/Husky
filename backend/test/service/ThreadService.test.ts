@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import DB from "../TestDB";
-import { getThread, createThread, updateThread, deleteThread } from "../../src/endpoints/thread/ThreadService";
+import { getThread, createThread, updateThread, deleteThread, getThreadtitle } from "../../src/endpoints/thread/ThreadService";
 import { Thread } from "../../src/endpoints/thread/ThreadModel";
 import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
 import { IUser, User } from "../../src/endpoints/user/UserModel"
@@ -171,3 +171,118 @@ test("Throws an Error, when Thread not found", async () => {
     const invalidId = new mongoose.Types.ObjectId();
     await expect(deleteThread(invalidId.toString())).rejects.toThrow("Thread with ID " + invalidId + " not found");
 });
+
+
+test("Creates a new Thread and search the Titel, one example", async () => {
+    const post = await Post.create({
+        content: "Test.",
+        author: idJinx,
+        createdAt: new Date()
+    });
+
+    const post2 = await Post.create({
+        content: "Test.",
+        author: idJinx,
+        createdAt: new Date()
+    });
+    let postid = post.id
+    let post2id = post2.id
+
+    const thread: ThreadResource = ({
+        creator: idJinx,
+        title: "Thread",
+        subForum: "Testing",
+        pages: [post.id, post2.id],
+        numPosts: 2,
+    });
+
+    const res = await createThread(thread);
+    const search  = await getThreadtitle("Thread")
+
+    expect(search.length).toBe(1)
+    expect(search[0]).toEqual(res)
+})
+
+test("Creates a new Thread and search the Titel case insensitive", async () => {
+    const post = await Post.create({
+        content: "Test.",
+        author: idJinx,
+        createdAt: new Date()
+    });
+
+    const post2 = await Post.create({
+        content: "Test.",
+        author: idJinx,
+        createdAt: new Date()
+    });
+    let postid = post.id
+    let post2id = post2.id
+
+    const thread: ThreadResource = ({
+        creator: idJinx,
+        title: "Thread",
+        subForum: "Testing",
+        pages: [post.id, post2.id],
+        numPosts: 2,
+    });
+
+    const thread1: ThreadResource = ({
+        creator: idJinx,
+        title: "thread",
+        subForum: "testing",
+        pages: [post.id, post2.id],
+        numPosts: 2,
+    });
+
+    const thread2: ThreadResource = ({
+        creator: idJinx,
+        title: "thethread",
+        subForum: "testing",
+        pages: [post.id, post2.id],
+        numPosts: 2,
+    });
+
+    const thread3: ThreadResource = ({
+        creator: idJinx,
+        title: "the thread",
+        subForum: "testing",
+        pages: [post.id, post2.id],
+        numPosts: 2,
+    });
+
+    const res = await createThread(thread);
+    const res1 = await createThread(thread1);
+    const res2 = await createThread(thread2);
+    const res3 = await createThread(thread3);
+
+    const search  = await getThreadtitle("Thread")
+
+    expect(search.length).toBe(4)
+    expect(search).toEqual([res, res1, res2, res3])
+})
+
+test("Creates a new Thread and search for an non existing Titel", async () => {
+    const post = await Post.create({
+        content: "Test.",
+        author: idJinx,
+        createdAt: new Date()
+    });
+
+    const post2 = await Post.create({
+        content: "Test.",
+        author: idJinx,
+        createdAt: new Date()
+    });
+    let postid = post.id
+    let post2id = post2.id
+
+    const thread: ThreadResource = ({
+        creator: idJinx,
+        title: "Thread",
+        subForum: "Testing",
+        pages: [post.id, post2.id],
+        numPosts: 2,
+    });
+    const res = await createThread(thread);
+    expect(await getThreadtitle("Ananas")).toEqual([])
+})
