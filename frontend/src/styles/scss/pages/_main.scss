@@ -1,6 +1,8 @@
 @use "../theme/theme";
 @use "../../../components/login/LoginDialog.module";
+@use "../../../components/post/Post.module";
 @use "../../../components/settings/Settings.module";
+@use "../../../components/threadpage/ThreadPage.module";
 
 :root {
     background-color: theme.$third-color;
