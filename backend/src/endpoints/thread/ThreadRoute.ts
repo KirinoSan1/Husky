@@ -1,5 +1,5 @@
 import express from "express";
-import { getThread, createThread, updateThread, deleteThread } from "./ThreadService";
+import { getThread, createThread, updateThread, deleteThread, getThreadtitle } from "./ThreadService";
 import { body, matchedData, param, validationResult } from "express-validator";
 import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
 import { ThreadResource } from "../../types/Resources";
@@ -95,5 +95,24 @@ threadRouter.delete("/:id", requiresAuthentication,
             next(err);
         }
     })
+
+
+threadRouter.get("/find/:query", optionalAuthentication,
+    param("query").isString().isLength({ min: 2, max: 100 }),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const query = req.params!.query;
+        try {
+            const foundThread = await getThreadtitle(query);
+            return res.send(foundThread);
+        } catch (error: any) {
+            res.status(404)
+            next(error)
+        }
+    });
+
 
 export default threadRouter;

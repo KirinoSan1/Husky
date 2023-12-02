@@ -23,6 +23,23 @@ export async function getThread(id: string): Promise<ThreadResource> {
     };
 }
 
+export async function getThreadtitle(title: string): Promise<ThreadResource[]> {
+    const regex = new RegExp(title, 'i');
+    const threads = await Thread.find({ title: regex }).exec();
+    const threadResources = threads.map(thread => ({
+        id: thread.id,
+        title: thread.title,
+        creator: thread.creator.toString(),
+        subForum: thread.subForum,
+        numPosts: thread.numPosts,
+        pages: thread.pages,
+        createdAt: thread.createdAt.toString()
+    }));
+
+    return threadResources;
+}
+
+
 /**
  * Create the Thread
  */
