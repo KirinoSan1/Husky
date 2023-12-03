@@ -1,14 +1,35 @@
+import { AuthorResource, AuthorsResource } from "../../types/Resources";
 import { ThreadPageResource } from "../../types/Resources";
-import { Post } from "../post/PostModel";
+import { User } from "../user/UserModel";
 import { ThreadPage } from "./ThreadPageModel";
 
 export async function getThreadPage(id: string): Promise<ThreadPageResource> {
     const threadPage = await ThreadPage.findById(id).exec();
     if (!threadPage) {
-        throw new Error(" Page not found")
+        throw new Error("Page not found")
     }
     const threadPageResource = { id: threadPage.id, posts: threadPage.posts, createdAt: threadPage.createdAt }
     return threadPageResource;
+}
+
+export async function getThreadPageAuthors(id: string): Promise<AuthorsResource> {
+    const threadPage = await ThreadPage.findById(id).exec();
+    if (!threadPage) {
+        throw new Error("Page not found");
+    }
+    let arr = new Array<AuthorResource>();
+    const map = new Map<string, boolean>();
+    for (const post of threadPage.posts) {
+        const authorID = String(post.author);
+        const author = await User.findById(authorID);
+        if (!author)
+            throw new Error("Author not found");
+        if (map.get(author.id))
+            continue;
+        arr.push({ id: author.id, name: author.name, admin: author.admin ?? false, mod: author.mod ?? false, createdAt: author.createdAt! });
+        map.set(author.id, true);
+    }
+    return { authors: arr };
 }
 
 export async function createThreadPage(threadPageResource: ThreadPageResource): Promise<ThreadPageResource> {
@@ -29,7 +50,7 @@ export async function updateThreadPage(threadPageResource: ThreadPageResource): 
     }
     if (threadPageResource.posts) {
         threadPage.posts.length = 0
-        for(let i = 0; i < threadPageResource.posts.length; i++){
+        for (let i = 0; i < threadPageResource.posts.length; i++) {
             threadPage.posts.push(threadPageResource.posts[i])
         }
     }
@@ -40,7 +61,7 @@ export async function updateThreadPage(threadPageResource: ThreadPageResource): 
 
 export async function deleteThreadPage(id: string): Promise<void> {
     const threadPage = await ThreadPage.findById(id).exec()
-    if(!threadPage){
+    if (!threadPage) {
         throw new Error(`No Page with id ${id} found, cannot delete`)
     }
     await ThreadPage.findByIdAndDelete(id).exec()

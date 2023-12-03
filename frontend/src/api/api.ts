@@ -1,5 +1,5 @@
 import { getJWT, getLoginInfo } from "../components/login/LoginContext";
-import { LoginResource, UserResource } from "../types/Resources";
+import { AuthorsResource, LoginResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
 
 const BASE_URL = "https://127.0.0.1";
 
@@ -159,5 +159,98 @@ export async function updateUser(user: UserResource, data: {
 
     } catch (error) {
         throw new Error("Error occurred during update: " + error);
+    }
+}
+
+export async function getThread(threadID: string): Promise<ThreadResource> {
+    try {
+        if (!threadID)
+            throw new Error("threadID not defined");
+
+        const response = await fetch(`${BASE_URL}/api/thread/${threadID}`, {
+            method: "GET"
+        });
+        if (!response || !response.ok)
+            throw new Error("network response was not OK");
+
+        const result: ThreadResource = await response.json();
+        if (!result)
+            throw new Error("invalid result from server");
+        if (!result.id || !result.pages || !result.title)
+            throw new Error("result from server is missing fields");
+        return result;
+
+    } catch (error) {
+        throw new Error("Error occurred during request: + " + error);
+    }
+}
+
+export async function getThreadPage(threadPageID: string): Promise<ThreadPageResource> {
+    try {
+        if (!threadPageID)
+            throw new Error("threadPageID not defined");
+
+        const response = await fetch(`${BASE_URL}/api/threadpage/${threadPageID}`, {
+            method: "GET"
+        });
+        if (!response || !response.ok)
+            throw new Error("network response was not OK");
+
+        const result: ThreadPageResource = await response.json();
+        if (!result)
+            throw new Error("invalid result from server");
+        if (!result.id || !result.posts)
+            throw new Error("result from server is missing fields");
+        result.posts.forEach((post) => { post.createdAt = new Date(post.createdAt); });
+        return result;
+
+    } catch (error) {
+        throw new Error("Error occurred during request: + " + error);
+    }
+}
+
+export async function getAuthors(threadPageID: string): Promise<AuthorsResource> {
+    try {
+        if (!threadPageID)
+            throw new Error("threadPageID not defined");
+
+        const response = await fetch(`${BASE_URL}/api/threadpage/authors/${threadPageID}`, {
+            method: "GET"
+        });
+        if (!response || !response.ok)
+            throw new Error("network response was not OK");
+
+        const result: AuthorsResource = await response.json();
+        if (!result)
+            throw new Error("invalid result from server");
+        if (!result.authors)
+            throw new Error("result from server is missing fields");
+        result.authors.forEach((author) => { author.createdAt = new Date(author.createdAt) });
+        return result;
+
+    } catch (error) {
+        throw new Error("Error occurred during request: + " + error);
+    }
+}
+
+export async function searchThreadsByTitle(title: string): Promise<Array<ThreadResource>> {
+    try {
+        if (!title)
+            throw new Error("title not defined");
+
+        const response = await fetch(`${BASE_URL}/api/thread/find/${title}`, {
+            method: "GET"
+        });
+        if (!response || !response.ok)
+            throw new Error("network response was not OK");
+
+        const result: Array<ThreadResource> = await response.json();
+        if (!result)
+            throw new Error("invalid result from server");
+        result.forEach((thread) => { thread.createdAt = new Date(thread.createdAt) });
+        return result;
+
+    } catch (error) {
+        throw new Error("Error occurred during request: + " + error);
     }
 }

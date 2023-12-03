@@ -9,16 +9,16 @@ export default function Post({ postNum, post, user }: { post: PostResource, user
     return (
         <>
             <div id={`post${postNum}-div1`}>
-                <img id={`post${postNum}-div1-img`} src="images/logo.png" alt={"Profile Pic"} width="100" height="100"></img>
+                <img id={`post${postNum}-div1-img`} src="/images/logo.png" alt={"Profile Pic"} width="100" height="100"></img>
                 <p id={`post${postNum}-div1-p1`}>{user.name}</p>
-                <p id={`post${postNum}-div1-p2`}>{`Mitglied seit: ${user.createdAt.toLocaleDateString()}`}</p>
+                <p id={`post${postNum}-div1-p2`}>{`Member since: ${user.createdAt.toLocaleDateString()}`}</p>
                 {user.mod && !user.admin && <p id={`post${postNum}-div1-p3`}>Moderator</p>}
                 {user.admin && <p id={`post${postNum}-div1-p4`}>Admin</p>}
             </div>
             <div className="post-vertical-line"></div>
             <div id={`post${postNum}-div2`}>
                 <div id={`post${postNum}-div2-div`}>
-                    <p id={`post${postNum}-div2-div-p1`}>{`Geschrieben am ${post.createdAt.toLocaleDateString()} um ${post.createdAt.getHours()}:${post.createdAt.getMinutes()} Uhr`}</p>
+                    <p id={`post${postNum}-div2-div-p1`}>{`Written on ${post.createdAt.toLocaleDateString()} at ${post.createdAt.getHours()}:${post.createdAt.getMinutes()}`}</p>
                     {loginInfo && loginInfo.userID === post.author &&
                         <>
                             <Button id={`post${postNum}-div2-div-button1`}>Edit</Button>
