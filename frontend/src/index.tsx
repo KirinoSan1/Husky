@@ -8,6 +8,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/css/style.css"
 import Settings from "./components/settings/Settings";
 import LoadingIndicator from "./components/util/LoadingIndicator";
+import Thread from "./components/thread/Thread";
+import ThreadSearch from "./components/thread/ThreadSearch";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
@@ -16,7 +18,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                 path: "/",
                 element: <App />,
                 children: [
-                    
+                    { path: "threads", element: <ThreadSearch /> },
+                    { path: "threads/:id", element: <Thread /> },
                     { path: "settings", element: <Settings /> }
                 ],
                 errorElement: <App /> /* TODO: create a nice looking error page */

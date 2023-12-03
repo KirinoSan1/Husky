@@ -1,5 +1,5 @@
-import { User } from "../endpoints/user/UserModel";
 import mongoose, { Connection } from "mongoose";
+import { prefillAdmin, prefillPineappleThread } from "./prefill";
 
 const connectionString: string = "mongodb://127.0.0.1/Husky";
 
@@ -16,20 +16,8 @@ export function connect() {
     connection.on("error", console.error.bind(console, "MongoDB connection error: "));
     connection.once("open", async function() {
         console.log("Successfully connected to MongoDB: " + connectionString);
-
-        await User.findOne({ admin: true }).then(async (user: any) => {
-            if (user) { 
-                return;
-            }
-
-            await User.create({
-                email: "admin@husky.de",
-                name: "Husky Admin",
-                password: "abcABC123!",
-                admin: true
-            });
-            console.log("Successfully created default admin");
-        });
+        await prefillAdmin();
+        await prefillPineappleThread();
     });
 }
 

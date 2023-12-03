@@ -26,7 +26,7 @@ export default function Navigation() {
                         onClick={() => setDropdownOpen(!isDropdownOpen)}
                         title={<>
                             {userInfo?.name}
-                            <img id="profile-section-avatar" src="images/logo.png" alt="Your profile avatar" />
+                            <img id="profile-section-avatar" src="/images/logo.png" alt="Your profile avatar" />
                         </>}
                     >
                         <Link className="dropdown-item" to="/profile">Profile</Link>

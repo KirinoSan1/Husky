@@ -1,7 +1,7 @@
 import express from "express";
 import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
 import { body, check, matchedData, param, validationResult } from "express-validator";
-import { createThreadPage, deleteThreadPage, getThreadPage, updateThreadPage } from "./ThreadPageService";
+import { createThreadPage, deleteThreadPage, getThreadPage, getThreadPageAuthors, updateThreadPage } from "./ThreadPageService";
 import { ThreadPageResource } from "../../types/Resources";
 
 export const threadPageRouter = express.Router();
@@ -19,6 +19,22 @@ threadPageRouter.get("/:id", optionalAuthentication,
         } catch (err) {
             res.status(400);
             next(err)
+        }
+    })
+
+    threadPageRouter.get("/authors/:id", optionalAuthentication,
+    param("id").isMongoId(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        try {
+            const authors = await getThreadPageAuthors(req.params.id);
+            return res.send(authors); // 200 by default
+        } catch (err) {
+            res.status(400);
+            next(err);
         }
     })
 

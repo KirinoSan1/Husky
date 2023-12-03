@@ -1,8 +1,7 @@
-import { ThreadPageResource } from "../../types/Resources";
+import { AuthorResource, ThreadPageResource } from "../../types/Resources";
 import Post from "../post/Post";
-import { authors } from "../../data/testingData";
 
-export default function ThreadPage({ pageNum, threadPage }: { pageNum: number, threadPage: ThreadPageResource }) {
+export default function ThreadPage({ pageNum, threadPage, authors }: { pageNum: number, threadPage: ThreadPageResource, authors: Map<string, AuthorResource> }) {
     let postNum = 0;
     return (
         <div id={`threadpage${pageNum}-div`}>
@@ -13,6 +12,7 @@ export default function ThreadPage({ pageNum, threadPage }: { pageNum: number, t
                     user={authors.get(post.author)!} post={post} postNum={(pageNum * 10) + postNum} key={`threadpage${pageNum}-div-post${(pageNum * 10) + postNum++}`}></Post>
                 </div>
             )}
+            {postNum > 0 && <hr id={`threadpage${pageNum}-div-hr`}></hr>}
         </div>
     );
 }

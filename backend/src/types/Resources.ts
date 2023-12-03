@@ -37,6 +37,18 @@ export type PostResource = {
     createdAt?: Date
 }
 
+export type AuthorResource = {
+    id: string
+    name: string
+    admin: boolean
+    mod: boolean
+    createdAt: Date
+}
+
+export type AuthorsResource = {
+    authors: Array<AuthorResource>
+}
+
 export type LoginResource = {
     /** The JWT */
     "access_token": string,
