@@ -80,6 +80,7 @@ export async function updateThread(threadResource: ThreadResource): Promise<Thre
     if (threadResource.subForum) {
         thread.subForum = threadResource.subForum;
     }
+    // thread.pages = threadResource.pages should be or?
     await thread.save();
     
     return { id: thread.id, title: thread.title, subForum: thread.subForum, creator: thread.creator.toString(), pages: thread.pages };
