@@ -5,7 +5,7 @@ import Navigation from './components/navigation/Navigation';
 import { UserContext } from './components/settings/UserContext';
 import { getUser } from './api/api';
 import { UserResource } from './types/Resources';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 export default function App() {
     const [loginInfo, setLoginInfo] = useState(getLoginInfo());
@@ -22,6 +22,8 @@ export default function App() {
         getUserData();
     }, [loginInfo]);
 
+    const routeName: string = useLocation().pathname.substring(1);
+
     return (
         <>
             <div id="app-background">
@@ -30,7 +32,7 @@ export default function App() {
             <LoginContext.Provider value={[loginInfo, setLoginInfo]}>
                 <UserContext.Provider value={[userInfo, setUserInfo]}>
                     <Navigation />
-                    <main>
+                    <main id={(routeName.length > 0 ? routeName : "home") + "-page-container"}>
                         <Outlet />
                     </main>
                 </UserContext.Provider>

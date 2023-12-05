@@ -1,10 +1,5 @@
 @use "../theme/theme";
 
-/* TODO:
-    - align text (account name) vertically
-    - text gets dragged by the profile picture size 
-*/
-
 .navbar {
     width: 95%;
     justify-content: left;
@@ -16,18 +11,45 @@
         font-weight: 500;
         margin: 10px;
 
-        img { /* TODO: make width dynamic */
-            width: 30px;
-            margin-left: 10px;
+        img {
+            width: 32px;
+            margin: 0px 5px 0px 10px;
         }
 
+        &:hover,
+        &:active,
         &:focus { /* TODO: make permanent for currently selected page/element */
             color: theme.$fourth-color;
         }
+
+        transition: ease-in-out 200ms;
     }
 
     #account-section {
         margin-left: auto;
+
+        a {
+            display: flex;
+            flex-direction: row;
+
+            *:not(img) {
+                margin: 0;
+            }
+
+            &::after {
+                margin: auto 0px;
+            }
+
+            p {
+                line-height: 200%;
+                margin: 0;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    #profile-section-avatar {
+        border-radius: 50%;
     }
 
     .dropdown-toggle:hover {
@@ -48,8 +70,9 @@
             &:focus {
                 background-color: rgba($color: #000, $alpha: 0.0);
                 color: theme.$fourth-color;
-                transition: ease-in 200ms;
             }
+
+            transition: ease-in 200ms;
         }
 
         button {

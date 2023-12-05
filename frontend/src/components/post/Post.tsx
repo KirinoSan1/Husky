@@ -3,7 +3,7 @@ import { PostResource, AuthorResource } from "../../types/Resources";
 import { useContext } from "react";
 import { LoginContext } from "../login/LoginContext";
 
-export default function Post({ postNum, post, user }: { post: PostResource, user: AuthorResource, postNum: number }) {
+export default function Post({ user, post, postNum }: { user: AuthorResource, post: PostResource, postNum: number }) {
     const [loginInfo] = useContext(LoginContext);
 
     return (

@@ -17,6 +17,7 @@ export default function Navigation() {
     return (
         <Navbar expand="lg">
             <Link to="/">Home</Link>
+            <Link to="/topics">Topics</Link>
             <Link to="/threads">Threads</Link>
             <Link to="/chats">Livechats</Link>
             <div id="account-section">{
@@ -25,7 +26,7 @@ export default function Navigation() {
                         show={isDropdownOpen}
                         onClick={() => setDropdownOpen(!isDropdownOpen)}
                         title={<>
-                            {userInfo?.name}
+                            <p>{userInfo?.name}</p>
                             <img id="profile-section-avatar" src="/images/logo.png" alt="Your profile avatar" />
                         </>}
                     >

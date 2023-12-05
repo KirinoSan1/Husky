@@ -1,0 +1,52 @@
+@use "../theme/theme";
+
+#banner-logo {
+    width: 20vh;
+    margin: 2.5vh 0vh 5vh 0vh;
+}
+
+#home-page-container {
+    height: 100%;
+    width: 100%;
+    align-items: center;
+
+    label {
+        width: 66%;
+        min-width: 200px;
+        max-width: 500px;
+        display: flex;
+        flex-direction: row;
+
+        input {
+            background-color: theme.$seventh-color;
+            color: theme.$fifth-color;
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 15px 0px 0px 15px;
+    
+            &::placeholder {
+                color: theme.$sixth-color;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        span {
+            height: 100%;
+            background-color: theme.$seventh-color;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0px 15px;
+            border-radius: 0px 15px 15px 0px;
+            color: theme.$fifth-color;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

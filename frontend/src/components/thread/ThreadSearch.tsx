@@ -28,11 +28,11 @@ export default function ThreadSearch() {
 
     let count = 0;
     return (
-        <div id="threadsearch-div" style={{ backgroundColor: "white" }}>
+        <div id="threadsearch-div">
             <p id="threadsearch-div-p0">Search for threads by title</p>
-            <input id="threadsearch-div-input" type="search" onChange={handleUpdate} value={title}></input>
+            <input id="threadsearch-div-input" type="search" placeholder="Title..." onChange={handleUpdate} value={title}></input>
             <Button id="threadsearch-div-button" onClick={handleSearch}>Search</Button>
-            {loading && <LoadingIndicator></LoadingIndicator>}
+            {loading && <LoadingIndicator />}
             {error && <Alert id="threadsearch-div-alert">{`${error}`}</Alert>}
             {threads && threads.length === 0 && <p id="threadsearch-div-p1">Nothing found</p>}
             {threads && threads.length > 0 && threads.map((thread) => (
