@@ -202,6 +202,50 @@ form > div:first-of-type > .form-label {
   width: 100%;
 }
 
+.threadpage-horizontal-line {
+  width: 100%;
+  height: 2px;
+  background-color: #3A3D40;
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+#thread-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#threadsearch-div-button,
+#threadsearch-div-alert {
+  margin-top: 24px;
+}
+
+#threads-page-container {
+  width: 25vw;
+}
+
+.threadsearch-single-result {
+  background-color: #2C3033;
+  border: 16px solid #2C3033;
+  border-radius: 16px;
+}
+.threadsearch-single-result > p {
+  color: #B5B5B5;
+  margin-bottom: 0;
+}
+.threadsearch-single-result > p:first-of-type {
+  margin-top: 8px;
+}
+
+.threadsearch-horizontal-line {
+  width: 100%;
+  height: 2px;
+  background-color: #3A3D40;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
 :root {
   background-color: #1C2225;
   height: 100%;
@@ -229,6 +273,7 @@ body {
 main {
   display: flex;
   flex-direction: column;
+  padding-bottom: 24px;
 }
 
 img::selection {
@@ -241,6 +286,13 @@ img::selection {
 
 input::-webkit-search-cancel-button {
   display: none;
+}
+
+a {
+  color: #38B6FF;
+}
+a:hover {
+  color: var(--bs-link-color);
 }
 
 #banner-logo {

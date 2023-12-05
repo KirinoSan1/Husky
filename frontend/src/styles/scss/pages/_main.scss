@@ -3,6 +3,8 @@
 @use "../../../components/post/Post.module";
 @use "../../../components/settings/Settings.module";
 @use "../../../components/threadpage/ThreadPage.module";
+@use "../../../components/thread/Thread.module";
+@use "../../../components/thread/ThreadSearch.module";
 
 :root {
     background-color: theme.$third-color;
@@ -32,6 +34,7 @@ body {
 main {
     display: flex;
     flex-direction: column;
+    padding-bottom: 24px;
 }
 
 img::selection {
@@ -44,4 +47,11 @@ img::selection {
 
 input::-webkit-search-cancel-button {
     display: none;
+}
+
+a {
+    color: theme.$first-color;
+    &:hover {
+        color: var(--bs-link-color);
+    }
 }

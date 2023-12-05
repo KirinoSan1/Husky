@@ -15,7 +15,7 @@ export default function ThreadPage({ pageNum, threadPage, authors }: { pageNum: 
                     />
                 </div>
             )}
-            {postNum > 0 && <hr id={`threadpage${pageNum}-div-hr`}></hr>}
+            {postNum > 0 && <div id={`threadpage${pageNum}-div-hr`} className="threadpage-horizontal-line"></div>}
         </div>
     );
 }

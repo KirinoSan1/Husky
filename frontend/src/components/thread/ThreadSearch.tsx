@@ -29,14 +29,15 @@ export default function ThreadSearch() {
     let count = 0;
     return (
         <div id="threadsearch-div">
-            <p id="threadsearch-div-p0">Search for threads by title</p>
-            <input id="threadsearch-div-input" type="search" placeholder="Title..." onChange={handleUpdate} value={title}></input>
+            <p id="threadsearch-div-p0">Search for threads by title:</p>
+            <input id="threadsearch-div-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdate} value={title}></input>
             <Button id="threadsearch-div-button" onClick={handleSearch}>Search</Button>
             {loading && <LoadingIndicator />}
+            {(error || threads) && <div className="threadsearch-horizontal-line"></div>}
             {error && <Alert id="threadsearch-div-alert">{`${error}`}</Alert>}
             {threads && threads.length === 0 && <p id="threadsearch-div-p1">Nothing found</p>}
             {threads && threads.length > 0 && threads.map((thread) => (
-                <div id={`threadsearch-div-div${count}`} key={`threadsearch-div-div${count}`}>
+                <div id={`threadsearch-div-div${count}`} className="threadsearch-single-result" key={`threadsearch-div-div${count}`}>
                     <Link id={`threadsearch-div-div${count}-link`} key={`threadsearch-div-div${count}-link`} to={`/threads/${thread.id}`}>{thread.title}</Link>
                     <p id={`threadsearch-div-div${count}-p0`} key={`threadsearch-div-div${count}-p0`}>{`Posts: ${thread.numPosts}`}</p>
                     <p id={`threadsearch-div-div${count}-p1`} key={`threadsearch-div-div${count}-p1`}>{`Subforum: ${thread.subForum}`}</p>
