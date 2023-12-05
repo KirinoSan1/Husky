@@ -61,12 +61,13 @@ test("Creates a new Thread and returns it", async () => {
     });
     let postid = post.id
     let post2id = post2.id
+    const threadpage = await ThreadPage.create({postid, post2id})
 
     const thread: ThreadResource = ({
         creator: idJinx,
         title: "Thread",
         subForum: "Testing",
-        pages: [post.id, post2.id],
+        pages: [threadpage.id!],
         numPosts: 2,
     });
 
