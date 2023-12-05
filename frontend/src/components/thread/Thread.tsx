@@ -63,8 +63,8 @@ export default function Thread() {
 
     return (
         <div id="thread-div">
-            <p id={`thread-div-p1`} style={{ color: "white" }}>{`Thema: ${thread.title}`}</p> {/* TODO: transfer and remove both inline stylings */}
-            <p id={`thread-div-p2`} style={{ color: "white" }}>{`Seite: ${pageNum + 1}`}</p>
+            <p id={`thread-div-p1`}>{`Thema: ${thread.title}`}</p>
+            <p id={`thread-div-p2`}>{`Seite: ${pageNum + 1}`}</p>
             {pageNum > 0 && <Button id="thread-div-button1" onClick={handlePrevious}>Previous</Button>}
             {pageNum < thread.pages.length - 1 && <Button id="thread-div-button2" onClick={handleNext}>Next</Button>}
             <ThreadPage pageNum={pageNum} threadPage={threadPage} authors={authors}></ThreadPage>

@@ -10,6 +10,7 @@ import Settings from "./components/settings/Settings";
 import LoadingIndicator from "./components/util/LoadingIndicator";
 import Thread from "./components/thread/Thread";
 import ThreadSearch from "./components/thread/ThreadSearch";
+import FrontPage from "./components/frontpage/FrontPage";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                 path: "/",
                 element: <App />,
                 children: [
+                    { path: "", element: <FrontPage /> },
                     { path: "threads", element: <ThreadSearch /> },
                     { path: "threads/:id", element: <Thread /> },
                     { path: "settings", element: <Settings /> }
