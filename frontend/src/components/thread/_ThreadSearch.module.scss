@@ -1,0 +1,33 @@
+@use "../../styles/scss/theme/theme";
+
+#threadsearch-div-button,
+#threadsearch-div-alert {
+    margin-top: 24px;
+}
+
+#threads-page-container {
+    width: 25vw;
+}
+
+.threadsearch-single-result {
+    background-color: theme.$eighth-color;
+    border: 16px solid theme.$eighth-color;
+    border-radius: 16px;
+    & > p {
+        color: theme.$sixth-color;
+        margin-bottom: 0;
+        &:first-of-type {
+            margin-top: 8px;
+        }
+    }
+}
+
+.threadsearch-horizontal-line {
+    width: 100%;
+    height: 2px;
+    background-color: theme.$seventh-color;
+    margin: {
+        top: 24px;
+        bottom: 16px;
+    }
+}
