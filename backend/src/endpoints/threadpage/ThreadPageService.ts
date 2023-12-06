@@ -1,5 +1,7 @@
-import { AuthorResource, AuthorsResource } from "../../types/Resources";
+import { AuthorResource, AuthorsResource, PostResource } from "../../types/Resources";
 import { ThreadPageResource } from "../../types/Resources";
+import { Post } from "../post/PostModel";
+import { Thread } from "../thread/ThreadModel";
 import { User } from "../user/UserModel";
 import { ThreadPage } from "./ThreadPageModel";
 
@@ -34,10 +36,25 @@ export async function getThreadPageAuthors(id: string): Promise<AuthorsResource>
 
 export async function createThreadPage(threadPageResource: ThreadPageResource): Promise<ThreadPageResource> {
     const threadPage = await ThreadPage.create({
-        posts: threadPageResource.posts,
-        createdAt: threadPageResource.createdAt
+        posts: threadPageResource.posts
     });
     return { id: threadPage.id, posts: threadPage.posts, createdAt: threadPage.createdAt }
+}
+
+export async function createThreadPageAndNotifyThread(posts: Array<PostResource>, threadID: string): Promise<ThreadPageResource> {
+    if (!posts)
+        throw new Error("posts not defined");
+    if (!threadID)
+        throw new Error("threadID not defined");
+    const threadPage = await ThreadPage.create({
+        posts: posts
+    });
+    const thread = await Thread.findById(threadID).exec();
+    if (!thread)
+        throw new Error(`no thread with ${threadID} found`);
+    thread.pages.push(threadPage.id);
+    await thread.save();
+    return { id: threadPage.id, posts: threadPage.posts, createdAt: threadPage.createdAt };
 }
 
 export async function updateThreadPage(threadPageResource: ThreadPageResource): Promise<ThreadPageResource> {
@@ -57,6 +74,29 @@ export async function updateThreadPage(threadPageResource: ThreadPageResource): 
 
     const savedPage = await threadPage.save();
     return { id: savedPage.id, posts: savedPage.posts }
+}
+
+export async function addPost(content: string, authorID: string, threadPageID: string): Promise<ThreadPageResource> {
+    if (!content)
+        throw new Error("content not defined");
+    if (!authorID)
+        throw new Error("author not defined");
+    if (!threadPageID)
+        throw new Error("threadPageID not defined");
+
+    const threadPage = await ThreadPage.findById(threadPageID).exec();
+    if (!threadPage)
+        throw new Error(`no page with ID ${threadPageID} found`);
+    if (threadPage.posts.length >= 10)
+        throw new Error("threadpage already full");
+
+    const author = await User.findById(authorID).exec();
+    if (!author)
+        throw new Error("author not found");
+
+    threadPage.posts.push(new Post({ content: content, author: author.id }));
+    const savedPage = await threadPage.save();
+    return { id: savedPage.id, posts: savedPage.posts };
 }
 
 export async function deleteThreadPage(id: string): Promise<void> {

@@ -5,6 +5,7 @@ import LoadingIndicator from "../util/LoadingIndicator";
 import { getAuthors, getThread, getThreadPage } from "../../api/api";
 import { AuthorResource, ThreadPageResource, ThreadResource } from "../../types/Resources";
 import { useParams } from "react-router-dom";
+import CreatePostDialog from "../post/CreatePostDialog";
 
 export default function Thread() {
     const threadID = useParams().id ?? "";
@@ -26,6 +27,7 @@ export default function Thread() {
     }, []);
     useEffect(() => {
         async function loadThreadPage() {
+            setThreadPage(null);
             if (!thread)
                 return;
             try {
@@ -38,12 +40,13 @@ export default function Thread() {
     }, [pageNum, thread]);
     useEffect(() => {
         async function loadAuthors() {
+            setAuthors(null);
             if (!thread || !threadPage || !threadPage.id)
                 return;
             try {
                 const arr = (await getAuthors(threadPage.id)).authors;
                 const map = new Map<string, AuthorResource>();
-                arr.forEach((author) => { map.set(author.id, author) });
+                arr.forEach((author) => { map.set(author.id, author); });
                 setAuthors(map);
             } catch (error) {
                 setError(String(error));
@@ -56,7 +59,7 @@ export default function Thread() {
     const handleNext = () => { setPageNum(pageNum + 1); };
 
     if (error)
-        return <Alert id="thread-alert">{`An error occured when loading the page: ${error}`}</Alert>;
+        return <Alert id="thread-alert" variant="danger">{`An error occured when loading the page: ${error}`}</Alert>;
 
     if (!thread || !threadPage || !authors)
         return <LoadingIndicator />;
@@ -68,6 +71,7 @@ export default function Thread() {
             {pageNum > 0 && <Button id="thread-div-button1" onClick={handlePrevious}>Previous</Button>}
             {pageNum < thread.pages.length - 1 && <Button id="thread-div-button2" onClick={handleNext}>Next</Button>}
             <ThreadPage pageNum={pageNum} threadPage={threadPage} authors={authors}></ThreadPage>
+            {pageNum === thread.pages.length - 1 && <CreatePostDialog threadID={thread.id} threadPage={threadPage} setThread={setThread} setPageNum={setPageNum}></CreatePostDialog>}
             {pageNum > 0 && <Button id="thread-div-button3" onClick={handlePrevious}>Previous</Button>}
             {pageNum < thread.pages.length - 1 && <Button id="thread-div-button4" onClick={handleNext}>Next</Button>}
         </div>

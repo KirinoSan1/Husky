@@ -34,7 +34,7 @@ export default function ThreadSearch() {
             <Button id="threadsearch-div-button" onClick={handleSearch}>Search</Button>
             {loading && <LoadingIndicator />}
             {(error || threads) && <div className="threadsearch-horizontal-line"></div>}
-            {error && <Alert id="threadsearch-div-alert">{`${error}`}</Alert>}
+            {error && <Alert id="threadsearch-div-alert" variant="danger">{`${error}`}</Alert>}
             {threads && threads.length === 0 && <p id="threadsearch-div-p1">Nothing found</p>}
             {threads && threads.length > 0 && threads.map((thread) => (
                 <div id={`threadsearch-div-div${count}`} className="threadsearch-single-result" key={`threadsearch-div-div${count}`}>

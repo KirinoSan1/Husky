@@ -181,7 +181,7 @@ export async function getThread(threadID: string): Promise<ThreadResource> {
         return result;
 
     } catch (error) {
-        throw new Error("Error occurred during request: + " + error);
+        throw new Error("Error occurred during request: " + error);
     }
 }
 
@@ -205,7 +205,7 @@ export async function getThreadPage(threadPageID: string): Promise<ThreadPageRes
         return result;
 
     } catch (error) {
-        throw new Error("Error occurred during request: + " + error);
+        throw new Error("Error occurred during request: " + error);
     }
 }
 
@@ -225,11 +225,11 @@ export async function getAuthors(threadPageID: string): Promise<AuthorsResource>
             throw new Error("invalid result from server");
         if (!result.authors)
             throw new Error("result from server is missing fields");
-        result.authors.forEach((author) => { author.createdAt = new Date(author.createdAt) });
+        result.authors.forEach((author) => { author.createdAt = new Date(author.createdAt); });
         return result;
 
     } catch (error) {
-        throw new Error("Error occurred during request: + " + error);
+        throw new Error("Error occurred during request: " + error);
     }
 }
 
@@ -247,10 +247,69 @@ export async function searchThreadsByTitle(title: string): Promise<Array<ThreadR
         const result: Array<ThreadResource> = await response.json();
         if (!result)
             throw new Error("invalid result from server");
-        result.forEach((thread) => { thread.createdAt = new Date(thread.createdAt) });
+        result.forEach((thread) => { thread.createdAt = new Date(thread.createdAt); });
         return result;
 
     } catch (error) {
-        throw new Error("Error occurred during request: + " + error);
+        throw new Error("Error occurred during request: " + error);
+    }
+}
+
+export async function createPost(content: string, userID: string, threadID: string, threadPage: ThreadPageResource): Promise<ThreadPageResource> {
+    try {
+        if (!content)
+            throw new Error("content not defined");
+        if (!userID)
+            throw new Error("userID not defined");
+        if (!threadID)
+            throw new Error("thread not defined");
+        if (!threadPage)
+            throw new Error("threadpage not defined");
+
+        const jwt = getJWT();
+        if (!jwt)
+            throw new Error("no JWT found");
+
+        let response = null;
+        if (threadPage.posts.length === 10) { // thread page is 'full' -> create new thread page
+            response = await fetch(`${BASE_URL}/api/threadpage/`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${jwt}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    posts: Array.of({
+                        content: content,
+                        author: userID
+                    }),
+                    threadID: threadID
+                })
+            });
+        } else {
+            response = await fetch(`${BASE_URL}/api/threadpage/${threadPage.id}/add`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${jwt}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    content: content,
+                    author: userID
+                })
+            });
+        }
+
+        if (!response || !response.ok)
+            throw new Error("network response was not OK");
+
+        const result: ThreadPageResource = await response.json();
+        if (!result.id || !result.posts)
+            throw new Error("result from server is missing fields");
+        result.posts.forEach((post) => { post.createdAt = new Date(post.createdAt); });
+        return result;
+
+    } catch (error) {
+        throw new Error("error occurred during request: " + error);
     }
 }
