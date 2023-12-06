@@ -24,7 +24,6 @@ export async function getSubForum(name: string): Promise<SubForumResource> {
      * The reason why only 0 is because it can only exist one Subforum with that name.
      */
     const subForum =  await SubForum.find({ name: name }).exec()
-    console.log(subForum)
     return subForum[0].toObject()
 }
 

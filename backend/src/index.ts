@@ -7,6 +7,7 @@ import userRouter from "./endpoints/user/UserRoute";
 import postRouter from "./endpoints/post/PostRoute";
 import { threadPageRouter } from "./endpoints/threadpage/ThreadPageRoute";
 import threadRouter from "./endpoints/thread/ThreadRoute";
+import { subForumRouter } from "./endpoints/subforum/SubForumRoute";
 
 const app: Express = express();
 const port: number = 443;
@@ -32,5 +33,6 @@ app.use("/api/user", userRouter)
 app.use("/api/post", postRouter)
 app.use("/api/threadpage", threadPageRouter)
 app.use("/api/thread", threadRouter)
+app.use("/api/subforum", subForumRouter)
 
 server.start(app, port);
