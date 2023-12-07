@@ -1,0 +1,19 @@
+@use "../theme/theme";
+
+.textarea {
+    height: 12rem;
+    background-color: theme.$seventh-color;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: 8px;
+    color: theme.$fifth-color;
+    padding: 6px 12px;
+    &::placeholder {
+        color: theme.$sixth-color;
+    }
+    &:focus {
+        background-color: theme.$sixth-color;
+        color: var(--bs-body-color);
+        border-color: #86b7fe;
+        outline: 0;
+    }
+}

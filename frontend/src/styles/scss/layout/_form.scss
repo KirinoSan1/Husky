@@ -16,6 +16,7 @@
 .form-control {
     background-color: theme.$seventh-color;
     color: theme.$fifth-color;
+    border-radius: 8px;
     &::placeholder {
         color: theme.$sixth-color;
     }

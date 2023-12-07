@@ -3,6 +3,10 @@
 .btn {
     &-primary {
         background-color: theme.$first-color;
+        &:disabled {
+            background-color: theme.$first-color;
+            opacity: var(--bs-btn-disabled-opacity);
+        }
     }
     &-secondary {
         background-color: theme.$seventh-color;
@@ -10,4 +14,5 @@
     &-close {
         background-color: theme.$seventh-color;
     }
+    border-radius: 8px;
 }

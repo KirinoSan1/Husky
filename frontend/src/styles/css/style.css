@@ -86,6 +86,7 @@ form > div:first-of-type > .form-label {
 .form-control {
   background-color: #2B3033;
   color: #D9D9D9;
+  border-radius: 8px;
 }
 .form-control::placeholder {
   color: #B5B5B5;
@@ -102,8 +103,15 @@ form > div:first-of-type > .form-label {
   color: #FFFFFF;
 }
 
+.btn {
+  border-radius: 8px;
+}
 .btn-primary {
   background-color: #38B6FF;
+}
+.btn-primary:disabled {
+  background-color: #38B6FF;
+  opacity: var(--bs-btn-disabled-opacity);
 }
 .btn-secondary {
   background-color: #2B3033;
@@ -112,12 +120,42 @@ form > div:first-of-type > .form-label {
   background-color: #2B3033;
 }
 
+#createthread-dropdown .dropdown-menu {
+  background-color: #B5B5B5;
+}
+
+#createthread-dropdown .dropdown-item {
+  background-color: #B5B5B5;
+}
+#createthread-dropdown .dropdown-item:hover {
+  background-color: #0b5ed7;
+  color: #FFFFFF;
+}
+
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
   background-color: #B5B5B5;
 }
 
 .nav-link, .nav-link:focus, .nav-link:hover {
   color: #FFFFFF;
+}
+
+.textarea {
+  height: 12rem;
+  background-color: #2B3033;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: 8px;
+  color: #D9D9D9;
+  padding: 6px 12px;
+}
+.textarea::placeholder {
+  color: #B5B5B5;
+}
+.textarea:focus {
+  background-color: #B5B5B5;
+  color: var(--bs-body-color);
+  border-color: #86b7fe;
+  outline: 0;
 }
 
 /*
@@ -213,19 +251,36 @@ form > div:first-of-type > .form-label {
   margin-bottom: 24px;
 }
 
+[id*=create-page-container] {
+  width: 50vw;
+}
+
+.btn {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+#createthread-button-bar > :first-child {
+  margin-right: 12px;
+}
+
+#createthread-p1 {
+  margin-top: 24px;
+}
+
 #thread-div {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#threadsearch-div-button,
+#threadsearch-div-button2,
 #threadsearch-div-alert {
   margin-top: 24px;
 }
 
 #threads-page-container {
-  width: 25vw;
+  width: 50vw;
 }
 
 .threadsearch-single-result {
@@ -244,8 +299,8 @@ form > div:first-of-type > .form-label {
 .threadsearch-horizontal-line {
   width: 100%;
   height: 2px;
-  background-color: #2B3033;
-  margin-top: 24px;
+  background-color: #393D40;
+  margin-top: 0;
   margin-bottom: 16px;
 }
 

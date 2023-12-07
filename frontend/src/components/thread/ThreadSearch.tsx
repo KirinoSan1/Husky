@@ -34,7 +34,7 @@ export default function ThreadSearch() {
         <div id="threadsearch-div">
             {loginInfo && <>
                 <Button id="threadsearch-div-button1" onClick={() => { navigate("/threads/create"); }}>Create New Thread</Button>
-                <hr id="threadsearch-div-hr"></hr>
+                <div className="threadsearch-horizontal-line"></div>
             </>}
             <p id="threadsearch-div-p0">Search for threads by title:</p>
             <input id="threadsearch-div-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdate} value={title}></input>

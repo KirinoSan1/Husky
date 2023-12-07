@@ -46,7 +46,7 @@ export function CreateThreadPage() {
         <>
             {error && <Alert id="createthread-alert2" variant="danger">{error}</Alert>}
             <h3 id="createthread-h3">Create New Thread</h3>
-            <p id="createthread-p1">Title:</p>
+            <p id="createthread-p1">Please enter the title:</p>
             <input id="createthread-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdateTitle} value={title}></input>
             <Dropdown id="createthread-dropdown">
                 <Dropdown.Toggle id="createthread-dropdown-toggle">{subForum.length === 0 ? "Choose Subforum" : subForum}</Dropdown.Toggle>
@@ -58,10 +58,12 @@ export function CreateThreadPage() {
                     <Dropdown.Item id="createthread-dropdown-menu-item5" onClick={() => { setSubForum("Science"); }}>Science</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-            <p id="createthread-p2">Initial Post:</p>
-            <textarea id="createthread-textarea" onChange={handleUpdateContent} value={content}></textarea>
-            <Button id="createthread-button1" onClick={() => { navigate("/threads"); }}>Go Back</Button>
-            <Button id="createthread-button2" onClick={handleSubmit} disabled={title.length === 0 || subForum === "" || content.length === 0 || loading}>Submit</Button>
+            <p id="createthread-p2">Please create the initial post:</p>
+            <textarea id="createthread-textarea" className="textarea" onChange={handleUpdateContent} value={content}></textarea>
+            <div id="createthread-button-bar">
+                <Button id="createthread-button1" variant="secondary" onClick={() => { navigate("/threads"); }}>Go Back</Button>
+                <Button id="createthread-button2" onClick={handleSubmit} disabled={title.length === 0 || subForum === "" || content.length === 0 || loading}>Submit</Button>
+            </div>
             {loading && <LoadingIndicator></LoadingIndicator>}
         </>
     );

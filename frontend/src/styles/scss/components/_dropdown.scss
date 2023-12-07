@@ -1,0 +1,17 @@
+@use "../theme/theme";
+
+.dropdown-menu {
+    #createthread-dropdown & {
+        background-color: theme.$sixth-color;
+    }
+}
+
+.dropdown-item {
+    #createthread-dropdown & {
+        background-color: theme.$sixth-color;
+        &:hover {
+            background-color: #0b5ed7;
+            color: theme.$fourth-color;
+        }
+    }
+}
