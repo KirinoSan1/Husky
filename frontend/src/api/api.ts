@@ -313,3 +313,47 @@ export async function createPost(content: string, userID: string, threadID: stri
         throw new Error("error occurred during request: " + error);
     }
 }
+
+export async function createThread(creator: string, title: string, subForum: string, content: string): Promise<ThreadResource> {
+    try {
+        if (!creator)
+            throw new Error("userID not defined");
+        if (!title)
+            throw new Error("title not defined");
+        if (!subForum)
+            throw new Error("subForum not defined");
+        if (!content)
+            throw new Error("content not defined");
+
+        const jwt = getJWT();
+        if (!jwt)
+            throw new Error("no JWT found");
+
+        const response = await fetch(`${BASE_URL}/api/thread/`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                creator: creator,
+                title: title,
+                subForum: subForum,
+                numPosts: 1,
+                content: content
+            })
+        });
+
+        if (!response || !response.ok)
+            throw new Error("network response was not OK");
+
+        const result: ThreadResource = await response.json();
+        if (!result.id || !result.pages)
+            throw new Error("result from server is missing fields");
+        result.createdAt = new Date(result.createdAt);
+        return result;
+
+    } catch (error) {
+        throw new Error("error occurred during request: " + error);
+    }
+}

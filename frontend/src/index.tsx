@@ -11,6 +11,7 @@ import LoadingIndicator from "./components/util/LoadingIndicator";
 import Thread from "./components/thread/Thread";
 import ThreadSearch from "./components/thread/ThreadSearch";
 import FrontPage from "./components/frontpage/FrontPage";
+import { CreateThreadPage } from "./components/thread/CreateThreadPage";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                     { path: "", element: <FrontPage /> },
                     { path: "threads", element: <ThreadSearch /> },
                     { path: "threads/:id", element: <Thread /> },
+                    { path: "threads/create", element: <CreateThreadPage /> },
                     { path: "settings", element: <Settings /> }
                 ],
                 errorElement: <App /> /* TODO: create a nice looking error page */
