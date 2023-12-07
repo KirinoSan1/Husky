@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavDropdown, Navbar } from "react-bootstrap";
 import CreateAccountDialog from "../registration/CreateAccountDialog";
 import LoginDialog from "../login/LoginDialog";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LoginContext } from "../login/LoginContext";
 import { UserContext } from "../settings/UserContext";
 
 export default function Navigation() {
     const [loginInfo] = React.useContext(LoginContext);
     const [userInfo] = React.useContext(UserContext);
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
-    const { pathname } = useLocation();
-
-    useEffect(() => setDropdownOpen(false), [pathname]);
 
     return (
         <Navbar expand="lg">
@@ -23,8 +19,6 @@ export default function Navigation() {
             <div id="account-section">{
                 loginInfo ?
                     <NavDropdown
-                        show={isDropdownOpen}
-                        onClick={() => setDropdownOpen(!isDropdownOpen)}
                         title={<>
                             <p>{userInfo?.name}</p>
                             <img id="profile-section-avatar" src="/images/logo.png" alt="Your profile avatar" />

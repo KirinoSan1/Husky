@@ -51,6 +51,7 @@ input::-webkit-search-cancel-button {
 
 a {
     color: theme.$first-color;
+
     &:hover {
         color: var(--bs-link-color);
     }
