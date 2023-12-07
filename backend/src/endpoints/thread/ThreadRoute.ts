@@ -2,7 +2,9 @@ import express from "express";
 import { getThread, createThread, updateThread, deleteThread, getThreadtitle } from "./ThreadService";
 import { body, matchedData, param, validationResult } from "express-validator";
 import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
-import { ThreadResource } from "../../types/Resources";
+import { PostResource, ThreadResource } from "../../types/Resources";
+import { createThreadPageAndNotifyThread } from "../threadpage/ThreadPageService";
+import { Post } from "../post/PostModel";
 
 const threadRouter = express.Router();
 
@@ -29,15 +31,31 @@ threadRouter.post("/", requiresAuthentication,
     body("subForum").isString().isLength({ min: 1, max: 100 }),
     body('numPosts').optional().isInt({ min: 0 }),
     body("creator").isString().isLength({ min: 1, max: 100 }),
+    body("content").optional().isString().isLength({ min: 1 }),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const threadData = matchedData(req) as ThreadResource;
-
+        const threadData = matchedData(req) as ThreadResource & { content: string };
         try {
-            const createdThread = await createThread(threadData);
+            let createdThread = await createThread(threadData);
+            // if content is defined -> create threadpage and initial post
+            if (threadData.content && threadData.numPosts === 1) {
+                const newPost = new Post({
+                    content: threadData.content,
+                    author: threadData.creator
+                });
+                const createdThreadWithPost = createThreadPageAndNotifyThread(Array.of({
+                    id: newPost.id,
+                    author: String(newPost.author),
+                    content: newPost.content,
+                    upvotes: newPost.upvotes,
+                    downvotes: newPost.downvotes,
+                    createdAt: newPost.createdAt
+                } as PostResource), createdThread.id ?? "");
+                createdThread = await getThread(createdThread.id ?? "");
+            }
             res.status(201).send(createdThread);
         } catch (err) {
             res.status(400);

@@ -1,15 +1,18 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ThreadResource } from "../../types/Resources";
 import { searchThreadsByTitle } from "../../api/api";
 import LoadingIndicator from "../util/LoadingIndicator";
 import { Alert, Button } from "react-bootstrap";
+import { LoginContext } from "../login/LoginContext";
 
 export default function ThreadSearch() {
+    const [loginInfo] = useContext(LoginContext);
     const [title, setTitle] = useState("");
     const [threads, setThreads] = useState<Array<ThreadResource> | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>) => { setTitle(e.target.value); };
     const handleSearch = async () => {
@@ -29,9 +32,13 @@ export default function ThreadSearch() {
     let count = 0;
     return (
         <div id="threadsearch-div">
+            {loginInfo && <>
+                <Button id="threadsearch-div-button1" onClick={() => { navigate("/threads/create"); }}>Create New Thread</Button>
+                <hr id="threadsearch-div-hr"></hr>
+            </>}
             <p id="threadsearch-div-p0">Search for threads by title:</p>
             <input id="threadsearch-div-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdate} value={title}></input>
-            <Button id="threadsearch-div-button" onClick={handleSearch}>Search</Button>
+            <Button id="threadsearch-div-button2" onClick={handleSearch}>Search</Button>
             {loading && <LoadingIndicator />}
             {(error || threads) && <div className="threadsearch-horizontal-line"></div>}
             {error && <Alert id="threadsearch-div-alert" variant="danger">{`${error}`}</Alert>}

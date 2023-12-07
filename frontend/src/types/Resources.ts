@@ -47,3 +47,5 @@ export type ThreadResource = {
     pages: string[]
     createdAt: Date
 }
+
+export type SubForumName = "" | "Cuisine" | "History" | "Mathematics" | "Philosophy" | "Science" ;
