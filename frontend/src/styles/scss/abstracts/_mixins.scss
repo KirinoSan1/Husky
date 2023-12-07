@@ -1,0 +1,9 @@
+@mixin horizontal-line($color, $margin-top: 24px, $margin-bottom: 16px) {
+    width: 100%;
+    height: 2px;
+    background-color: $color;
+    margin: {
+        top: $margin-top;
+        bottom: $margin-bottom;
+    }
+}
