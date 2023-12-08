@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { PostResource } from "../../types/Resources";
 import { Post } from "./PostModel";
+import { ThreadPage } from "../threadpage/ThreadPageModel";
 
 export async function getPost(id: string): Promise<PostResource> {
     const post = await Post.findById(id).exec();
@@ -18,7 +19,10 @@ export async function createPost(postResource: PostResource): Promise<PostResour
 
     const post = await Post.create({
         content: postResource.content,
-        author: postResource.author
+        author: postResource.author,
+        upvotes: postResource.upvotes,
+        downvotes: postResource.downvotes
+
     });
 
     return {
@@ -49,8 +53,6 @@ export async function updatePost(postResource: PostResource): Promise<PostResour
     }
 }
 
-
-
 export async function deletePost(id: string): Promise<void> {
     //if u want to delete it you should see the Message <Post got deleted>
     const res = await Post.findById(id).exec();
@@ -59,4 +61,28 @@ export async function deletePost(id: string): Promise<void> {
     }
     res.content = "This Post has been deleted."
     res.save()
+}
+
+export async function upvotePost(threadpageid: string, index: number): Promise<void> {
+    const threadPage = await ThreadPage.findById(threadpageid).exec();
+    if (!threadPage) {
+        throw new Error("ThreadPage not found.")
+    }
+    if (!threadPage.posts[index]) {
+        throw new Error("Post not found.")
+    }
+    threadPage.posts[index].upvotes! += 1
+    await threadPage.save();
+}
+
+export async function downvotePost(threadpageid: string, index: number): Promise<void> {
+    const threadPage = await ThreadPage.findById(threadpageid).exec();
+    if (!threadPage) {
+        throw new Error("ThreadPage not found.")
+    }
+    if (!threadPage.posts[index]) {
+        throw new Error("Post not found.")
+    }
+    threadPage.posts[index].downvotes! -= 1
+    await threadPage.save();
 }

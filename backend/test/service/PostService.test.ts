@@ -1,9 +1,12 @@
 import DB from "../TestDB";
 import { User } from "../../src/endpoints/user/UserModel"
 import { PostResource, UserResource } from "../../src/types/Resources";
-import { createPost, deletePost, getPost, updatePost } from "../../src/endpoints/post/PostService";
+import { createPost, deletePost, downvotePost, getPost, updatePost, upvotePost } from "../../src/endpoints/post/PostService";
 import { Post } from "../../src/endpoints/post/PostModel";
 import { Types } from "mongoose";
+import { createUser } from "../../src/endpoints/user/UserService";
+import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
+import { getThreadPage } from "../../src/endpoints/threadpage/ThreadPageService";
 
 
 
@@ -105,4 +108,48 @@ test('updatePost test negativ with wrong id ', async () => {
 
 test('deletePost test negativ', async () => {
     await expect(deletePost("635d2e796ea2e8c9bde5787c")).rejects.toThrow();
+});
+
+test('upvotePost test positive', async () => {
+    let umut = await createUser({ name: "Lucy", email: "lucy@gmail.com", password: "Ufoea2e8c9!!", admin: false })
+    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, upvotes: 20, createdAt: new Date() };
+    const post2 = await createPost(postData2);
+    let threadPage = await ThreadPage.create({posts: [post2]})
+    await upvotePost(threadPage.id!, 0)
+    const test = await getThreadPage(threadPage.id!)
+    expect(test.posts[0].upvotes!).toBe(21)
+});
+
+test('upvotePost test post not found', async () => {
+    let umut = await createUser({ name: "Lucy", email: "lucy@gmail.com", password: "Ufoea2e8c9!!", admin: false })
+    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, upvotes: 20, createdAt: new Date() };
+    const post2 = await createPost(postData2);
+    let threadPage = await ThreadPage.create({posts: [post2]})
+    await expect(upvotePost(threadPage.id!, 1)).rejects.toThrow("Post not found.")
+});
+
+test('upvotePost test negative fake id', async () => {
+    await expect(upvotePost("635d2e796ea2e8c9bde5787c", 0)).rejects.toThrow("ThreadPage not found.")
+});
+
+test('downvotePost test positive', async () => {
+    let umut = await createUser({ name: "Lucy", email: "lucy@gmail.com", password: "Ufoea2e8c9!!", admin: false })
+    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, downvotes: 8, createdAt: new Date() };
+    const post2 = await createPost(postData2);
+    let threadPage = await ThreadPage.create({posts: [post2]})
+    await downvotePost(threadPage.id!, 0)
+    const test = await getThreadPage(threadPage.id!)
+    expect(test.posts[0].downvotes!).toBe(7)
+});
+
+test('downvotePost test positive', async () => {
+    let umut = await createUser({ name: "Lucy", email: "lucy@gmail.com", password: "Ufoea2e8c9!!", admin: false })
+    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, downvotes: 8, createdAt: new Date() };
+    const post2 = await createPost(postData2);
+    let threadPage = await ThreadPage.create({posts: [post2]})
+    await expect(downvotePost(threadPage.id!, 1)).rejects.toThrow("Post not found.")
+});
+
+test('downvotePost test negative fake id', async () => {
+    await expect(downvotePost("635d2e796ea2e8c9bde5787c", 0)).rejects.toThrow("ThreadPage not found.")
 });
