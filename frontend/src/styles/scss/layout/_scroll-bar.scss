@@ -1,0 +1,97 @@
+@use "../theme/theme";
+@use "../../scss/abstracts/mixins";
+
+$scroll-bar-size: 12px;
+$scroll-bar-color: theme.$seventh-color;
+$scroll-bar-color-hover: theme.$eighth-color;
+$scroll-bar-color-active: theme.$sixth-color;
+
+::-webkit-scrollbar {
+    width: $scroll-bar-size;
+    height: $scroll-bar-size;
+
+    &-track {
+        background-color: theme.$third-color;
+        border-radius: $scroll-bar-size;
+    }
+
+    &-thumb {
+        background-color: $scroll-bar-color;
+        border-radius: $scroll-bar-size;
+
+        &:hover {
+            background-color: $scroll-bar-color-hover;
+        }
+
+        &:active {
+            background-color: $scroll-bar-color-active;
+        }
+    }
+
+    &-button {
+        background-color: $scroll-bar-color;
+
+        &:single-button {
+            background-color: theme.$third-color;
+            display: block;
+            background-size: $scroll-bar-size;
+            background-repeat: no-repeat;
+
+            &:vertical {
+                &:increment {
+                    @include mixins.scroll-bar-arrow-format-vertical($scroll-bar-size);
+                    @include mixins.scroll-bar-arrow-icon($scroll-bar-color, bottom);
+
+                    &:hover {
+                        @include mixins.scroll-bar-arrow-icon($scroll-bar-color-hover, bottom);
+                    }
+
+                    &:active {
+                        @include mixins.scroll-bar-arrow-icon($scroll-bar-color-active, bottom);
+                    }
+                }
+
+                &:decrement {
+                    @include mixins.scroll-bar-arrow-format-vertical($scroll-bar-size);
+                    @include mixins.scroll-bar-arrow-icon($scroll-bar-color, top);
+
+                    &:hover {
+                        @include mixins.scroll-bar-arrow-icon($scroll-bar-color-hover, top);
+                    }
+
+                    &:active {
+                        @include mixins.scroll-bar-arrow-icon($scroll-bar-color-active, top);
+                    }
+                }
+            }
+
+            &:horizontal {
+                &:increment {
+                    @include mixins.scroll-bar-arrow-format-horizontal($scroll-bar-size);
+                    @include mixins.scroll-bar-arrow-icon($scroll-bar-color, right);
+
+                    &:hover {
+                        @include mixins.scroll-bar-arrow-icon($scroll-bar-color-hover, right);
+                    }
+
+                    &:active {
+                        @include mixins.scroll-bar-arrow-icon($scroll-bar-color-active, right);
+                    }
+                }
+
+                &:decrement {
+                    @include mixins.scroll-bar-arrow-format-horizontal($scroll-bar-size);
+                    @include mixins.scroll-bar-arrow-icon($scroll-bar-color, left);
+
+                    &:hover {
+                        @include mixins.scroll-bar-arrow-icon($scroll-bar-color-hover, left);
+                    }
+
+                    &:active {
+                        @include mixins.scroll-bar-arrow-icon($scroll-bar-color-active, left);
+                    }
+                }
+            }
+        }
+    }
+}
