@@ -1,6 +1,5 @@
 import { Types } from "mongoose"
 import { IPost } from "../endpoints/post/PostModel"
-import { IThread } from "../endpoints/thread/ThreadModel"
 
 export type UserResource = {
     id?: string
@@ -35,6 +34,7 @@ export type PostResource = {
     author: string
     upvotes?: number
     downvotes?: number
+    modified: "" | "m" | "d"
     createdAt?: Date
 }
 

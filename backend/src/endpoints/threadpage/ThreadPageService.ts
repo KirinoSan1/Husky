@@ -1,4 +1,4 @@
-import { AuthorResource, AuthorsResource, PostResource } from "../../types/Resources";
+import { AuthorResource, AuthorsResource } from "../../types/Resources";
 import { ThreadPageResource } from "../../types/Resources";
 import { Post } from "../post/PostModel";
 import { Thread } from "../thread/ThreadModel";
@@ -41,22 +41,6 @@ export async function createThreadPage(threadPageResource: ThreadPageResource): 
     return { id: threadPage.id, posts: threadPage.posts, createdAt: threadPage.createdAt }
 }
 
-export async function createThreadPageAndNotifyThread(posts: Array<PostResource>, threadID: string): Promise<ThreadPageResource> {
-    if (!posts)
-        throw new Error("posts not defined");
-    if (!threadID)
-        throw new Error("threadID not defined");
-    const threadPage = await ThreadPage.create({
-        posts: posts
-    });
-    const thread = await Thread.findById(threadID).exec();
-    if (!thread)
-        throw new Error(`no thread with ${threadID} found`);
-    thread.pages.push(threadPage.id);
-    await thread.save();
-    return { id: threadPage.id, posts: threadPage.posts, createdAt: threadPage.createdAt };
-}
-
 export async function updateThreadPage(threadPageResource: ThreadPageResource): Promise<ThreadPageResource> {
     if (!threadPageResource.id) {
         throw new Error("Page id missing, cannot update");
@@ -76,25 +60,66 @@ export async function updateThreadPage(threadPageResource: ThreadPageResource): 
     return { id: savedPage.id, posts: savedPage.posts }
 }
 
-export async function addPost(content: string, authorID: string, threadPageID: string): Promise<ThreadPageResource> {
+export async function addPost(content: string, authorID: string, threadPageID: string, threadID: string): Promise<ThreadPageResource> {
+    if (!content)
+        throw new Error("content not defined");
+    if (!authorID)
+        throw new Error("authorID not defined");
+    if (!threadPageID)
+        throw new Error("threadPageID not defined");
+
+    let threadPage = await ThreadPage.findById(threadPageID).exec();
+    if (!threadPage)
+        throw new Error(`no page with ID ${threadPageID} found`);
+
+    const author = await User.findById(authorID).exec();
+    if (!author)
+        throw new Error("author not found");
+
+    if (threadPage.posts.length == 10)
+        return await addPostNewPage(authorID, content, threadID);
+
+    threadPage.posts.push(new Post({ content: content, author: author.id }));
+    const savedPage = await threadPage.save();
+    return { id: savedPage.id, posts: savedPage.posts };
+}
+
+export async function addPostNewPage(author: string, content: string, threadID: string): Promise<ThreadPageResource> {
+    if (!author)
+        throw new Error("author not defined");
+    if (!content)
+        throw new Error("content not defined");
+    const threadPage = await ThreadPage.create({
+        posts: [new Post({ author: author, content: content })]
+    });
+    const thread = await Thread.findById(threadID).exec();
+    if (!thread)
+        throw new Error(`no thread with ${threadID} found`);
+    thread.pages.push(threadPage.id);
+    await thread.save();
+    return { id: threadPage.id, posts: threadPage.posts, createdAt: threadPage.createdAt };
+}
+
+export async function editPost(content: string, authorID: string, threadPageID: string, postNum: number): Promise<ThreadPageResource> {
     if (!content)
         throw new Error("content not defined");
     if (!authorID)
         throw new Error("author not defined");
     if (!threadPageID)
         throw new Error("threadPageID not defined");
+    if (!postNum)
+        throw new Error("postNum not defined");
 
     const threadPage = await ThreadPage.findById(threadPageID).exec();
     if (!threadPage)
         throw new Error(`no page with ID ${threadPageID} found`);
-    if (threadPage.posts.length >= 10)
-        throw new Error("threadpage already full");
+    if (!threadPage.posts[postNum])
+        throw new Error("post doesn't exist");
+    if (threadPage.posts[postNum].modified && threadPage.posts[postNum].modified === "d")
+        throw new Error("cannot edit deleted post");
 
-    const author = await User.findById(authorID).exec();
-    if (!author)
-        throw new Error("author not found");
-
-    threadPage.posts.push(new Post({ content: content, author: author.id }));
+    threadPage.posts[postNum].content = content;
+    threadPage.posts[postNum].modified = "m";
     const savedPage = await threadPage.save();
     return { id: savedPage.id, posts: savedPage.posts };
 }

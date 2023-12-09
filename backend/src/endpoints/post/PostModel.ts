@@ -9,6 +9,7 @@ export interface IPost {
     author: Types.ObjectId
     upvotes?: number
     downvotes?: number
+    modified: "" | "m" | "d"
     createdAt: Date
 }
 
@@ -16,7 +17,8 @@ export const postSchema = new Schema<IPost>({
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     upvotes: { type: Number, default: 0 },
-    downvotes: { type: Number, default: 0 }
+    downvotes: { type: Number, default: 0 },
+    modified: { type: String, default: "" }
 }, { timestamps: true });
 
 export const Post = model<IPost>("Post", postSchema);

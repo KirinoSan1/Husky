@@ -59,7 +59,7 @@ export function CreateThreadPage() {
                 </Dropdown.Menu>
             </Dropdown>
             <p id="createthread-p2">Please create the initial post:</p>
-            <textarea id="createthread-textarea" className="textarea" onChange={handleUpdateContent} value={content}></textarea>
+            <textarea id="createthread-textarea" className="textarea" placeholder="Write something awesome!" onChange={handleUpdateContent} value={content}></textarea>
             <div id="createthread-button-bar">
                 <Button id="createthread-button1" variant="secondary" onClick={() => { navigate("/threads"); }}>Go Back</Button>
                 <Button id="createthread-button2" onClick={handleSubmit} disabled={title.length === 0 || subForum === "" || content.length === 0 || loading}>Submit</Button>

@@ -4,9 +4,13 @@ import { Alert, Button } from "react-bootstrap";
 import LoadingIndicator from "../util/LoadingIndicator";
 import { createPost, getThread } from "../../api/api";
 import { UserContext } from "../settings/UserContext";
-import { ThreadPageResource } from "../../types/Resources";
+import { PageNumContext, ThreadContext, ThreadPageContext } from "../thread/Thread";
 
-export default function CreatePostDialog({ threadID, threadPage, setThread, setPageNum }: { threadID: string, threadPage: ThreadPageResource, setThread: Function, setPageNum: Function }) {
+export default function CreatePostDialog() {
+    const [thread, setThread] = useContext(ThreadContext);
+    const [threadPage, setThreadPage] = useContext(ThreadPageContext);
+    const [, setPageNum] = useContext(PageNumContext);
+
     const [loginInfo] = useContext(LoginContext);
     const [userInfo] = useContext(UserContext);
     const [showDialog, setShowDialog] = useState(false);
@@ -20,10 +24,14 @@ export default function CreatePostDialog({ threadID, threadPage, setThread, setP
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            await createPost(content, userInfo.id, threadID, threadPage);
-            const newThread = await getThread(threadID);
-            setThread(newThread);
-            setPageNum(newThread.pages.length - 1);
+            const newThreadPage = await createPost(content, userInfo.id, thread.id, threadPage.id);
+            if (newThreadPage.id === threadPage.id) { // old threadpage
+                setThreadPage(newThreadPage);
+            } else { // new threadpage
+                const newThread = await getThread(thread.id);
+                setThread(newThread);
+                setPageNum(newThread.pages.length - 1);
+            }
         } catch (error) {
             setError(String(error));
         }

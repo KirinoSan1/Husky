@@ -4,19 +4,34 @@ import { Alert, Button } from "react-bootstrap";
 import LoadingIndicator from "../util/LoadingIndicator";
 import { getAuthors, getThread, getThreadPage } from "../../api/api";
 import { AuthorResource, ThreadPageResource, ThreadResource } from "../../types/Resources";
-import { useParams } from "react-router-dom";
+import { Location, NavigateFunction, useLocation, useNavigate, useParams } from "react-router-dom";
 import CreatePostDialog from "../post/CreatePostDialog";
+import React from "react";
+
+export const ThreadContext = React.createContext([] as any);
+export const ThreadPageContext = React.createContext([] as any);
+export const PageNumContext = React.createContext([] as any);
 
 export default function Thread() {
     const threadID = useParams().id ?? "";
-    const [pageNum, setPageNum] = useState(0);
+    const [pageNum, setPageNum] = useState(Number(useParams().page) - 1 ?? 1);
     const [thread, setThread] = useState<ThreadResource | null>(null);
     const [threadPage, setThreadPage] = useState<ThreadPageResource | null>(null);
     const [authors, setAuthors] = useState<Map<string, AuthorResource> | null>(null);
     const [error, setError] = useState("");
 
+    const navigate: NavigateFunction = useNavigate();
+    const route: Location = useLocation();
+
+    const setCurrentPageNum = (page: number) => {
+        const currentPath: string = route.pathname;
+        navigate(currentPath.substring(0, currentPath.length - 1) + (page + 1));
+        setPageNum(page);
+    }
+
     useEffect(() => {
         async function loadThread() {
+            setThreadPage(null);
             try {
                 setThread(await getThread(threadID));
             } catch (error) {
@@ -55,8 +70,8 @@ export default function Thread() {
         loadAuthors();
     }, [threadPage]);
 
-    const handlePrevious = () => { setPageNum(pageNum - 1); };
-    const handleNext = () => { setPageNum(pageNum + 1); };
+    const handlePrevious = () => { setCurrentPageNum(pageNum - 1); };
+    const handleNext = () => { setCurrentPageNum(pageNum + 1); };
 
     if (error)
         return <Alert id="thread-alert" variant="danger">{`An error occured when loading the page: ${error}`}</Alert>;
@@ -65,15 +80,21 @@ export default function Thread() {
         return <LoadingIndicator />;
 
     return (
-        <div id="thread-div">
-            <p id={`thread-div-p1`}>{`Thema: ${thread.title}`}</p>
-            <p id={`thread-div-p2`}>{`Seite: ${pageNum + 1}`}</p>
-            {pageNum > 0 && <Button id="thread-div-button1" onClick={handlePrevious}>Previous</Button>}
-            {pageNum < thread.pages.length - 1 && <Button id="thread-div-button2" onClick={handleNext}>Next</Button>}
-            <ThreadPage pageNum={pageNum} threadPage={threadPage} authors={authors}></ThreadPage>
-            {pageNum === thread.pages.length - 1 && <CreatePostDialog threadID={thread.id} threadPage={threadPage} setThread={setThread} setPageNum={setPageNum}></CreatePostDialog>}
-            {pageNum > 0 && <Button id="thread-div-button3" onClick={handlePrevious}>Previous</Button>}
-            {pageNum < thread.pages.length - 1 && <Button id="thread-div-button4" onClick={handleNext}>Next</Button>}
-        </div>
+        <ThreadContext.Provider value={[thread, setThread]}>
+            <ThreadPageContext.Provider value={[threadPage, setThreadPage]}>
+                <PageNumContext.Provider value={[pageNum, setPageNum]}>
+                    <div id="thread-div">
+                        <p id={`thread-div-p1`}>{`Thema: ${thread.title}`}</p>
+                        <p id={`thread-div-p2`}>{`Seite: ${pageNum + 1}`}</p>
+                        {pageNum > 0 && <Button id="thread-div-button1" onClick={handlePrevious}>Previous</Button>}
+                        {pageNum < thread.pages.length - 1 && <Button id="thread-div-button2" onClick={handleNext}>Next</Button>}
+                        <ThreadPage authors={authors}></ThreadPage>
+                        {pageNum === thread.pages.length - 1 && <CreatePostDialog></CreatePostDialog>}
+                        {pageNum > 0 && <Button id="thread-div-button3" onClick={handlePrevious}>Previous</Button>}
+                        {pageNum < thread.pages.length - 1 && <Button id="thread-div-button4" onClick={handleNext}>Next</Button>}
+                    </div>
+                </PageNumContext.Provider>
+            </ThreadPageContext.Provider>
+        </ThreadContext.Provider>
     );
 };
