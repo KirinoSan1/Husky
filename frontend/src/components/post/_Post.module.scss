@@ -9,7 +9,7 @@
         left: 8px;
         right: 8px;
     }
-    height: 300px;
+    height: fit-content;
     background-color: theme.$eighth-color;
     border: 8px solid theme.$eighth-color;
     border-radius: 16px;
@@ -17,16 +17,26 @@
         width: 20%;
         display: flex;
         flex-direction: column;
+        margin-right: 8px;
         & > img {
+            max-width: 100%;
+            height: auto;
             align-self: center;
             margin: 8px auto;
         }
-        & > p:first-of-type {
+        & > p {
             align-self: center;
-        }
-        & > p:last-of-type {
-            color: theme.$sixth-color;
-            margin-left: 8px;
+            // margin-right: 8px;
+            text-align: center;
+            &:not(:last-of-type) {
+                margin-bottom: 0;
+            }
+            &:not(:first-of-type) {
+                color: theme.$sixth-color;
+            }
+            &:last-of-type {
+                margin-top: 16px;
+            }
         }
     }
     & > [id*="div2"] {
@@ -40,11 +50,14 @@
         & > :first-child {
             display: flex;
             flex-direction: row;
-            justify-content: flex-end;
+            justify-content: space-between;
             color: theme.$sixth-color;
-            & > :last-child {
-                margin-left: 32px;
-            }
+        }
+    }
+    .btn {
+        margin: 8px auto 0;
+        &:first-of-type {
+            margin-right: 12px;
         }
     }
 }
