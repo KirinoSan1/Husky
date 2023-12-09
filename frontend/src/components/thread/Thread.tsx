@@ -84,14 +84,17 @@ export default function Thread() {
             <ThreadPageContext.Provider value={[threadPage, setThreadPage]}>
                 <PageNumContext.Provider value={[pageNum, setPageNum]}>
                     <div id="thread-div">
-                        <p id={`thread-div-p1`}>{`Thema: ${thread.title}`}</p>
-                        <p id={`thread-div-p2`}>{`Seite: ${pageNum + 1}`}</p>
-                        {pageNum > 0 && <Button id="thread-div-button1" onClick={handlePrevious}>Previous</Button>}
-                        {pageNum < thread.pages.length - 1 && <Button id="thread-div-button2" onClick={handleNext}>Next</Button>}
+                        <h3 id={`thread-div-p1`}>{`Thema: ${thread.title}`}</h3>
+                        <div className="button-bar">
+                            {pageNum > 0 && <Button id="thread-div-button1" onClick={handlePrevious}>Previous</Button>}
+                            {pageNum < thread.pages.length - 1 && <Button id="thread-div-button2" onClick={handleNext}>Next</Button>}
+                        </div>
                         <ThreadPage authors={authors}></ThreadPage>
+                        <div className="button-bar">
+                            {pageNum > 0 && <Button id="thread-div-button3" onClick={handlePrevious}>Previous</Button>}
+                            {pageNum < thread.pages.length - 1 && <Button id="thread-div-button4" onClick={handleNext}>Next</Button>}
+                        </div>
                         {pageNum === thread.pages.length - 1 && <CreatePostDialog></CreatePostDialog>}
-                        {pageNum > 0 && <Button id="thread-div-button3" onClick={handlePrevious}>Previous</Button>}
-                        {pageNum < thread.pages.length - 1 && <Button id="thread-div-button4" onClick={handleNext}>Next</Button>}
                     </div>
                 </PageNumContext.Provider>
             </ThreadPageContext.Provider>

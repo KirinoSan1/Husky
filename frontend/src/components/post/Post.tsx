@@ -13,9 +13,9 @@ export default function Post({ user, post, postNum }: { user: AuthorResource, po
             <div id={`post${postNum}-div1`}>
                 <img id={`post${postNum}-div1-img`} src="/images/logo.png" alt={"Profile Pic"} width="100" height="100"></img>
                 <p id={`post${postNum}-div1-p1`}>{user.name}</p>
-                <p id={`post${postNum}-div1-p2`}>{`Member since: ${user.createdAt.toLocaleDateString()}`}</p>
                 {user.mod && !user.admin && <p id={`post${postNum}-div1-p3`}>Moderator</p>}
                 {user.admin && <p id={`post${postNum}-div1-p4`}>Admin</p>}
+                <p id={`post${postNum}-div1-p2`}>{`Member since: ${user.createdAt.toLocaleDateString()}`}</p>
             </div>
             <div className="post-vertical-line"></div>
             <div id={`post${postNum}-div2`}>

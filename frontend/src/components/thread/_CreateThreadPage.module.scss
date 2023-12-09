@@ -4,13 +4,6 @@
     width: variables.$page-width;
 }
 
-.btn {
-    margin: {
-        top: 24px;
-        bottom: 24px;
-    }
-}
-
 #createthread-button-bar {
     & > :first-child {
         margin-right: 12px;

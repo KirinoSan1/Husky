@@ -182,6 +182,8 @@ form > div:first-of-type > .form-label {
 
 .btn {
   border-radius: 8px;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 .btn-primary {
   background-color: #38B6FF;
@@ -247,7 +249,7 @@ form > div:first-of-type > .form-label {
   margin-bottom: 24px;
   margin-left: 8px;
   margin-right: 8px;
-  height: 300px;
+  height: fit-content;
   background-color: #393D40;
   border: 8px solid #393D40;
   border-radius: 16px;
@@ -256,17 +258,26 @@ form > div:first-of-type > .form-label {
   width: 20%;
   display: flex;
   flex-direction: column;
+  margin-right: 8px;
 }
 .threadpage-post > [id*=div1] > img {
+  max-width: 100%;
+  height: auto;
   align-self: center;
   margin: 8px auto;
 }
-.threadpage-post > [id*=div1] > p:first-of-type {
+.threadpage-post > [id*=div1] > p {
   align-self: center;
+  text-align: center;
+}
+.threadpage-post > [id*=div1] > p:not(:last-of-type) {
+  margin-bottom: 0;
+}
+.threadpage-post > [id*=div1] > p:not(:first-of-type) {
+  color: #B5B5B5;
 }
 .threadpage-post > [id*=div1] > p:last-of-type {
-  color: #B5B5B5;
-  margin-left: 8px;
+  margin-top: 16px;
 }
 .threadpage-post > [id*=div2] {
   width: 80%;
@@ -278,11 +289,14 @@ form > div:first-of-type > .form-label {
 .threadpage-post > [id*=div2] > :first-child {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   color: #B5B5B5;
 }
-.threadpage-post > [id*=div2] > :first-child > :last-child {
-  margin-left: 32px;
+.threadpage-post .btn {
+  margin: 8px auto 0;
+}
+.threadpage-post .btn:first-of-type {
+  margin-right: 12px;
 }
 
 .post-vertical-line {
@@ -315,7 +329,7 @@ form > div:first-of-type > .form-label {
 
 .threadpage-number {
   margin-bottom: 0;
-  padding-right: 24px;
+  padding-right: 8px;
   text-align: right;
   width: 100%;
 }
@@ -332,11 +346,6 @@ form > div:first-of-type > .form-label {
   width: 50vw;
 }
 
-.btn {
-  margin-top: 24px;
-  margin-bottom: 24px;
-}
-
 #createthread-button-bar > :first-child {
   margin-right: 12px;
 }
@@ -349,6 +358,21 @@ form > div:first-of-type > .form-label {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+#thread-div .button-bar {
+  display: flex;
+  width: 90%;
+  justify-content: end;
+  margin-right: 12px;
+}
+#thread-div .button-bar .btn {
+  margin-bottom: 8px;
+}
+#thread-div .button-bar .btn:last-of-type {
+  margin-left: 12px;
+}
+#thread-div .button-bar:last-of-type .btn {
+  margin-top: 0;
 }
 
 #threadsearch-div-button2,
@@ -399,6 +423,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: scroll;
 }
 #root #logincontext-provider-buttons {
   display: inline-flex;
@@ -409,6 +434,7 @@ main {
   display: flex;
   flex-direction: column;
   padding-bottom: 24px;
+  width: 100%;
 }
 
 img::selection {
