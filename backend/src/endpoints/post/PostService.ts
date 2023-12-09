@@ -9,7 +9,7 @@ export async function getPost(id: string): Promise<PostResource> {
         throw new Error("Post not found.")
     }
     return { id: post.id, content: post.content, author: post.author.toString(), upvotes: post.upvotes, 
-        downvotes: post.downvotes, createdAt: post.createdAt }
+        downvotes: post.downvotes, modified: post.modified, createdAt: post.createdAt }
 }
 
 /**
@@ -28,7 +28,7 @@ export async function createPost(postResource: PostResource): Promise<PostResour
     return {
         id: post.id,
         content: post.content, author: post.author.toString(), upvotes: post.upvotes,
-        downvotes: post.downvotes, createdAt: post.createdAt
+        downvotes: post.downvotes, modified: post.modified, createdAt: post.createdAt
     }
 }
 
@@ -49,7 +49,7 @@ export async function updatePost(postResource: PostResource): Promise<PostResour
 
     return {
         id: post.id, content: post.content, author: post.author.toString(), upvotes: post.upvotes,
-        downvotes: post.downvotes, createdAt: post.createdAt
+        downvotes: post.downvotes, modified: post.modified, createdAt: post.createdAt
     }
 }
 

@@ -22,7 +22,8 @@ const threadpageSchema = new Schema<IThreadPage, ThreadPageModel>({
         content: { type: String, required: true },
         author: { type: Schema.Types.ObjectId, ref: "User", required: true },
         upvotes: { type: Number, default: 0 },
-        downvotes: { type: Number, default: 0 }
+        downvotes: { type: Number, default: 0 },
+        modified: { type: String, default: "" }
     }, { timestamps: true })]
 
 }, { timestamps: true })

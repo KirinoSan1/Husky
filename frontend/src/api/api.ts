@@ -255,50 +255,33 @@ export async function searchThreadsByTitle(title: string): Promise<Array<ThreadR
     }
 }
 
-export async function createPost(content: string, userID: string, threadID: string, threadPage: ThreadPageResource): Promise<ThreadPageResource> {
+export async function createPost(content: string, userID: string, threadID: string, threadPageID: string): Promise<ThreadPageResource> {
     try {
         if (!content)
             throw new Error("content not defined");
         if (!userID)
             throw new Error("userID not defined");
         if (!threadID)
-            throw new Error("thread not defined");
-        if (!threadPage)
-            throw new Error("threadpage not defined");
+            throw new Error("threadID not defined");
+        if (!threadPageID)
+            throw new Error("threadpageID not defined");
 
         const jwt = getJWT();
         if (!jwt)
             throw new Error("no JWT found");
 
-        let response = null;
-        if (threadPage.posts.length === 10) { // thread page is 'full' -> create new thread page
-            response = await fetch(`${BASE_URL}/api/threadpage/`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${jwt}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    posts: Array.of({
-                        content: content,
-                        author: userID
-                    }),
-                    threadID: threadID
-                })
-            });
-        } else {
-            response = await fetch(`${BASE_URL}/api/threadpage/${threadPage.id}/add`, {
-                method: "PATCH",
-                headers: {
-                    "Authorization": `Bearer ${jwt}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    content: content,
-                    author: userID
-                })
-            });
-        }
+        const response = await fetch(`${BASE_URL}/api/threadpage/${threadPageID}/add`, {
+            method: "PATCH",
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                content: content,
+                author: userID,
+                threadID: threadID
+            })
+        });
 
         if (!response || !response.ok)
             throw new Error("network response was not OK");
@@ -355,5 +338,44 @@ export async function createThread(creator: string, title: string, subForum: str
 
     } catch (error) {
         throw new Error("error occurred during request: " + error);
+    }
+}
+
+export async function editPost(author: string, content: string, postNum: number, threadPageID: string): Promise<ThreadPageResource> {
+    try {
+        if (!author)
+            throw new Error("author not defined");
+        if (!content)
+            throw new Error("content not defined");
+        if (!postNum)
+            throw new Error("postNum not defined");
+        if (!threadPageID)
+            throw new Error("threadPageID not defined");
+
+        const jwt = getJWT();
+        if (!jwt)
+            throw new Error("no JWT found");
+
+        const response = await fetch(`${BASE_URL}/api/threadpage/${threadPageID}/edit`, {
+            method: "PATCH",
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                postNum: postNum,
+                content: content,
+                author: author
+            })
+        });
+
+        const result: ThreadPageResource = await response.json();
+        if (!result.id || !result.posts)
+            throw new Error("result from server is missing fields");
+        result.posts.forEach((post) => { post.createdAt = new Date(post.createdAt); });
+        return result;
+
+    } catch (error) {
+        throw new Error("error occurred during request " + error);
     }
 }

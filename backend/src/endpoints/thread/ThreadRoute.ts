@@ -2,9 +2,8 @@ import express from "express";
 import { getThread, createThread, updateThread, deleteThread, getThreadtitle } from "./ThreadService";
 import { body, matchedData, param, validationResult } from "express-validator";
 import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
-import { PostResource, ThreadResource } from "../../types/Resources";
-import { createThreadPageAndNotifyThread } from "../threadpage/ThreadPageService";
-import { Post } from "../post/PostModel";
+import { ThreadResource } from "../../types/Resources";
+import { addPostNewPage } from "../threadpage/ThreadPageService";
 
 const threadRouter = express.Router();
 
@@ -42,18 +41,7 @@ threadRouter.post("/", requiresAuthentication,
             let createdThread = await createThread(threadData);
             // if content is defined -> create threadpage and initial post
             if (threadData.content && threadData.numPosts === 1) {
-                const newPost = new Post({
-                    content: threadData.content,
-                    author: threadData.creator
-                });
-                const createdThreadWithPost = createThreadPageAndNotifyThread(Array.of({
-                    id: newPost.id,
-                    author: String(newPost.author),
-                    content: newPost.content,
-                    upvotes: newPost.upvotes,
-                    downvotes: newPost.downvotes,
-                    createdAt: newPost.createdAt
-                } as PostResource), createdThread.id ?? "");
+                await addPostNewPage(threadData.creator, threadData.content, createdThread.id!);
                 createdThread = await getThread(createdThread.id ?? "");
             }
             res.status(201).send(createdThread);

@@ -28,6 +28,7 @@ export type PostResource = {
     id: string
     content: string
     author: string
+    modified: "" | "m" | "d"
     createdAt: Date
 }
 

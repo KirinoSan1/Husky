@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 
@@ -22,7 +22,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                 children: [
                     { path: "", element: <FrontPage /> },
                     { path: "threads", element: <ThreadSearch /> },
-                    { path: "threads/:id", element: <Thread /> },
+                    { path: "threads/:id", element: <Navigate to="1" /> },
+                    { path: "threads/:id/:page", element: <Thread /> },
                     { path: "threads/create", element: <CreateThreadPage /> },
                     { path: "settings", element: <Settings /> }
                 ],

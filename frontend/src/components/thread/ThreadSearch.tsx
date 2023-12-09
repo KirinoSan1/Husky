@@ -20,8 +20,8 @@ export default function ThreadSearch() {
         setThreads(null);
         setError("");
         try {
-            if (title.length < 3)
-                throw new Error("query must contain at least 3 characters");
+            if (title.length < 2)
+                throw new Error("query must contain at least 2 characters");
             setThreads(await searchThreadsByTitle(title));
         } catch (error) {
             setError(String(error));
