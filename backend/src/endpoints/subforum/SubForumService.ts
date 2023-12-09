@@ -1,10 +1,27 @@
 import { Types } from "mongoose";
 import { SubForumResource } from "../../types/Resources";
-import { deleteThread } from "../thread/ThreadService";
 import { SubForum } from "./SubForumModel";
-import { Thread } from "../thread/ThreadModel";
+import { IThread, Thread } from "../thread/ThreadModel";
 
+export async function getSubForum(name: string): Promise<SubForumResource> {
+    const subForum = await SubForum.find({ name: name }).exec()
+    return subForum[0].toObject() // 0, because it can only exist one Subforum with that name.
+}
 
+export async function getAllThreadsForSubForum(subForumName: string, count?: number): Promise<IThread[]> {
+    const subforum = await SubForum.findOne({ name: subForumName }).exec();
+    if (!subforum) {
+        throw new Error(`Subforum with name ${subForumName} not found.`);
+    }
+    let threads: Types.ObjectId[] = subforum.threads.slice(); // copy Array, to prevent side effects
+
+    // Retrieve the thread objects based on the thread IDs from the subforum and sort them in descending order of creation date
+    const threadObjects = await Thread.find({ _id: { $in: threads } }).sort({ createdAt: -1 }).exec();
+    if (count && count > 0) {
+        threadObjects.splice(count);
+    }
+    return threadObjects;
+}
 
 export async function createSubForum(subForumResource: SubForumResource): Promise<SubForumResource> {
     const subforum = await SubForum.create({
@@ -19,15 +36,6 @@ export async function createSubForum(subForumResource: SubForumResource): Promis
     }
 }
 
-export async function getSubForum(name: string): Promise<SubForumResource> {
-    /**
-     * The reason why only 0 is because it can only exist one Subforum with that name.
-     */
-    const subForum =  await SubForum.find({ name: name }).exec()
-    return subForum[0].toObject()
-}
-
-
 export async function updateSubForum(subForumResource: SubForumResource): Promise<SubForumResource> {
     const subforum = await SubForum.findById(subForumResource.id).exec();
     if (!subforum) {
@@ -40,7 +48,6 @@ export async function updateSubForum(subForumResource: SubForumResource): Promis
         subforum.description = subForumResource.description;
     }
     const result = await subforum.save();
-
     return result.toObject();
 }
 

@@ -1,7 +1,7 @@
 import express from "express";
 import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
 import { body, matchedData, param, validationResult } from "express-validator";
-import { createSubForum, deleteSubForum, getSubForum, updateSubForum } from "./SubForumService";
+import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getSubForum, updateSubForum } from "./SubForumService";
 import { SubForumResource } from "../../types/Resources";
 
 export const subForumRouter = express.Router();
@@ -21,6 +21,24 @@ subForumRouter.get("/:name", optionalAuthentication,
             next(err)
         }
     })
+
+subForumRouter.get("/:name/threads", optionalAuthentication,
+    param("name").isString(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        try {
+            const subForumName = req.params.name;
+            const count = req.query.count ? parseInt(req.query.count as string) : undefined;
+            const threads = await getAllThreadsForSubForum(subForumName, count);
+            return res.send(threads);
+        } catch (err) {
+            res.status(400);
+            next(err);
+        }
+    });
 
 subForumRouter.post("/", requiresAuthentication,
     body('name').isString(),

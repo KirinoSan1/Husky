@@ -1,14 +1,11 @@
 import dotenv from "dotenv";
-import { LoginResource, PostResource, SubForumResource, ThreadPageResource, ThreadResource, UserResource } from "../../src/types/Resources";
+import { LoginResource, SubForumResource, UserResource } from "../../src/types/Resources";
 import TestDB from "../TestDB";
 import { User } from "../../src/endpoints/user/UserModel";
 import { createUser } from "../../src/endpoints/user/UserService";
 import supertest from "supertest";
 import app from "../../src/testIndex";
 import { Post } from "../../src/endpoints/post/PostModel";
-import { createThreadPage } from "../../src/endpoints/threadpage/ThreadPageService";
-import { createSubForum } from "../../src/endpoints/subforum/SubForumService";
-import { createThread } from "../../src/endpoints/thread/ThreadService";
 import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
 import { Thread } from "../../src/endpoints/thread/ThreadModel";
 import { SubForum } from "../../src/endpoints/subforum/SubForumModel";
@@ -26,12 +23,10 @@ const NON_EXISTING_ID = "635d2e796ea2e8c9bde5787c";
 
 beforeAll(async () => { await TestDB.connect(); })
 beforeEach(async () => {
-    // create a use and login
     User.syncIndexes();
     john = await User.create({ name: "Johnathan", email: "johnathan@jonathan.de", password: "123asdf!ABCD", admin: true})
     idjohn = john.id!
 
-    // Login um Token zu erhalten
     const request = supertest(app);
     const loginData = { email: "johnathan@jonathan.de", password: "123asdf!ABCD" };
     const response = await request.post(`/api/login`).send(loginData)
@@ -68,7 +63,6 @@ beforeEach(async () => {
         threads: [thread.id]
     })
 
-    // Login um Token zu erhalten
     const request2 = supertest(app);
     const loginData2 = { email: "umi@jonatahan.de", password: "123asdf!ABCDs" };
     const response2 = await request2.post(`/api/login`).send(loginData2)
@@ -100,6 +94,17 @@ test("Subforum GET, negative test ", async () => {
     const response = await request.get(`/api/subforum/${john}`)
     expect(response.statusCode).toBe(400);
 })
+
+test("Subforum GET, threads for a subforum with a limit", async () => {
+    const request = supertest(app);
+    const response = await request.get(`/api/subforum/${subForum.name}/threads`).set("Authorization", `Bearer ${token}`);
+    
+    expect(response.statusCode).toBe(200);
+    const threads = response.body as typeof Thread[];    
+    expect(Array.isArray(threads)).toBe(true);
+});
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 test("Subforum POST,positive Test", async () => {
     const request = supertest(app);
