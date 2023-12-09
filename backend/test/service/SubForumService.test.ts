@@ -1,13 +1,13 @@
 import mongoose, { Types } from "mongoose"
 import DB from "../TestDB";
-import { getThread, createThread, updateThread, deleteThread, getThreadtitle } from "../../src/endpoints/thread/ThreadService";
-import { Thread } from "../../src/endpoints/thread/ThreadModel";
+import { createThread } from "../../src/endpoints/thread/ThreadService";
 import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
 import { IUser, User } from "../../src/endpoints/user/UserModel"
 import { Post } from "../../src/endpoints/post/PostModel";
 import { SubForumResource, ThreadResource } from "../../src/types/Resources";
-import { createSubForum, deleteSubForum, getSubForum, updateSubForum } from "../../src/endpoints/subforum/SubForumService";
+import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getSubForum, updateSubForum } from "../../src/endpoints/subforum/SubForumService";
 import { SubForum } from "../../src/endpoints/subforum/SubForumModel";
+import { Thread } from "../../src/endpoints/thread/ThreadModel";
 
 let jinxData: IUser = { email: "Jinx@gmail.com", name: "Jinx", password: "123", admin: false }
 let idJinx: string
@@ -56,7 +56,70 @@ test("Creates a new Thread and added to an Subforum returns it", async () => {
     expect(forum.threads[0].toString()).toBe(newSubForum.threads[0].toString())
 })
 
+test("Get all threads for a subforum with a limit", async () => {
+    const subForumName = "Testing";
+    const count = 5;
 
+    await Thread.create([
+        {
+            title: "Thread 1",
+            creator: new mongoose.Types.ObjectId(),
+            subForum: subForumName,
+            pages: [],
+            createdAt: new Date()
+        },
+        {
+            title: "Thread 2",
+            creator: new mongoose.Types.ObjectId(),
+            subForum: subForumName,
+            pages: [],
+            createdAt: new Date()
+        },
+        {
+            title: "Thread 3",
+            creator: new mongoose.Types.ObjectId(),
+            subForum: subForumName,
+            pages: [],
+            createdAt: new Date()
+        }
+    ]);
+
+    const threads = await getAllThreadsForSubForum(subForumName, count);
+
+    expect(Array.isArray(threads)).toBe(true);
+    expect(threads.length).toBe(3); // Asserts the number of returned threads matches the count
+});
+
+test("Get all threads for a subforum without a limit", async () => {
+    const subForumName = "Testing";
+
+    await Thread.create([
+        {
+            title: "Thread 1",
+            creator: new mongoose.Types.ObjectId(),
+            subForum: subForumName,
+            pages: [],
+            createdAt: new Date()
+        },
+        {
+            title: "Thread 2",
+            creator: new mongoose.Types.ObjectId(),
+            subForum: subForumName,
+            pages: [],
+            createdAt: new Date()
+        },
+        {
+            title: "Thread 3",
+            creator: new mongoose.Types.ObjectId(),
+            subForum: subForumName,
+            pages: [],
+            createdAt: new Date()
+        }
+    ]);
+
+    const threads = await getAllThreadsForSubForum(subForumName);
+    expect(Array.isArray(threads)).toBe(true);
+});
 
 test("Creates a new Thread and added to an Subforum returns it", async () => {
     const post = await Post.create({
@@ -108,7 +171,6 @@ test("Creates a new Thread and added to an Subforum returns it", async () => {
     expect(search?.description).toBe("This is an Update")
     expect(search?.threads.toString()).toEqual([res.id, res1.id].toString())
 })
-
 
 test("Creates a new Thread and get the an Subforum with name.", async () => {
     const post = await Post.create({
@@ -166,7 +228,6 @@ test("Creates a new Thread and get the an Subforum with name.", async () => {
     expect(result1.threads.toString()).toBe(newSub.threads.toString())
 })
 
-
 test("Creates a new Thread and added to an Subforum returns negative it", async () => {
     const post = await Post.create({
         content: "Test.",
@@ -216,7 +277,7 @@ test("Creates a new Thread and added to an Subforum returns negative it", async 
     await expect(updateSubForum(updateSub)).rejects.toThrow("The Subforum with the id 635d2e796ea2e8c9bde5787c does not exist.")
 })
 
-test("Creates a new Thread and added to an Subforum then deleteit", async () => {
+test("Creates a new Thread and added to an Subforum then delete it", async () => {
     const post = await Post.create({
         content: "Test.",
         author: idJinx,
