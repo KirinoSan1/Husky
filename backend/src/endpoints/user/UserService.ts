@@ -2,19 +2,32 @@ import { Types } from "mongoose"
 import { User } from "./UserModel";
 import { Post } from "../post/PostModel";
 import { ThreadPage } from "../threadpage/ThreadPageModel";
-import { UserResource} from "../../types//Resources";
-import { Thread } from "../thread/ThreadModel";
+import { UserResource } from "../../types//Resources";
+import { IThread, Thread } from "../thread/ThreadModel";
 
 /**
  * The password may not be returned.
  */
 export async function getUser(id: string): Promise<UserResource> {
     const users = await User.findById(id).exec();
-    if(!users){
-        throw new Error (" User not found")
+    if (!users) {
+        throw new Error(" User not found")
     }
     const userResource = { id: users.id, name: users.name, email: users.email, admin: users.admin, mod: users.mod }
     return userResource;
+}
+
+export async function getAllThreadsForUser(userId: string, count?: number): Promise<IThread[]> {
+    const user = await User.findById(userId).exec();
+    if (!user) {
+        throw new Error(`User with ID ${userId} not found.`);
+    }
+    let threadsQuery = Thread.find({ creator: new Types.ObjectId(userId) }).sort({ createdAt: -1 });
+    if (count && count > 0) {
+        threadsQuery = threadsQuery.limit(count);
+    }
+    const threads = await threadsQuery.exec();
+    return threads;
 }
 
 /**
@@ -52,7 +65,7 @@ export async function updateUser(userResource: UserResource): Promise<UserResour
     if (userResource.mod) user.mod = userResource.mod;
 
     const savedUser = await user.save();
-    return  { id: savedUser.id, name: savedUser.name, email: savedUser.email, admin: savedUser.admin, mod: savedUser.mod }
+    return { id: savedUser.id, name: savedUser.name, email: savedUser.email, admin: savedUser.admin, mod: savedUser.mod }
 }
 
 /**
@@ -68,7 +81,7 @@ export async function deleteUser(id: string): Promise<void> {
     if (res.deletedCount !== 1) {
         throw new Error(`No user with id ${id} deleted, probably id not valid`);
     }
-    await Thread.deleteMany({creator: new Types.ObjectId(id)}).exec()
-    await ThreadPage.deleteMany({creator: new Types.ObjectId(id)}).exec()
-    await Post.deleteMany({creator: new Types.ObjectId(id)}).exec()
+    await Thread.deleteMany({ creator: new Types.ObjectId(id) }).exec()
+    await ThreadPage.deleteMany({ creator: new Types.ObjectId(id) }).exec()
+    await Post.deleteMany({ creator: new Types.ObjectId(id) }).exec()
 }

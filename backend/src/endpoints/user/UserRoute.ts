@@ -1,7 +1,7 @@
 import { LoginResource, UserResource } from "../../types/Resources";
 import express from "express";
-import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
-import { createUser, deleteUser, getUser, updateUser } from "./UserService";
+import { requiresAuthentication } from "../../util/authentication";
+import { createUser, deleteUser, getAllThreadsForUser, getUser, updateUser } from "./UserService";
 import { body, matchedData, param, validationResult } from "express-validator";
 import { verifyPasswordAndCreateJWT } from "../service/JWTService";
 
@@ -21,6 +21,24 @@ userRouter.get("/:id", requiresAuthentication,
             next(err)
         }
     })
+
+    userRouter.get("/:id/threads", requiresAuthentication,
+    param("id").isMongoId(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        try {
+            const userId = req.params.id;
+            const count = req.query.count ? parseInt(req.query.count as string) : undefined;
+            const threads = await getAllThreadsForUser(userId, count);
+            res.send(threads); // Send threads for the user with the given ID
+        } catch (err) {
+            res.status(400);
+            next(err);
+        }
+    });
 
 userRouter.post("/",
     body('email').isEmail().normalizeEmail().isLength({ min: 1, max: 100 }),
