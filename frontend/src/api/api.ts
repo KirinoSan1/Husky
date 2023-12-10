@@ -347,7 +347,7 @@ export async function editPost(author: string, content: string, postNum: number,
             throw new Error("author not defined");
         if (!content)
             throw new Error("content not defined");
-        if (!postNum)
+        if (!!postNum === false && postNum !== 0)
             throw new Error("postNum not defined");
         if (!threadPageID)
             throw new Error("threadPageID not defined");
