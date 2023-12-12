@@ -22,7 +22,17 @@ export default function App() {
         getUserData();
     }, [loginInfo]);
 
-    const routeName: string = useLocation().pathname.substring(1);
+    const route: string = useLocation().pathname.substring(1);
+
+    const getRouteName = (): string => {
+        let routeName: string = route;
+
+        if (routeName.endsWith("/")) {
+            routeName.slice(0, routeName.length - 1);
+        }
+
+        return routeName.split("/")[0];
+    }
 
     return (
         <>
@@ -32,7 +42,7 @@ export default function App() {
             <LoginContext.Provider value={[loginInfo, setLoginInfo]}>
                 <UserContext.Provider value={[userInfo, setUserInfo]}>
                     <Navigation />
-                    <main id={(routeName.length > 0 ? routeName : "home") + "-page-container"}>
+                    <main id={(route.length > 0 ? getRouteName() : "home") + "-page-container"}>
                         <Outlet />
                     </main>
                 </UserContext.Provider>

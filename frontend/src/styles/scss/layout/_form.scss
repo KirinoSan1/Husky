@@ -21,6 +21,9 @@
         color: theme.$sixth-color;
     }
     &:focus {
-        background-color: theme.$sixth-color;
+        background-color: theme.$seventh-color;
+        color: theme.$fourth-color;
+        caret-color: theme.$fourth-color;
+        box-shadow: 0 1px 1px theme.$first-color inset, 0px 1px 6px theme.$first-color;
     }
 }

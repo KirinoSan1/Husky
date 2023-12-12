@@ -38,7 +38,7 @@ export default function LoginDialog() {
             <Button id="logindialog-button-login" onClick={handleShow}>Login</Button>
 
             <Modal id="logindialog-modal" show={showDialog} onHide={handleClose}>
-                <Modal.Header id="logindialog-modal-header" closeButton>
+                <Modal.Header id="logindialog-modal-header" data-bs-theme="dark" closeButton>
                     <Modal.Title id="logindialog-modal-header-title">Login</Modal.Title>
                 </Modal.Header>
                 <Modal.Body id="logindialog-modal-body">
@@ -57,7 +57,7 @@ export default function LoginDialog() {
                             ></Form.Control>
                         </Form.Group>
                         <Form.Group id="logindialog-modal-body-form-group2">
-                            <Form.Label id="logindialog-modal-body-form-group2-label">Passwort</Form.Label>
+                            <Form.Label id="logindialog-modal-body-form-group2-label">Password</Form.Label>
                             <Form.Control
                                 type="password"
                                 name="password"
@@ -70,7 +70,7 @@ export default function LoginDialog() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer id="logindialog-modal-footer">
-                    {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
+                    {loading ? <LoadingIndicator /> : <></>}
                     <Button id="logindialog-modal-footer-button-cancel" variant="secondary" onClick={handleClose}>Cancel</Button>
                     <Button id="logindialog-modal-footer-button-submit" disabled={loading} onClick={handleSubmit}>Submit</Button>
                 </Modal.Footer>

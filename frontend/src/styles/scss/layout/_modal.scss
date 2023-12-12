@@ -1,9 +1,29 @@
 @use "../theme/theme";
 
-.modal-content {
-    background-color: theme.$eighth-color;
-}
-
 .modal-title {
     color: theme.$fourth-color;
+}
+
+.modal-content {
+    background-color: theme.$eighth-color;
+
+    button {
+        margin: 0;
+
+        &.btn-secondary {
+            margin-right: 8px !important;
+        }
+    }
+}
+
+.modal-header {
+    border-bottom-color: theme.$sixth-color;
+}
+
+.modal-body {
+    padding-bottom: 24px;
+}
+
+.modal-footer {
+    border-top-color: theme.$sixth-color;
 }

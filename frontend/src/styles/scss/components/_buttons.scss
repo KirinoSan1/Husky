@@ -3,17 +3,19 @@
 .btn {
     &-primary {
         background-color: theme.$first-color;
+        border-color: theme.$first-color;
         &:disabled {
             background-color: theme.$first-color;
+            border-color: theme.$first-color;
             opacity: var(--bs-btn-disabled-opacity);
         }
     }
     &-secondary {
         background-color: theme.$seventh-color;
     }
-    &-close {
-        background-color: theme.$seventh-color;
-    }
+    /*&-close:hover {
+        outline: 1px solid theme.$sixth-color; /* I seriously don't know whether it's better that way or not
+    }*/
     border-radius: 8px;
     margin: {
         top: 24px;
