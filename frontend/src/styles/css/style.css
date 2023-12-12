@@ -305,6 +305,21 @@ form > div:first-of-type > .form-label {
   background-color: #2B3033;
 }
 
+#editpost-modal .textarea {
+  width: 100%;
+}
+#editpost-modal .btn {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+#editpost-modal .btn:last-of-type {
+  margin-left: 12px;
+}
+
+#editpost-modal-body-p {
+  color: #B5B5B5;
+}
+
 [id*=settings-tabs-tabpane] > form > div:first-of-type .form-label {
   margin-top: 16px;
 }
