@@ -32,18 +32,18 @@ export function EditPostDialog({ contentPost, postNum, setShowEditDialog }: { co
     return (
         <>
             <Modal id="editpost-modal" show={true} onHide={handleClose}>
-                <Modal.Header id="editpost-modal-header" closeButton>
+                <Modal.Header id="editpost-modal-header" data-bs-theme="dark" closeButton>
                     <Modal.Title id="editpost-modal-header-title">Edit Post</Modal.Title>
                 </Modal.Header>
                 <Modal.Body id="editpost-modal-body">
                     <p id="editpost-modal-body-p">If you modify your post, it will be permanently marked as edited!</p>
-                    <textarea id="editpost-modal-body-textarea" onChange={handleUpdateContent} value={content} className="textarea"></textarea>
+                    <textarea id="editpost-modal-body-textarea" placeholder="Empty post" onChange={handleUpdateContent} value={content} className="textarea"></textarea>
                 </Modal.Body>
                 <Modal.Footer>
                     {error && <Alert id="editpost-modal-footer-alert" variant="danger">{error}</Alert>}
                     <Button variant="secondary" id="editpost-modal-footer-button1" onClick={handleClose}>Cancel</Button>
                     <Button id="editpost-modal-footer-button0" disabled={content.length === 0} onClick={handleSubmit}>Submit</Button>
-                    {loading && <LoadingIndicator></LoadingIndicator>}
+                    {loading && <LoadingIndicator />}
                 </Modal.Footer>
             </Modal >
         </>

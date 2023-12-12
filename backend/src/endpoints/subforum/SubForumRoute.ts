@@ -22,7 +22,7 @@ subForumRouter.get("/:name", optionalAuthentication,
         }
     })
 
-subForumRouter.get("/:name/threads", optionalAuthentication,
+subForumRouter.post("/:name/threads", optionalAuthentication,
     param("name").isString(),
     async (req, res, next) => {
         const errors = validationResult(req);

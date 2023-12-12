@@ -2,6 +2,7 @@ import { Post } from "../endpoints/post/PostModel";
 import { Thread } from "../endpoints/thread/ThreadModel";
 import { ThreadPage } from "../endpoints/threadpage/ThreadPageModel";
 import { User } from "../endpoints/user/UserModel";
+import { SubForum } from '../endpoints/subforum/SubForumModel';
 
 export async function prefillAdmin() {
     const admin = await User.findOne({ email: "admin@husky.de" }).exec();
@@ -118,5 +119,54 @@ export async function prefillPineappleThread() {
 
     const page = await ThreadPage.findById(t!.pages[0]).exec();
 
-    console.log("Successfully created pineapple thread"); 
+    console.log("Successfully created pineapple thread");
+}
+
+export async function prefillSubforums() {
+    const sebastianUser = await User.findOne({ email: "sebastian@gmail.com" }).exec();
+    if (sebastianUser)
+        return;
+
+    const sebastian = await User.create({
+        name: "Sebastian",
+        email: "sebastian@gmail.com",
+        password: "abcABC123!"
+    });
+    const post1 = new Post({
+        content: "Ich mag Ananas auf Pizza! Ich weiß nicht, warum alle immer darüber läster, aber mir schmeckt es super.\nIch denke, es gibt einfach Leute, die andern Leuten nichts gönnen wollen :(",
+        author: sebastian.id!,
+        createdAt: new Date(),
+        creationDate: new Date()
+    });
+    const post2 = new Post({
+        content: "Ich auch :)\nWie schön mal jemanden gleichgesinntes zu treffen!",
+        author: sebastian.id!,
+        createdAt: new Date(),
+        creationDate: new Date()
+    });
+    const threadPage = await ThreadPage.create({
+        posts: Array.of(post1, post2)
+    });
+    const thread = await Thread.create({
+        title: "Ananas auf Pizza",
+        creator: sebastian.id,
+        creatorName: "Sebastian",
+        subForum: "Essen und Trinken",
+        pages: [threadPage.id]
+    });
+    const foodForum = await SubForum.create({
+        name: "Essen und Trinken",
+        description: "blub",
+        threads: [thread.id]
+    });
+    const cuisineForum = await SubForum.create({
+        name: "Cuisine",
+        description: "blub",
+        threads: [thread.id]
+    });
+    const scienceForum = await SubForum.create({
+        name: "Science",
+        description: "blub",
+        threads: [thread.id]
+    });
 }

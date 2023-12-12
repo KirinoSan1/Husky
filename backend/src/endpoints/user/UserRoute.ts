@@ -22,7 +22,7 @@ userRouter.get("/:id", requiresAuthentication,
         }
     })
 
-    userRouter.get("/:id/threads", requiresAuthentication,
+userRouter.post("/:id/threads", requiresAuthentication,
     param("id").isMongoId(),
     async (req, res, next) => {
         const errors = validationResult(req);

@@ -1,18 +1,7 @@
 @use "../../styles/scss/theme/theme";
 
-#editpost-modal {
-    .textarea {
-        width: 100%;
-    }
-    .btn {
-        &:last-of-type {
-            margin-left: 12px;
-        }
-        margin: {
-            top: 8px;
-            bottom: 8px;
-        }
-    }
+#editpost-modal .textarea {
+    width: 100%;
 }
 
 #editpost-modal-body-p {

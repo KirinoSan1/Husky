@@ -1,5 +1,5 @@
 import mongoose, { Connection } from "mongoose";
-import { prefillAdmin, prefillPineappleThread } from "./prefill";
+import { prefillAdmin, prefillPineappleThread, prefillSubforums } from "./prefill";
 
 const connectionString: string = "mongodb://127.0.0.1/Husky";
 
@@ -18,6 +18,7 @@ export function connect() {
         console.log("Successfully connected to MongoDB: " + connectionString);
         await prefillAdmin();
         await prefillPineappleThread();
+        await prefillSubforums();
     });
 }
 

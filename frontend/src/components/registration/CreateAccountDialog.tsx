@@ -36,7 +36,7 @@ export default function CreateAccountDialog() {
             <Button id="createaccount-button" onClick={handleShow}>Create Account</Button>
 
             <Modal id="createaccount-modal" show={showDialog} onHide={handleClose}>
-                <Modal.Header id="createaccount-modal-header" closeButton>
+                <Modal.Header id="createaccount-modal-header" data-bs-theme="dark" closeButton>
                     <Modal.Title id="createaccount-modal-header-title">Create Account</Modal.Title>
                 </Modal.Header>
                 <Modal.Body id="createaccount-modal-body">

@@ -5,15 +5,14 @@
     background-color: theme.$seventh-color;
     border: var(--bs-border-width) solid var(--bs-border-color);
     border-radius: 8px;
-    color: theme.$fifth-color;
+    color: theme.$fourth-color;
     padding: 6px 12px;
     &::placeholder {
         color: theme.$sixth-color;
     }
     &:focus {
-        background-color: theme.$sixth-color;
-        color: var(--bs-body-color);
-        border-color: #86b7fe;
+        border-color: theme.$first-color;
+        box-shadow: 0 1px 1px theme.$first-color inset, 0px 1px 6px theme.$first-color;
         outline: 0;
     }
 }
