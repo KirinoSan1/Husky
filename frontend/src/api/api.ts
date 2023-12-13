@@ -1,5 +1,9 @@
+import { useParams } from "react-router-dom";
 import { getJWT, getLoginInfo } from "../components/login/LoginContext";
 import { AuthorsResource, LoginResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
+import { useEffect } from "react";
+import { verify } from "crypto";
+
 import axios from "axios";
 
 const BASE_URL = "https://127.0.0.1";
@@ -32,7 +36,8 @@ export async function login(loginData: { email: string, password: string }): Pro
     }
 }
 
-export async function register(registrationData: { username: string, email: string, password1: string, password2: string }): Promise<LoginResource> {
+export async function register(registrationData: { username: string, email: string, password1: string, password2: string }): Promise<Boolean> {
+
     try {
         if (!registrationData.username)
             throw new Error("username not defined");
@@ -45,6 +50,7 @@ export async function register(registrationData: { username: string, email: stri
         if (registrationData.password1 !== registrationData.password2)
             throw new Error("passwords do not match");
 
+
         const response = await fetch(`${BASE_URL}/api/user/`, {
             method: "POST",
             headers: {
@@ -55,11 +61,16 @@ export async function register(registrationData: { username: string, email: stri
 
         if (!response || !response.ok)
             throw new Error("network response was not OK");
+        
+        if(response.status == 201){
+            return true
+        }
+        return false
 
-        const result: LoginResource = await response.json();
-        if (!result.access_token || !result.token_type)
-            throw new Error("invalid result from server");
-        return result;
+        // const result: LoginResource = await response.json();
+        // if (!result.access_token || !result.token_type)
+        //     throw new Error("invalid result from server");
+        // return result;
 
     } catch (error) {
         throw new Error("Error occurred during registration: " + error);
