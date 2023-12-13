@@ -315,6 +315,7 @@ form > div:first-of-type > .form-label {
 }
 .threadpage-post .btn {
   margin: 8px auto 0;
+  bottom: 0;
 }
 .threadpage-post .btn:first-of-type {
   margin-right: 12px;
@@ -332,6 +333,11 @@ form > div:first-of-type > .form-label {
 
 #editpost-modal-body-p {
   color: #B5B5B5;
+}
+
+#createpostdialog-textarea {
+  width: 88%;
+  margin-top: 16px;
 }
 
 [id*=settings-tabs-tabpane] > form > div:first-of-type .form-label {
@@ -368,7 +374,7 @@ form > div:first-of-type > .form-label {
   height: 2px;
   background-color: #2B3033;
   margin-top: 0;
-  margin-bottom: 24px;
+  margin-bottom: 0;
 }
 
 [id*=create-page-container] {
@@ -400,8 +406,22 @@ form > div:first-of-type > .form-label {
 #thread-div .button-bar .btn:last-of-type {
   margin-left: 12px;
 }
-#thread-div .button-bar:last-of-type .btn {
+#thread-div .threadsearch-horizontal-line {
+  width: 100%;
+  height: 2px;
+  background-color: #2B3033;
   margin-top: 0;
+  margin-bottom: 16px;
+  width: 90%;
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+#thread-div #createpostdialog-textarea {
+  margin-top: 24px;
+}
+#thread-div #thread-div-button3,
+#thread-div #thread-div-button4 {
+  margin-bottom: 0;
 }
 
 #threadsearch-div-button2,
@@ -417,6 +437,7 @@ form > div:first-of-type > .form-label {
   background-color: #393D40;
   border: 16px solid #393D40;
   border-radius: 16px;
+  margin-bottom: 16px;
 }
 .threadsearch-single-result > p {
   color: #B5B5B5;
@@ -464,6 +485,10 @@ main {
   flex-direction: column;
   padding-bottom: 24px;
   width: 100%;
+}
+
+#settings-page-container {
+  width: 50vw;
 }
 
 img::selection {

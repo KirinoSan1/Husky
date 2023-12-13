@@ -47,14 +47,21 @@ export default function CreatePostDialog() {
         return <></>;
 
     if (!showDialog)
-        return <Button id="createpostdialog-button0" onClick={handleOpen}>Add Post</Button>;
+        return (
+            <>
+                <div className="threadsearch-horizontal-line"></div>
+                <Button id="createpostdialog-button0" onClick={handleOpen}>Add Post</Button>
+            </>
+        )
 
     return (
         <>
             {error && <Alert id="createpostdialog-alert" variant="danger">{error}</Alert>}
-            <textarea id="createpostdialog-textarea" onChange={handleUpdate} value={content}></textarea>
-            <Button id="createpostdialog-button1" onClick={handleClose}>Cancel</Button>
-            <Button id="createpostdialog-button2" onClick={handleSubmit} disabled={content.length === 0 || loading}>Submit</Button>
+            <textarea id="createpostdialog-textarea" onChange={handleUpdate} value={content} className="textarea"></textarea>
+            <div className="button-bar">
+                <Button id="createpostdialog-button1" onClick={handleClose} variant="secondary">Cancel</Button>
+                <Button id="createpostdialog-button2" onClick={handleSubmit} disabled={content.length === 0 || loading}>Submit</Button>
+            </div>
             {loading && <LoadingIndicator></LoadingIndicator>}
         </>
     );
