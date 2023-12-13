@@ -12,6 +12,7 @@ export interface IUser {
     admin?: boolean
     mod?: boolean
     createdAt?: Date
+    avatar? : string
 }
 
 /**
@@ -33,6 +34,7 @@ const userSchema = new Schema<IUser, IUserMethods>({
     password: { type: String, required: true },
     mod: { type: Boolean, default: false },
     admin: { type: Boolean, default: false },
+    avatar: {type: String, default: "" },
     createdAt: { type: Date }
 
 }, { timestamps: true })

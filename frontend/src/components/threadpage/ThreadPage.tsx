@@ -17,6 +17,7 @@ export default function ThreadPage({ authors }: { authors: Map<string, AuthorRes
                         user={authors.get(post.author)!}
                         post={post}
                         postNum={(pageNum * 10) + postNum}
+                        avatar={authors.get(post.author)?.avatar!}
                     />
                 </div>
             )}

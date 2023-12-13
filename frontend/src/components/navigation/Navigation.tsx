@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavDropdown, Navbar } from "react-bootstrap";
 import CreateAccountDialog from "../registration/CreateAccountDialog";
 import LoginDialog from "../login/LoginDialog";
@@ -10,6 +10,7 @@ export default function Navigation() {
     const [loginInfo] = React.useContext(LoginContext);
     const [userInfo] = React.useContext(UserContext);
 
+
     return (
         <Navbar expand="lg">
             <Link to="/">Home</Link>
@@ -19,10 +20,16 @@ export default function Navigation() {
             <div id="account-section">{
                 loginInfo ?
                     <NavDropdown
-                        title={<>
-                            <p>{userInfo?.name}</p>
-                            <img id="profile-section-avatar" src="/images/logo.png" alt="Your profile avatar" />
-                        </>}
+                        title={
+                            userInfo ?
+                                <><p>{userInfo?.name}</p>
+                                    {userInfo?.avatar ? (
+                                        <img
+                                            key={userInfo.avatar}
+                                            id="profile-section-avatar" src={userInfo.avatar} alt="Profile Picture" />
+                                    ) : <img id="profile-section-avatar" src="/images/logo.png" alt="Profile Picture" />
+                                    }</> : (<img id="profile-section-avatar" src="/images/logo.png" alt="Profile Picture" />)
+                        }
                     >
                         <Link className="dropdown-item" to="/profile">Profile</Link>
                         <Link className="dropdown-item" to="/posts">Posts</Link>
@@ -30,7 +37,7 @@ export default function Navigation() {
                         <NavDropdown.Divider />
                         <LoginDialog />
                     </NavDropdown>
-                :
+                    :
                     <div id="logincontext-provider-buttons">
                         <LoginDialog />
                         <CreateAccountDialog />

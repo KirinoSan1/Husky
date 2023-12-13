@@ -28,7 +28,7 @@ export async function getThreadPageAuthors(id: string): Promise<AuthorsResource>
             throw new Error("Author not found");
         if (map.get(author.id))
             continue;
-        arr.push({ id: author.id, name: author.name, admin: author.admin ?? false, mod: author.mod ?? false, createdAt: author.createdAt! });
+        arr.push({ id: author.id, name: author.name, admin: author.admin ?? false, mod: author.mod ?? false, createdAt: author.createdAt!, avatar: author.avatar! });
         map.set(author.id, true);
     }
     return { authors: arr };

@@ -6,6 +6,7 @@ import { body, matchedData, param, validationResult } from "express-validator";
 import { verifyPasswordAndCreateJWT } from "../service/JWTService";
 
 export const userRouter = express.Router();
+
 userRouter.get("/:id", requiresAuthentication,
     param("id").isMongoId(),
     async (req, res, next) => {
@@ -69,27 +70,58 @@ userRouter.post("/",
 userRouter.put("/:id",
     requiresAuthentication,
     param("id").isMongoId(),
+    body("avatar").isString(),
     body('email').isEmail().normalizeEmail().isLength({ min: 1, max: 100 }),
     body('admin').isBoolean(),
     body('mod').isBoolean(),
     body('name').isString().isLength({ min: 1, max: 100 }),
     body('password').isStrongPassword().isLength({ min: 1, max: 100 }), async (req, res, next) => {
-
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
         // const userID = req.params!.id;
+
         const userResource = matchedData(req) as UserResource;
         try {
             const updatedUserResource = await updateUser(userResource)
-            res.send(updatedUserResource);
+            return res.send(updatedUserResource);
 
         } catch (err) {
+            console.log(err)
             res.status(400); // duplicate user
             next(err);
         }
     })
+
+
+    userRouter.put("/image/:id",
+    // upload.single("avatar"),
+    // requiresAuthentication,
+    // no validator because no existing validator for file
+    // body("avatar").exists(), 
+    // param('id').isMongoId(), 
+    // body('otherField').isString(), // Add validation for other fields
+    async (req, res, next) => {
+        const userResource: UserResource = {
+            id: req.params.id,
+            name: req.body.name,
+            email: req.body.email,
+            avatar: req.body.data.avatar
+        }
+        try {
+            const updatedUserResource = await updateUser(userResource)
+            return res.send(updatedUserResource);
+
+        } catch (err) {
+            console.log(err)
+            res.status(400); // duplicate user
+            next(err);
+        }
+    })
+
+
+
 
 userRouter.delete("/:id",
     requiresAuthentication,

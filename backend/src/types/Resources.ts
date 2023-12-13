@@ -2,6 +2,7 @@ import { Types } from "mongoose"
 import { IPost } from "../endpoints/post/PostModel"
 
 export type UserResource = {
+    avatar?: string
     id?: string
     name: string
     email: string
@@ -44,6 +45,7 @@ export type AuthorResource = {
     admin: boolean
     mod: boolean
     createdAt: Date
+    avatar: string
 }
 
 export type AuthorsResource = {
