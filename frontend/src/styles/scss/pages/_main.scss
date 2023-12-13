@@ -1,6 +1,8 @@
 @use "../theme/theme";
+@use "../abstracts/variables";
 @use "../../../components/post/Post.module";
 @use "../../../components/post/EditPostDialog.module";
+@use "../../../components/post/CreatePostDialog.module";
 @use "../../../components/settings/Settings.module";
 @use "../../../components/threadpage/ThreadPage.module";
 @use "../../../components/thread/CreateThreadPage.module";
@@ -37,6 +39,10 @@ main {
     flex-direction: column;
     padding-bottom: 24px;
     width: 100%;
+}
+
+#settings-page-container {
+    width: variables.$page-width;
 }
 
 img::selection {

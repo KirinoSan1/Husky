@@ -1,3 +1,6 @@
+@use "../../styles/scss/theme/theme";
+@use "../../styles/scss/abstracts/mixins";
+
 #thread-div {
     display: flex;
     flex-direction: column;
@@ -13,10 +16,20 @@
                 margin-left: 12px;
             }
         }
-        &:last-of-type {
-            .btn {
-                margin-top: 0;
-            }
+    }
+    .threadsearch-horizontal-line {
+        @include mixins.horizontal-line(theme.$seventh-color, 0);
+        width: 90%;
+        margin: {
+            top: 24px;
+            bottom: 0;
         }
+    }
+    #createpostdialog-textarea {
+        margin-top: 24px;
+    }
+    #thread-div-button3,
+    #thread-div-button4 {
+        margin-bottom: 0;
     }
 }
