@@ -117,7 +117,7 @@ test("users GET/threads, negative test 2", async () => {
 //POST tests
 test("user POST, positive test", async () => {
     const request = supertest(app);
-    const jane: UserResource = { name: "Jane", email: "jane@jana.de", password: "abHBJHBHB!!9324923!gikbfk???c" };
+    const jane: UserResource = { name: "Jane", email: "jane@jana.de", password: "abHBJHBHB!!9324923!gikbfk???c" , avatar: "somerandom.jpg"};
     const response = await request.post(`/api/user`).send(jane).set("Authorization", `Bearer ${token}`);
     const janeModel = await User.findOne({ email: "jane@jana.de" });
     expect(janeModel).toBeDefined();
@@ -147,14 +147,14 @@ test("user POST, negative test 400 2", async () => {
 //PUT tests
 test("user PUT, positive test", async () => {
     const request = supertest(app);
-    const update: UserResource = { id: john.id, name: "Jane", email: "jane@jana.de", admin: true, password: "hdsbfhHH!!68723472", mod: false }
+    const update: UserResource = { id: john.id, name: "Jane", email: "jane@jana.de", admin: true, password: "hdsbfhHH!!68723472", mod: false, avatar: "newAvatar.jpg" }
 
     const response = await request.put(`/api/user/${update.id}`).send(update).set("Authorization", `Bearer ${token}`);
 
     expect(response.statusCode).toBe(200);
 
     const updateRes = response.body as UserResource;
-    expect(updateRes).toEqual({ ...update, password: updateRes.password, mod: updateRes.mod });
+    expect(updateRes).toEqual({ ...update, password:  updateRes.password, mod: updateRes.mod});
 });
 
 test("user PUT, negative test for duplicate User", async () => {

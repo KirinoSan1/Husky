@@ -4,8 +4,9 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Alert, Button, Form, ListGroup } from "react-bootstrap";
 import { UserContext } from "./UserContext";
-import { updateUser } from "../../api/api";
+import { converttobase64, updateUser, updateUserProfilePicture } from "../../api/api";
 import LoadingIndicator from "../util/LoadingIndicator";
+import LogoAs64base from "../../types/LogoAsString";
 
 export default function Settings() {
     const [loginInfo] = React.useContext(LoginContext);
@@ -17,6 +18,28 @@ export default function Settings() {
     const [nameData, setNameData] = useState({ newName: "", oldPassword: "" });
     const [emailData, setEmailData] = useState({ newEmail: "", oldPassword: "" });
     const [passwordData, setPasswordData] = useState({ oldPassword: "", newPassword1: "", newPassword2: "" });
+    const [selectedFile, setSelectedFile] = useState({ myFile: LogoAs64base });
+
+    const handleFileChange = async (event: any) => {
+        const file = event.target.files?.[0];
+        const base64 = await converttobase64(file);
+        setSelectedFile({ myFile: base64 as string });
+    };
+
+    const handleSubmitPicture = async () => { 
+        setLoading(true)
+
+        const response = await updateUserProfilePicture(userInfo, selectedFile.myFile)
+        const obj = Object.assign({}, response);
+        setUserInfo(obj)
+        setLoading(false) }
+    const handleDeletePicture = async () => {
+        setLoading(true)
+        setSelectedFile({ myFile: LogoAs64base })
+        setUserInfo({ ...userInfo, avatar: await updateUserProfilePicture(userInfo, LogoAs64base) })
+        setLoading(false)
+    }
+
 
     useEffect(() => {
         function handleLogout() {
@@ -44,9 +67,12 @@ export default function Settings() {
     const handleUpdateName = (e: React.ChangeEvent<HTMLInputElement>) => { setNameData({ ...nameData, [e.target.name]: e.target.value }); };
     const handleUpdateEmail = (e: React.ChangeEvent<HTMLInputElement>) => { setEmailData({ ...emailData, [e.target.name]: e.target.value }); };
     const handleUpdatePassword = (e: React.ChangeEvent<HTMLInputElement>) => { setPasswordData({ ...passwordData, [e.target.name]: e.target.value }); };
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+
         try {
             if (pageKey === "ChangeUsername") {
                 setUserInfo(await updateUser(userInfo, nameData, "name"));
@@ -60,6 +86,10 @@ export default function Settings() {
                 setUserInfo(await updateUser(userInfo, passwordData, "password"));
                 handleSelect("Profile");
                 setSuccess("password");
+            } else if (pageKey === "ChangeProfile") {
+                setUserInfo(await updateUserProfilePicture(userInfo, selectedFile.myFile))
+                handleSelect("Profile Picture")
+                setSuccess("changed profile")
             }
         } catch (error) {
             setError(String(error));
@@ -69,6 +99,7 @@ export default function Settings() {
 
     if (!loginInfo)
         return <></>;
+
 
     return (
         <Tabs
@@ -87,7 +118,7 @@ export default function Settings() {
                         <ListGroup.Item id="settings-tabs-tab1-listgroup-item3">{`Admin: ${userInfo.admin}`}</ListGroup.Item>
                         <ListGroup.Item id="settings-tabs-tab1-listgroup-item4">{`Moderator: ${userInfo.mod}`}</ListGroup.Item>
                     </ListGroup>
-                : <></>}
+                    : <></>}
             </Tab>
             <Tab id="settings-tabs-tab2" eventKey="ChangeUsername" title="Change Username">
                 <Alert id="settings-tabs-tab2-alert" show={!!error} variant="danger">{`An error occurred, please try again.\n${error}`}</Alert>
@@ -189,6 +220,43 @@ export default function Settings() {
                 <Button id="settings-tabs-tab4-button" disabled={loading} onClick={handleSubmit}>Submit Changes</Button>
                 {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
             </Tab>
+            <Tab eventKey="ChangeProfile" title="Change Profile Picture">
+                <Alert id="settings-tabs-tab5-alert" show={!!error} variant="danger">{`An error occurred, please try again.\n${error}`}</Alert>
+                {selectedFile && (
+                    <div>
+                        <p>Selected Image:</p>
+                        <img
+                            src={ userInfo?.avatar || selectedFile.myFile}
+                            alt="Profile Picture"
+                            style={{ maxWidth: '100px', maxHeight: '100px' }}
+                            loading="lazy"
+                        />
+                    </div>
+                )}
+                <Form encType="multipart/form-data" onSubmit={handleSubmit}>
+                    <Form.Group id="settings-tabs-tab5-form-group1">
+                        <Form.Label id="settings-tabs-tab5-form-group1-label">New Profile Picture</Form.Label>
+                        <Form.Control
+                            type="file"
+                            name="newProfilePicture"
+                            onChange={handleFileChange}
+                            accept="image/*"
+                            id="settings-tabs-tab5-form-group1-control"
+                        />
+                    </Form.Group>
+                </Form>
+                <Button id="settings-tabs-tab5-button" disabled={loading} onClick={handleSubmitPicture} style={{ marginRight: '10px' }}>
+                    Submit Changes
+                </Button>
+                {/* Has to be a red button */}
+                <Button id="settings-tabs-tab5-button" disabled={loading} onClick={handleDeletePicture} className="btn-danger">
+                    Delete Picture
+                </Button>
+
+                {loading ? <LoadingIndicator /> : <></>}
+
+            </Tab>
+
         </Tabs>
     );
 }

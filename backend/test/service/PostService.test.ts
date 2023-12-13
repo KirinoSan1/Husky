@@ -21,7 +21,7 @@ beforeEach(async () => {
     await User.syncIndexes();
     const user = await User.create(userData);
     dataID = user.id;
-    postData = { content: "Random Content.Yes.", author: dataID, createdAt: new Date() };
+    postData = { content: "Random Content.Yes.", author: dataID, createdAt: new Date(), modified: "" };
     // const post = await Post.create(postData)
     const post = await createPost(postData);
     postID = post.id!;
@@ -53,6 +53,7 @@ test('updatePost test', async () => {
         upvotes: 5,
         downvotes: 3,
         createdAt: new Date(),
+        modified: ""
     };
     const updatedPost = await updatePost(updatedPostData);
     expect(updatedPost).toBeDefined();
@@ -87,6 +88,7 @@ test('updatePost test negativ', async () => {
         upvotes: 5,
         downvotes: 3,
         createdAt: new Date(),
+        modified: ""
     };
     await expect(updatePost(updatedPostData)).rejects.toThrow("Post id missing, cannot update");
 });
@@ -100,7 +102,8 @@ test('updatePost test negativ with wrong id ', async () => {
         author: new Types.ObjectId().toString(),
         upvotes: 5,
         downvotes: 3,
-        createdAt: new Date()
+        createdAt: new Date(),
+        modified: ""
     };
     await expect(updatePost(updatedPostData)).rejects.toThrow(`No Post with the given id found, cannot update.`);
 });
@@ -112,7 +115,7 @@ test('deletePost test negativ', async () => {
 
 test('upvotePost test positive', async () => {
     let umut = await createUser({ name: "Lucy", email: "lucy@gmail.com", password: "Ufoea2e8c9!!", admin: false })
-    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, upvotes: 20, createdAt: new Date() };
+    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, upvotes: 20, createdAt: new Date() , modified: ""};
     const post2 = await createPost(postData2);
     let threadPage = await ThreadPage.create({posts: [post2]})
     await upvotePost(threadPage.id!, 0)
@@ -122,7 +125,7 @@ test('upvotePost test positive', async () => {
 
 test('upvotePost test post not found', async () => {
     let umut = await createUser({ name: "Lucy", email: "lucy@gmail.com", password: "Ufoea2e8c9!!", admin: false })
-    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, upvotes: 20, createdAt: new Date() };
+    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, upvotes: 20, createdAt: new Date(), modified: "" };
     const post2 = await createPost(postData2);
     let threadPage = await ThreadPage.create({posts: [post2]})
     await expect(upvotePost(threadPage.id!, 1)).rejects.toThrow("Post not found.")
@@ -134,7 +137,7 @@ test('upvotePost test negative fake id', async () => {
 
 test('downvotePost test positive', async () => {
     let umut = await createUser({ name: "Lucy", email: "lucy@gmail.com", password: "Ufoea2e8c9!!", admin: false })
-    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, downvotes: 8, createdAt: new Date() };
+    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, downvotes: 8, createdAt: new Date(), modified: "" };
     const post2 = await createPost(postData2);
     let threadPage = await ThreadPage.create({posts: [post2]})
     await downvotePost(threadPage.id!, 0)
@@ -144,7 +147,7 @@ test('downvotePost test positive', async () => {
 
 test('downvotePost test positive', async () => {
     let umut = await createUser({ name: "Lucy", email: "lucy@gmail.com", password: "Ufoea2e8c9!!", admin: false })
-    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, downvotes: 8, createdAt: new Date() };
+    let postData2: PostResource = { content: "Random Content.Yes.", author: umut.id!, downvotes: 8, createdAt: new Date(), modified: "" };
     const post2 = await createPost(postData2);
     let threadPage = await ThreadPage.create({posts: [post2]})
     await expect(downvotePost(threadPage.id!, 1)).rejects.toThrow("Post not found.")

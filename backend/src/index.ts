@@ -18,14 +18,14 @@ app.use("*", cors({
         "https://localhost:3000"
     ]
 }));
-app.use(function(request, response, next) {
+app.use(function (request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     response.header("Access-Control-Expose-Headers", "Authorization");
     next();
 });
 
-app.use("*", express.json());
+app.use("*", express.json({ limit: "5mb" }));
 app.use(bodyParser.json());
 
 app.use("/api/login", loginRouter);

@@ -4,14 +4,14 @@ import { useContext, useState } from "react";
 import { LoginContext } from "../login/LoginContext";
 import { EditPostDialog } from "./EditPostDialog";
 
-export default function Post({ user, post, postNum }: { user: AuthorResource, post: PostResource, postNum: number }) {
+export default function Post({ user, post, postNum, avatar }: { user: AuthorResource, post: PostResource, postNum: number, avatar: string }) {
     const [loginInfo] = useContext(LoginContext);
     const [showEditDialog, setShowEditDialog] = useState(false);
 
     return (
         <>
             <div id={`post${postNum}-div1`}>
-                <img id={`post${postNum}-div1-img`} src="/images/logo.png" alt={"Profile Pic"} width="100" height="100"></img>
+                <img id={`post${postNum}-div1-img`} src={avatar || "/images/logo.png"} alt={"Profile Pic"} width="100" height="100"></img>
                 <p id={`post${postNum}-div1-p1`}>{user.name}</p>
                 {user.mod && !user.admin && <p id={`post${postNum}-div1-p3`}>Moderator</p>}
                 {user.admin && <p id={`post${postNum}-div1-p4`}>Admin</p>}

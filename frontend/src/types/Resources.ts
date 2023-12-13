@@ -10,6 +10,8 @@ export type UserResource = {
     admin: boolean
     mod: boolean
     createdAt: Date
+    avatar: string
+    file: File
 }
 
 export type AuthorResource = {
@@ -18,6 +20,7 @@ export type AuthorResource = {
     admin: boolean
     mod: boolean
     createdAt: Date
+    avatar: string
 }
 
 export type AuthorsResource = {

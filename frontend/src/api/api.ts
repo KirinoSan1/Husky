@@ -1,5 +1,6 @@
 import { getJWT, getLoginInfo } from "../components/login/LoginContext";
 import { AuthorsResource, LoginResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
+import axios from "axios";
 
 const BASE_URL = "https://127.0.0.1";
 
@@ -341,6 +342,31 @@ export async function createThread(creator: string, title: string, subForum: str
     }
 }
 
+
+export const updateUserProfilePicture = async (user: UserResource, myFile: string) => {
+    const jwt = getJWT();
+    if (!jwt) {
+        throw new Error("No JWT found");
+    }
+    try {
+        const instance = axios.create({
+            baseURL: `${BASE_URL}/api/user/image/${user.id}`,
+            timeout: 1000,
+        });
+
+        const response = await instance.put(``, {
+            headers: {
+            },
+            data: { avatar: myFile }
+        });
+        return response
+    } catch (error) {
+        throw error;
+    }
+
+
+};
+
 export async function editPost(author: string, content: string, postNum: number, threadPageID: string): Promise<ThreadPageResource> {
     try {
         if (!author)
@@ -453,4 +479,17 @@ export async function getSubforumsThreads(subforumName: string, count: number): 
     } catch (error) {
         throw new Error("Error occurred during request: " + error);
     }
+}
+
+
+
+export async function converttobase64(file: any) {
+    return new Promise((resolve, reject) => {
+        const filereader = new FileReader()
+        filereader.readAsDataURL(file)
+        filereader.onload = () => {
+            resolve(filereader.result)
+        }
+        filereader.onerror = (err) => { reject(err) }
+    })
 }

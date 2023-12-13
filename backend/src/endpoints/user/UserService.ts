@@ -13,7 +13,7 @@ export async function getUser(id: string): Promise<UserResource> {
     if (!users) {
         throw new Error(" User not found")
     }
-    const userResource = { id: users.id, name: users.name, email: users.email, admin: users.admin, mod: users.mod }
+    const userResource: UserResource = { id: users.id, name: users.name, email: users.email, admin: users.admin, mod: users.mod, avatar: users.avatar }
     return userResource;
 }
 
@@ -42,7 +42,7 @@ export async function createUser(userResource: UserResource): Promise<UserResour
         admin: false,
         mod: false
     });
-    return { id: user.id, name: user.name, email: user.email, admin: user.admin, mod: user.mod }
+    return { id: user.id, name: user.name, email: user.email, admin: user.admin, mod: user.mod, avatar: user.avatar }
 }
 
 /**
@@ -63,9 +63,10 @@ export async function updateUser(userResource: UserResource): Promise<UserResour
     if (typeof userResource.admin === 'boolean') user.admin = userResource.admin;
     if (userResource.password) user.password = userResource.password;
     if (userResource.mod) user.mod = userResource.mod;
+    if (userResource.avatar) user.avatar = userResource.avatar;
 
     const savedUser = await user.save();
-    return { id: savedUser.id, name: savedUser.name, email: savedUser.email, admin: savedUser.admin, mod: savedUser.mod }
+    return { id: savedUser.id, name: savedUser.name, email: savedUser.email, admin: savedUser.admin, mod: savedUser.mod, avatar: savedUser.avatar }
 }
 
 /**

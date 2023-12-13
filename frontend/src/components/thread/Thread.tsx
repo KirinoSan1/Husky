@@ -7,6 +7,7 @@ import { AuthorResource, ThreadPageResource, ThreadResource } from "../../types/
 import { Location, NavigateFunction, useLocation, useNavigate, useParams } from "react-router-dom";
 import CreatePostDialog from "../post/CreatePostDialog";
 import React from "react";
+import { UserContext } from "../settings/UserContext";
 
 export const ThreadContext = React.createContext([] as any);
 export const ThreadPageContext = React.createContext([] as any);
@@ -19,7 +20,7 @@ export default function Thread() {
     const [threadPage, setThreadPage] = useState<ThreadPageResource | null>(null);
     const [authors, setAuthors] = useState<Map<string, AuthorResource> | null>(null);
     const [error, setError] = useState("");
-
+    const [userInfo] = React.useContext(UserContext);
     const navigate: NavigateFunction = useNavigate();
     const route: Location = useLocation();
 
@@ -40,6 +41,7 @@ export default function Thread() {
         }
         loadThread();
     }, []);
+    
     useEffect(() => {
         async function loadThreadPage() {
             setThreadPage(null);
@@ -53,6 +55,7 @@ export default function Thread() {
         }
         loadThreadPage();
     }, [pageNum, thread]);
+
     useEffect(() => {
         async function loadAuthors() {
             setAuthors(null);
