@@ -12,6 +12,8 @@ import Thread from "./components/thread/Thread";
 import ThreadSearch from "./components/thread/ThreadSearch";
 import FrontPage from "./components/frontpage/FrontPage";
 import { CreateThreadPage } from "./components/thread/CreateThreadPage";
+import Confirmation from "./components/registration/confirmation";
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
@@ -25,7 +27,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                     { path: "threads/:id", element: <Navigate to="1" /> },
                     { path: "threads/:id/:page", element: <Thread /> },
                     { path: "threads/create", element: <CreateThreadPage /> },
-                    { path: "settings", element: <Settings /> }
+                    { path: "settings", element: <Settings /> },
+                    { path: "api/user/:id/verify/:token", element: <Confirmation /> }
                 ],
                 errorElement: <App /> /* TODO: create a nice looking error page */
             }])}

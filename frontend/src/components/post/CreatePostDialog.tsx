@@ -24,14 +24,10 @@ export default function CreatePostDialog() {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            const newThreadPage = await createPost(content, userInfo.id, thread.id, threadPage.id);
-            if (newThreadPage.id === threadPage.id) { // old threadpage
-                setThreadPage(newThreadPage);
-            } else { // new threadpage
-                const newThread = await getThread(thread.id);
-                setThread(newThread);
-                setPageNum(newThread.pages.length - 1);
-            }
+            await createPost(content, userInfo.id, thread.id, threadPage.id);
+            const newThread = await getThread(thread.id);
+            setThread(newThread);
+            setPageNum(newThread.pages.length - 1);
         } catch (error) {
             setError(String(error));
         }

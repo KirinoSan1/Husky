@@ -1,8 +1,9 @@
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import { LoginContext, getLoginInfo, setJWT } from "../login/LoginContext";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoadingIndicator from "../util/LoadingIndicator";
 import { register } from "../../api/api";
+import { useParams } from "react-router-dom";
 
 export default function CreateAccountDialog() {
     const [loginInfo, setLoginInfo] = React.useContext(LoginContext);
@@ -19,8 +20,10 @@ export default function CreateAccountDialog() {
         setLoading(true);
         try {
             const response = await register(registrationData);
-            setJWT(response.access_token);
-            setLoginInfo(getLoginInfo());
+            if(!response){
+                throw new Error("Registration failed")
+            }
+            alert("Registration success")
             handleClose();
         } catch (error) {
             setError(String(error));

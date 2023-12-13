@@ -10,6 +10,7 @@ export type UserResource = {
     admin?: boolean
     mod?: boolean
     createdAt?: Date
+    verified?: Boolean
 }
 
 export type ThreadResource = {

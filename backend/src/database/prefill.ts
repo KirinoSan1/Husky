@@ -12,7 +12,8 @@ export async function prefillAdmin() {
         email: "admin@husky.de",
         name: "Husky Admin",
         password: "abcABC123!",
-        admin: true
+        admin: true,
+        verified: true
     });
     console.log("Successfully created default admin");
 }
@@ -25,17 +26,20 @@ export async function prefillPineappleThread() {
     const alice = await User.create({
         name: "Alice",
         email: "alice@gmail.com",
-        password: "abcABC123!"
+        password: "abcABC123!",
+        verified: true
     });
     const bob = await User.create({
         name: "Bob",
         email: "bob@gmail.com",
-        password: "abcABC123!"
+        password: "abcABC123!",
+        verified: true
     });
     const carlos = await User.create({
         name: "Carlos",
         email: "carlos@gmail.com",
-        password: "abcABC123!"
+        password: "abcABC123!",
+        verified: true
     });
 
     const post1 = new Post({
