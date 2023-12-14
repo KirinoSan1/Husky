@@ -7,19 +7,12 @@
     flex-direction: column;
 }
 
-.threadpage-number {
-    margin-bottom: 0;
-    padding-right: 8px;
-    text-align: right;
-    width: 100%;
-}
-
 .threadpage-horizontal-line {
     width: 100%;
     height: 2px;
     background-color: theme.$seventh-color;
     margin: {
-        top: 0;
-        bottom: 0;
+        top: 12px;
+        bottom: 12px;
     }
 }

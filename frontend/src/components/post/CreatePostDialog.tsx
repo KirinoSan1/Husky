@@ -8,7 +8,7 @@ import { PageNumContext, ThreadContext, ThreadPageContext } from "../thread/Thre
 
 export default function CreatePostDialog() {
     const [thread, setThread] = useContext(ThreadContext);
-    const [threadPage, setThreadPage] = useContext(ThreadPageContext);
+    const [threadPage] = useContext(ThreadPageContext);
     const [, setPageNum] = useContext(PageNumContext);
 
     const [loginInfo] = useContext(LoginContext);
@@ -35,30 +35,30 @@ export default function CreatePostDialog() {
     };
 
     useEffect(() => {
-        if (!loginInfo)
+        if (!loginInfo) {
             handleClose();
+        } else {
+            handleOpen();
+        }
     }, [loginInfo]);
 
-    if (!loginInfo)
+    if (!showDialog) {
         return <></>;
-
-    if (!showDialog)
-        return (
-            <>
-                <div className="threadsearch-horizontal-line"></div>
-                <Button id="createpostdialog-button0" onClick={handleOpen}>Add Post</Button>
-            </>
-        )
+    }
 
     return (
         <>
             {error && <Alert id="createpostdialog-alert" variant="danger">{error}</Alert>}
-            <textarea id="createpostdialog-textarea" onChange={handleUpdate} value={content} className="textarea"></textarea>
-            <div className="button-bar">
-                <Button id="createpostdialog-button1" onClick={handleClose} variant="secondary">Cancel</Button>
-                <Button id="createpostdialog-button2" onClick={handleSubmit} disabled={content.length === 0 || loading}>Submit</Button>
+            <div className="threadpage-horizontal-line" />
+            <div id="create-post-container">
+                <h4>Add new post</h4>
+                <textarea id="createpostdialog-textarea" placeholder="Write something awesome!" onChange={handleUpdate} value={content} className="textarea" />
+                <div className="button-bar">
+                    <Button id="createpostdialog-button2" onClick={handleSubmit} disabled={content.length === 0 || loading}>Submit</Button>
+                </div>
             </div>
-            {loading && <LoadingIndicator></LoadingIndicator>}
+            <div className="threadpage-horizontal-line" />
+            {loading && <LoadingIndicator />}
         </>
     );
 }
