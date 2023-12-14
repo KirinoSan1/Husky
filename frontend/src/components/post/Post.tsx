@@ -8,6 +8,9 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
     const [loginInfo] = useContext(LoginContext);
     const [showEditDialog, setShowEditDialog] = useState(false);
 
+    const gotModified = post.modified && post.modified === "m";
+    const gotDeleted = post.modified && post.modified === "d";
+
     return (
         <>
             <div id={`post${postNum}-div1`}>
@@ -20,9 +23,10 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
             <div className="post-vertical-line"></div>
             <div id={`post${postNum}-div2`}>
                 <div id={`post${postNum}-div2-div`}>
-                    <p id={`post${postNum}-div2-div-p2`}>{`Written on ${post.createdAt.toLocaleDateString()} at ${post.createdAt.getHours()}:${post.createdAt.getMinutes()}`}</p>
-                    {post.modified && post.modified === "m" && <p id={`post${postNum}-div2-div-p0`}>(modified)</p>}
-                    {post.modified && post.modified === "d" && <p id={`post${postNum}-div2-div-p1`}>(deleted)</p>}
+                    <p id={`post${postNum}-div2-div-p2`}>
+                        {`Written on ${post.createdAt.toLocaleDateString()} at ${post.createdAt.getHours()}:${post.createdAt.getMinutes()}`}
+                        {gotModified ? " - (modified)" : (gotDeleted && " - (deleted)")}
+                    </p>
                     <p id={`post${postNum}-div2-div-p3`}>{`#${postNum + 1}`}</p>
                 </div>
                 <p id={`post${postNum}-div2-p3`}>{post.content}</p>

@@ -1,4 +1,30 @@
+@use "../../styles/scss/theme/theme";
+
+#create-post-container {
+
+    margin: 8px;
+    border-radius: 16px;
+    background-color: theme.$eighth-color;
+
+    h4 {
+        margin: 12px 0px 6px 14px;
+        font-size: 22px;
+    }
+
+    .button-bar { /* TODO: translate module stylings into our scss area - that would fix the enormous usage of !important */
+        width: 100% !important;
+        display: flex;
+        justify-content: flex-end !important;
+        padding: 0px 12px 12px 12px !important;
+        margin: 0px !important;
+
+        button {
+            margin: 0px !important;
+        }
+    }
+}
+
 #createpostdialog-textarea {
-    width: 88%;
-    margin-top: 16px;
+    width: calc(100% - 24px);
+    margin: 12px !important;
 }

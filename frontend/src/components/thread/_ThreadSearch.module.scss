@@ -9,6 +9,7 @@
 
 #threads-page-container {
     width: variables.$page-width;
+    min-width: 400px;
 }
 
 .threadsearch-single-result {

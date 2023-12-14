@@ -10,12 +10,11 @@ $scroll-bar-color-active: theme.$sixth-color;
     width: $scroll-bar-size;
     height: $scroll-bar-size;
 
-    &-track {
+    &-track { /* Railway of the dragbar */
         background-color: theme.$third-color;
-        border-radius: $scroll-bar-size;
     }
 
-    &-thumb {
+    &-thumb { /* Dragbar */
         background-color: $scroll-bar-color;
         border-radius: $scroll-bar-size;
 
@@ -30,6 +29,7 @@ $scroll-bar-color-active: theme.$sixth-color;
 
     &-button {
         background-color: $scroll-bar-color;
+        height: 0px;
 
         &:single-button {
             background-color: theme.$third-color;

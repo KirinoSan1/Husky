@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ThreadPage from "../threadpage/ThreadPage";
 import { Alert, Button } from "react-bootstrap";
 import LoadingIndicator from "../util/LoadingIndicator";
 import { getAuthors, getThread, getThreadPage } from "../../api/api";
 import { AuthorResource, ThreadPageResource, ThreadResource } from "../../types/Resources";
 import { Location, NavigateFunction, useLocation, useNavigate, useParams } from "react-router-dom";
-import CreatePostDialog from "../post/CreatePostDialog";
-import React from "react";
-import { UserContext } from "../settings/UserContext";
+import Icon from "../util/Icon";
 
 export const ThreadContext = React.createContext([] as any);
 export const ThreadPageContext = React.createContext([] as any);
@@ -20,7 +18,6 @@ export default function Thread() {
     const [threadPage, setThreadPage] = useState<ThreadPageResource | null>(null);
     const [authors, setAuthors] = useState<Map<string, AuthorResource> | null>(null);
     const [error, setError] = useState("");
-    const [userInfo] = React.useContext(UserContext);
     const navigate: NavigateFunction = useNavigate();
     const route: Location = useLocation();
 
@@ -89,15 +86,24 @@ export default function Thread() {
                     <div id="thread-div">
                         <h3 id={`thread-div-p1`}>{`Thema: ${thread.title}`}</h3>
                         <div className="button-bar">
-                            {pageNum > 0 && <Button id="thread-div-button1" onClick={handlePrevious}>Previous</Button>}
-                            {pageNum < thread.pages.length - 1 && <Button id="thread-div-button2" onClick={handleNext}>Next</Button>}
+                            <Button id="thread-div-button1" className={"previous" + (pageNum < 1 ? " hidden" : "")} onClick={handlePrevious}>
+                                <Icon width={20} height={20} data="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                            </Button>
+                            <p id={`threadpage${pageNum}-div-p`} className="threadpage-number">{`Page: ${pageNum + 1}`}</p>
+                            <Button id="thread-div-button2" className={"next" + (pageNum > thread.pages.length - 2 ? " hidden" : "")} onClick={handleNext}>
+                                <Icon width={20} height={20} data="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                            </Button>
                         </div>
-                        <ThreadPage authors={authors}></ThreadPage>
+                        <ThreadPage authors={authors} pageCount={thread.pages.length} />
                         <div className="button-bar">
-                            {pageNum > 0 && <Button id="thread-div-button3" onClick={handlePrevious}>Previous</Button>}
-                            {pageNum < thread.pages.length - 1 && <Button id="thread-div-button4" onClick={handleNext}>Next</Button>}
+                            <Button id="thread-div-button3" className={"previous" + (pageNum < 1 ? " hidden" : "")} onClick={handlePrevious}>
+                                <Icon width={20} height={20} data="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                            </Button>
+                            <p id={`threadpage${pageNum}-div-p`} className="threadpage-number">{`Page: ${pageNum + 1}`}</p>
+                            <Button id="thread-div-button4" className={"next" + (pageNum > thread.pages.length - 2 ? " hidden" : "")} onClick={handleNext}>
+                                <Icon width={20} height={20} data="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                            </Button>
                         </div>
-                        {pageNum === thread.pages.length - 1 && <CreatePostDialog></CreatePostDialog>}
                     </div>
                 </PageNumContext.Provider>
             </ThreadPageContext.Provider>
