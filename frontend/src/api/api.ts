@@ -1,9 +1,5 @@
-import { useParams } from "react-router-dom";
 import { getJWT, getLoginInfo } from "../components/login/LoginContext";
 import { AuthorsResource, LoginResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
-import { useEffect } from "react";
-import { verify } from "crypto";
-
 import axios from "axios";
 
 const BASE_URL = "https://127.0.0.1";
@@ -37,7 +33,6 @@ export async function login(loginData: { email: string, password: string }): Pro
 }
 
 export async function register(registrationData: { username: string, email: string, password1: string, password2: string }): Promise<Boolean> {
-
     try {
         if (!registrationData.username)
             throw new Error("username not defined");
@@ -50,7 +45,6 @@ export async function register(registrationData: { username: string, email: stri
         if (registrationData.password1 !== registrationData.password2)
             throw new Error("passwords do not match");
 
-
         const response = await fetch(`${BASE_URL}/api/user/`, {
             method: "POST",
             headers: {
@@ -61,16 +55,11 @@ export async function register(registrationData: { username: string, email: stri
 
         if (!response || !response.ok)
             throw new Error("network response was not OK");
-        
-        if(response.status == 201){
+
+        if (response.status === 201) {
             return true
         }
-        return false
-
-        // const result: LoginResource = await response.json();
-        // if (!result.access_token || !result.token_type)
-        //     throw new Error("invalid result from server");
-        // return result;
+        return false;
 
     } catch (error) {
         throw new Error("Error occurred during registration: " + error);
@@ -378,7 +367,7 @@ export const updateUserProfilePicture = async (user: UserResource, myFile: strin
 
 };
 
-export async function editPost(author: string, content: string, postNum: number, threadPageID: string): Promise<ThreadPageResource> {
+export async function editPost(author: string, content: string, postNum: number, threadPageID: string, modified: "m" | "d" | ""): Promise<ThreadPageResource> {
     try {
         if (!author)
             throw new Error("author not defined");
@@ -388,6 +377,8 @@ export async function editPost(author: string, content: string, postNum: number,
             throw new Error("postNum not defined");
         if (!threadPageID)
             throw new Error("threadPageID not defined");
+        if (!modified)
+            throw new Error("modified not defined");
 
         const jwt = getJWT();
         if (!jwt)
@@ -402,7 +393,8 @@ export async function editPost(author: string, content: string, postNum: number,
             body: JSON.stringify({
                 postNum: postNum,
                 content: content,
-                author: author
+                author: author,
+                modified: modified
             })
         });
 
@@ -446,7 +438,7 @@ export async function getUsersThreads(userID: string, count: number): Promise<Th
             throw new Error("network response was not OK");
         }
 
-        const result: ThreadResource[] = await response.json();
+        const result: (ThreadResource & { creatorName: string })[] = await response.json();
 
         if (result === undefined) {
             throw new Error("invalid result from server");

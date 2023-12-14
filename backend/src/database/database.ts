@@ -16,9 +16,9 @@ export function connect() {
     connection.on("error", console.error.bind(console, "MongoDB connection error: "));
     connection.once("open", async function() {
         console.log("Successfully connected to MongoDB: " + connectionString);
-        await prefillPineappleThread();
         await prefillAdmin();
         await prefillSubforums();
+        await prefillPineappleThread();
     });
 }
 

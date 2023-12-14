@@ -48,7 +48,7 @@ export default function ThreadSearch() {
                     <Link id={`threadsearch-div-div${count}-link`} key={`threadsearch-div-div${count}-link`} to={`/threads/${thread.id}`}>{thread.title}</Link>
                     <p id={`threadsearch-div-div${count}-p0`} key={`threadsearch-div-div${count}-p0`}>{`Posts: ${thread.numPosts}`}</p>
                     <p id={`threadsearch-div-div${count}-p1`} key={`threadsearch-div-div${count}-p1`}>{`Subforum: ${thread.subForum}`}</p>
-                    <p id={`threadsearch-div-div${count}-p2`} key={`threadsearch-div-div${count}-p2`}>{`Created At: ${thread.createdAt.toLocaleDateString()}`}</p>
+                    <p id={`threadsearch-div-div${count}-p2`} key={`threadsearch-div-div${count++}-p2`}>{`Created At: ${thread.createdAt.toLocaleDateString()}`}</p>
                 </div>
             ))}
         </div>

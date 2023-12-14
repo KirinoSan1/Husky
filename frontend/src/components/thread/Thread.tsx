@@ -84,7 +84,7 @@ export default function Thread() {
             <ThreadPageContext.Provider value={[threadPage, setThreadPage]}>
                 <PageNumContext.Provider value={[pageNum, setPageNum]}>
                     <div id="thread-div">
-                        <h3 id={`thread-div-p1`}>{`Thema: ${thread.title}`}</h3>
+                        <h3 id={`thread-div-p1`}>{`${thread.title}`}</h3>
                         <div className="button-bar">
                             <Button id="thread-div-button1" className={"previous" + (pageNum < 1 ? " hidden" : "")} onClick={handlePrevious}>
                                 <Icon width={20} height={20} data="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />

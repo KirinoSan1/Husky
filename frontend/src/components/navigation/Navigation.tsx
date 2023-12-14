@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { NavDropdown, Navbar } from "react-bootstrap";
 import CreateAccountDialog from "../registration/CreateAccountDialog";
 import LoginDialog from "../login/LoginDialog";
@@ -9,7 +9,6 @@ import { UserContext } from "../settings/UserContext";
 export default function Navigation() {
     const [loginInfo] = React.useContext(LoginContext);
     const [userInfo] = React.useContext(UserContext);
-
 
     return (
         <Navbar expand="lg">
@@ -22,13 +21,17 @@ export default function Navigation() {
                     <NavDropdown
                         title={
                             userInfo ?
-                                <><p>{userInfo?.name}</p>
+                                <>
+                                    <p>{userInfo?.name}</p>
                                     {userInfo?.avatar ? (
                                         <img
                                             key={userInfo.avatar}
-                                            id="profile-section-avatar" src={userInfo.avatar} alt="Profile Picture" />
-                                    ) : <img id="profile-section-avatar" src="/images/logo.png" alt="Profile Picture" />
-                                    }</> : (<img id="profile-section-avatar" src="/images/logo.png" alt="Profile Picture" />)
+                                            id="profile-section-avatar" src={userInfo.avatar} alt="Avatar" />
+                                    )
+                                        : <img id="profile-section-avatar" src="/images/logo.png" alt="Avatar" />
+                                    }
+                                </>
+                                : (<img id="profile-section-avatar" src="/images/logo.png" alt="Avatar" />)
                         }
                     >
                         <Link className="dropdown-item" to="/profile">Profile</Link>

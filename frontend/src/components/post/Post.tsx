@@ -3,13 +3,19 @@ import { PostResource, AuthorResource } from "../../types/Resources";
 import { useContext, useState } from "react";
 import { LoginContext } from "../login/LoginContext";
 import { EditPostDialog } from "./EditPostDialog";
+import { DeletePostDialog } from "./DeletePostDialog";
 
 export default function Post({ user, post, postNum, avatar }: { user: AuthorResource, post: PostResource, postNum: number, avatar: string }) {
     const [loginInfo] = useContext(LoginContext);
     const [showEditDialog, setShowEditDialog] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     const gotModified = post.modified && post.modified === "m";
     const gotDeleted = post.modified && post.modified === "d";
+
+    const to2DigitFormat = (n: number): string => {
+        return ("0" + n).slice(-2);
+    };
 
     return (
         <>
@@ -24,7 +30,7 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
             <div id={`post${postNum}-div2`}>
                 <div id={`post${postNum}-div2-div`}>
                     <p id={`post${postNum}-div2-div-p2`}>
-                        {`Written on ${post.createdAt.toLocaleDateString()} at ${post.createdAt.getHours()}:${post.createdAt.getMinutes()}`}
+                        {`Written on ${post.createdAt.toLocaleDateString()} at ${to2DigitFormat(post.createdAt.getHours())}:${to2DigitFormat(post.createdAt.getMinutes())}`}
                         {gotModified ? " - (modified)" : (gotDeleted && " - (deleted)")}
                     </p>
                     <p id={`post${postNum}-div2-div-p3`}>{`#${postNum + 1}`}</p>
@@ -34,7 +40,8 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
                     <>
                         <Button id={`post${postNum}-div2-div-button1`} onClick={() => { setShowEditDialog(true); }}>Edit</Button>
                         {showEditDialog && <EditPostDialog contentPost={post.content} postNum={postNum} setShowEditDialog={setShowEditDialog}></EditPostDialog>}
-                        <Button id={`post${postNum}-div2-div-button2`}>Delete</Button>
+                        <Button id={`post${postNum}-div2-div-button2`} onClick={() => { setShowDeleteDialog(true); }}>Delete</Button>
+                        {showDeleteDialog && <DeletePostDialog postNum={postNum} setShowDeleteDialog={setShowDeleteDialog}></DeletePostDialog>}
                     </>
                 }
             </div>

@@ -1,14 +1,15 @@
 import { Types } from "mongoose";
-import { SubForumResource } from "../../types/Resources";
+import { SubForumResource, ThreadResource } from "../../types/Resources";
 import { SubForum } from "./SubForumModel";
-import { IThread, Thread } from "../thread/ThreadModel";
+import { Thread } from "../thread/ThreadModel";
+import { User } from "../user/UserModel";
 
 export async function getSubForum(name: string): Promise<SubForumResource> {
     const subForum = await SubForum.find({ name: name }).exec()
     return subForum[0].toObject() // 0, because it can only exist one Subforum with that name.
 }
 
-export async function getAllThreadsForSubForum(subForumName: string, count?: number): Promise<IThread[]> {
+export async function getAllThreadsForSubForum(subForumName: string, count?: number): Promise<(ThreadResource & {creatorName: string})[]> {
     const subforum = await SubForum.findOne({ name: subForumName }).exec();
     if (!subforum) {
         throw new Error(`Subforum with name ${subForumName} not found.`);
@@ -20,7 +21,20 @@ export async function getAllThreadsForSubForum(subForumName: string, count?: num
     if (count && count > 0) {
         threadObjects.splice(count);
     }
-    return threadObjects;
+    const threadArr: (ThreadResource & { creatorName: string })[] = [];
+    for (const thread of threadObjects) {
+        const userName = (await User.findById(thread.creator).exec())?.name;
+        threadArr.push({
+            id: thread.id,
+            title: thread.title,
+            creator: thread.creator.toString(),
+            subForum: thread.subForum,
+            numPosts: thread.numPosts,
+            pages: thread.pages,
+            creatorName: userName!
+        });
+    }
+    return threadArr;
 }
 
 export async function createSubForum(subForumResource: SubForumResource): Promise<SubForumResource> {
