@@ -1,12 +1,11 @@
 import { Alert, Button, Form, Modal } from "react-bootstrap";
-import { LoginContext, getLoginInfo, setJWT } from "../login/LoginContext";
-import React, { useEffect, useState } from "react";
+import { LoginContext } from "../login/LoginContext";
+import React, {useState } from "react";
 import LoadingIndicator from "../util/LoadingIndicator";
 import { register } from "../../api/api";
-import { useParams } from "react-router-dom";
 
 export default function CreateAccountDialog() {
-    const [loginInfo, setLoginInfo] = React.useContext(LoginContext);
+    const [loginInfo] = React.useContext(LoginContext);
     const [showDialog, setShowDialog] = useState(false);
     const [registrationData, setRegistrationData] = useState({ username: "", email: "", password1: "", password2: "" });
     const [loading, setLoading] = useState(false);

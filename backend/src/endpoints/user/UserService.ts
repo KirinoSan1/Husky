@@ -2,8 +2,8 @@ import { Types } from "mongoose"
 import { User } from "./UserModel";
 import { Post } from "../post/PostModel";
 import { ThreadPage } from "../threadpage/ThreadPageModel";
-import { UserResource } from "../../types//Resources";
-import { IThread, Thread } from "../thread/ThreadModel";
+import { ThreadResource, UserResource } from "../../types//Resources";
+import { Thread } from "../thread/ThreadModel";
 
 /**
  * The password may not be returned.
@@ -17,7 +17,7 @@ export async function getUser(id: string): Promise<UserResource> {
     return userResource;
 }
 
-export async function getAllThreadsForUser(userId: string, count?: number): Promise<IThread[]> {
+export async function getAllThreadsForUser(userId: string, count?: number): Promise<(ThreadResource & { creatorName: string })[]> {
     const user = await User.findById(userId).exec();
     if (!user) {
         throw new Error(`User with ID ${userId} not found.`);
@@ -27,7 +27,20 @@ export async function getAllThreadsForUser(userId: string, count?: number): Prom
         threadsQuery = threadsQuery.limit(count);
     }
     const threads = await threadsQuery.exec();
-    return threads;
+    const threadArr: (ThreadResource & { creatorName: string })[] = [];
+    for (const thread of threads) {
+        const userName = (await User.findById(thread.creator).exec())?.name;
+        threadArr.push({
+            id: thread.id,
+            title: thread.title,
+            creator: thread.creator.toString(),
+            subForum: thread.subForum,
+            numPosts: thread.numPosts,
+            pages: thread.pages,
+            creatorName: userName!
+        });
+    }
+    return threadArr;
 }
 
 /**

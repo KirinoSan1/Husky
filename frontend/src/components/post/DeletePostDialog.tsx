@@ -6,20 +6,18 @@ import { editPost } from "../../api/api";
 import { UserContext } from "../settings/UserContext";
 import { ThreadPageContext } from "../thread/Thread";
 
-export function EditPostDialog({ contentPost, postNum, setShowEditDialog }: { contentPost: string, postNum: number, setShowEditDialog: Function }) {
+export function DeletePostDialog({ postNum, setShowDeleteDialog }: { postNum: number, setShowDeleteDialog: Function }) {
     const [loginInfo] = useContext(LoginContext);
     const [userInfo] = useContext(UserContext);
     const [threadPage, setThreadPage] = useContext(ThreadPageContext);
-    const [content, setContent] = useState(contentPost);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const handleUpdateContent = (e: any) => { setContent(e.target.value); };
-    const handleClose = () => { setShowEditDialog(false); };
+    const handleClose = () => { setShowDeleteDialog(false); };
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            setThreadPage(await editPost(userInfo.id, content, postNum % 10, threadPage.id, "m"));
+            setThreadPage(await editPost(userInfo.id, "This post has been deleted.", postNum % 10, threadPage.id, "d"));
         } catch (error) {
             setError(String(error));
         }
@@ -33,16 +31,18 @@ export function EditPostDialog({ contentPost, postNum, setShowEditDialog }: { co
         <>
             <Modal id="editpost-modal" show={true} onHide={handleClose}>
                 <Modal.Header id="editpost-modal-header" data-bs-theme="dark" closeButton>
-                    <Modal.Title id="editpost-modal-header-title">Edit Post</Modal.Title>
+                    <Modal.Title id="editpost-modal-header-title">Delete Post</Modal.Title>
                 </Modal.Header>
                 <Modal.Body id="editpost-modal-body">
-                    <p id="editpost-modal-body-p">If you modify your post, it will be permanently marked as edited!</p>
-                    <textarea id="editpost-modal-body-textarea" placeholder="Empty post" onChange={handleUpdateContent} value={content} className="textarea"></textarea>
+                    <p id="editpost-modal-body-p">Do you wish to delete this post?</p>
+                    <p id="editpost-modal-body-p">All contents will be lost.</p>
+                    <p id="editpost-modal-body-p">Your post will be marked as deleted.</p>
+                    <p id="editpost-modal-body-p">This cannot be reversed.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     {error && <Alert id="editpost-modal-footer-alert" variant="danger">{error}</Alert>}
                     <Button variant="secondary" id="editpost-modal-footer-button1" onClick={handleClose}>Cancel</Button>
-                    <Button id="editpost-modal-footer-button0" disabled={content.length === 0} onClick={handleSubmit}>Submit</Button>
+                    <Button id="editpost-modal-footer-button0" onClick={handleSubmit}>Delete</Button>
                     {loading && <LoadingIndicator />}
                 </Modal.Footer>
             </Modal >

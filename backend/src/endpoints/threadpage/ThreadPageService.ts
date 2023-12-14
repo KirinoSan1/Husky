@@ -81,6 +81,12 @@ export async function addPost(content: string, authorID: string, threadPageID: s
 
     threadPage.posts.push(new Post({ content: content, author: author.id }));
     const savedPage = await threadPage.save();
+
+    const thread = await Thread.findById(threadID).exec();
+    if (!thread)
+        throw new Error("thread not found");
+    thread.numPosts = (thread?.pages.length - 1) * 10 + savedPage.posts.length;
+    await thread.save();
     return { id: savedPage.id, posts: savedPage.posts };
 }
 
@@ -96,11 +102,12 @@ export async function addPostNewPage(author: string, content: string, threadID: 
     if (!thread)
         throw new Error(`no thread with ${threadID} found`);
     thread.pages.push(threadPage.id);
+    thread.numPosts = (thread?.pages.length - 1) * 10 + threadPage.posts.length;
     await thread.save();
     return { id: threadPage.id, posts: threadPage.posts, createdAt: threadPage.createdAt };
 }
 
-export async function editPost(content: string, authorID: string, threadPageID: string, postNum: number): Promise<ThreadPageResource> {
+export async function editPost(content: string, authorID: string, threadPageID: string, postNum: number, modified: "m" | "d" | ""): Promise<ThreadPageResource> {
     if (!content)
         throw new Error("content not defined");
     if (!authorID)
@@ -119,7 +126,7 @@ export async function editPost(content: string, authorID: string, threadPageID: 
         throw new Error("cannot edit deleted post");
 
     threadPage.posts[postNum].content = content;
-    threadPage.posts[postNum].modified = "m";
+    threadPage.posts[postNum].modified = modified;
     const savedPage = await threadPage.save();
     return { id: savedPage.id, posts: savedPage.posts };
 }

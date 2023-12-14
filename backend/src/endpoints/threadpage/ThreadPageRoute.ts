@@ -115,14 +115,16 @@ threadPageRouter.patch("/:id/edit", requiresAuthentication,
     body('author').isMongoId(),
     body('postNum').isNumeric(),
     body('content').isString(),
+    body('modified').isString().optional(),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
         const postData = matchedData(req) as { author: string, content: string, postNum: number };
+        const modified = req.body.modified ?? "m";
         try {
-            const newThreadPageResource = await editPost(postData.content, postData.author, req.params.id, postData.postNum);
+            const newThreadPageResource = await editPost(postData.content, postData.author, req.params.id, postData.postNum, modified);
             return res.status(200).json(newThreadPageResource);
         } catch (err) {
             res.status(400).json(`Error during update: ${err}`);

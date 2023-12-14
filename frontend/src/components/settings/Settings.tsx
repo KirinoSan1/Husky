@@ -27,11 +27,10 @@ export default function Settings() {
     };
 
     const handleSubmitPicture = async () => { 
-        setLoading(true)
-
-        const response = await updateUserProfilePicture(userInfo, selectedFile.myFile)
+        setLoading(true);
+        const response = await updateUserProfilePicture(userInfo, selectedFile.myFile);
         const obj = Object.assign({}, response);
-        setUserInfo(obj)
+        setUserInfo(obj);
         setLoading(false) }
     const handleDeletePicture = async () => {
         setLoading(true)
@@ -39,7 +38,6 @@ export default function Settings() {
         setUserInfo({ ...userInfo, avatar: await updateUserProfilePicture(userInfo, LogoAs64base) })
         setLoading(false)
     }
-
 
     useEffect(() => {
         function handleLogout() {
@@ -72,7 +70,6 @@ export default function Settings() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-
         try {
             if (pageKey === "ChangeUsername") {
                 setUserInfo(await updateUser(userInfo, nameData, "name"));
@@ -87,9 +84,9 @@ export default function Settings() {
                 handleSelect("Profile");
                 setSuccess("password");
             } else if (pageKey === "ChangeProfile") {
-                setUserInfo(await updateUserProfilePicture(userInfo, selectedFile.myFile))
-                handleSelect("Profile Picture")
-                setSuccess("changed profile")
+                setUserInfo(await updateUserProfilePicture(userInfo, selectedFile.myFile));
+                handleSelect("Profile Picture");
+                setSuccess("changed profile");
             }
         } catch (error) {
             setError(String(error));
@@ -227,7 +224,7 @@ export default function Settings() {
                         <p>Selected Image:</p>
                         <img
                             src={ userInfo?.avatar || selectedFile.myFile}
-                            alt="Profile Picture"
+                            alt="Avatar"
                             style={{ maxWidth: '100px', maxHeight: '100px' }}
                             loading="lazy"
                         />
@@ -252,11 +249,8 @@ export default function Settings() {
                 <Button id="settings-tabs-tab5-button" disabled={loading} onClick={handleDeletePicture} className="btn-danger">
                     Delete Picture
                 </Button>
-
                 {loading ? <LoadingIndicator /> : <></>}
-
             </Tab>
-
         </Tabs>
     );
 }

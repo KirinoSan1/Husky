@@ -286,6 +286,7 @@ form > div:first-of-type > .form-label {
   height: auto;
   align-self: center;
   margin: 8px auto;
+  border-radius: 50%;
 }
 .threadpage-post > [id*=div1] > p {
   align-self: center;
@@ -428,8 +429,8 @@ form > div:first-of-type > .form-label {
   min-height: 38px;
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 #thread-div .button-bar .hidden {
   visibility: hidden;
