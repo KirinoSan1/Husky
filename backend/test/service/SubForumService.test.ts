@@ -5,7 +5,7 @@ import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
 import { IUser, User } from "../../src/endpoints/user/UserModel"
 import { Post } from "../../src/endpoints/post/PostModel";
 import { SubForumResource, ThreadResource } from "../../src/types/Resources";
-import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getSubForum, updateSubForum } from "../../src/endpoints/subforum/SubForumService";
+import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getLatestThreadsFromSubForums, getSubForum, updateSubForum } from "../../src/endpoints/subforum/SubForumService";
 import { SubForum } from "../../src/endpoints/subforum/SubForumModel";
 import { Thread } from "../../src/endpoints/thread/ThreadModel";
 
@@ -119,6 +119,56 @@ test("Get all threads for a subforum without a limit", async () => {
 
     const threads = await getAllThreadsForSubForum(subForumName);
     expect(Array.isArray(threads)).toBe(true);
+});
+
+test("Get latest threads from specified subforums", async () => {
+    const subForumNames2 = ["Thread", "Thread2"];
+    const threadCount = 5;
+
+    const post = await Post.create({
+        content: "Test.",
+        author: idJinx,
+        createdAt: new Date()
+    });
+    const post2 = await Post.create({
+        content: "Test.",
+        author: idJinx,
+        createdAt: new Date()
+    });
+    let postid = post.id
+    let post2id = post2.id
+    const threadpage = await ThreadPage.create({ postid, post2id })
+
+    const thread: ThreadResource = ({ creator: idJinx, title: "Thread11", subForum: "Thread", pages: [threadpage.id!], numPosts: 2 });
+    const thread2: ThreadResource = ({ creator: idJinx, title: "Thread22", subForum: "Thread", pages: [threadpage.id!], numPosts: 2 });
+    const thread3: ThreadResource = ({ creator: idJinx, title: "Thread33", subForum: "Thread", pages: [threadpage.id!], numPosts: 2 });
+    const thread4: ThreadResource = ({ creator: idJinx, title: "Thread44", subForum: "Thread2", pages: [threadpage.id!], numPosts: 2 });
+    const thread5: ThreadResource = ({ creator: idJinx, title: "Thread55", subForum: "Thread2", pages: [threadpage.id!], numPosts: 2 });
+    const thread6: ThreadResource = ({ creator: idJinx, title: "Thread66", subForum: "Thread2", pages: [threadpage.id!], numPosts: 2 });
+
+    await Thread.create(thread);
+    await Thread.create(thread2);
+    await Thread.create(thread3);
+    await Thread.create(thread4);
+    await Thread.create(thread5);
+    await Thread.create(thread6);
+
+    const subForum1: SubForumResource = { name: "Thread", description: "Description for the new SubForum", threads: [new Types.ObjectId(thread.id!), new Types.ObjectId(thread2.id!), new Types.ObjectId(thread3.id!)] };
+    const subForum2: SubForumResource = { name: "Thread2", description: "Description for the new SubForum 2", threads: [new Types.ObjectId(thread4.id!), new Types.ObjectId(thread5.id!), new Types.ObjectId(thread6.id!)] };
+
+    const forum = await createSubForum(subForum1)
+    const forum2 = await createSubForum(subForum2)
+
+    const latestThreads = await getLatestThreadsFromSubForums(subForumNames2, threadCount);
+
+    expect(Array.isArray(latestThreads)).toBe(true);
+
+    for (let i = 0; i < latestThreads.length - 1; i++) {
+        const currentThreadCreatedAt = new Date(latestThreads[i].createdAt!);
+        const nextThreadCreatedAt = new Date(latestThreads[i + 1].createdAt!);
+
+        expect(currentThreadCreatedAt.getTime()).toBeGreaterThanOrEqual(nextThreadCreatedAt.getTime());
+    }
 });
 
 test("Creates a new Thread and added to an Subforum returns it", async () => {
