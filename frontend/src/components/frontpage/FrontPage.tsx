@@ -20,14 +20,17 @@ export default function FrontPage() {
 
     const handleSearch = async () => {
         setLoading(true);
-
+        
         if (searchInput.length < 2) {
             console.log("short");
-            return;
+            return new Error("The input you did is to short.");
         }
 
-        /* TODO: transfer input to threads tab and execute automatically */
-        navigate("/threads");
+        if(searchInput !== ""){
+            navigate("/threads",{replace: true, state: searchInput});
+        }else{
+            navigate("/threads")
+        }
 
         setLoading(false);
     };
