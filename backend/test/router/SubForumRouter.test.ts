@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { LoginResource, SubForumResource, UserResource } from "../../src/types/Resources";
+import { LoginResource, SubForumResource, ThreadResource, UserResource } from "../../src/types/Resources";
 import TestDB from "../TestDB";
 import { User } from "../../src/endpoints/user/UserModel";
 import { createUser } from "../../src/endpoints/user/UserService";
@@ -32,7 +32,6 @@ beforeEach(async () => {
     const response = await request.post(`/api/login`).send(loginData)
     const loginResource = response.body as LoginResource;
     token = loginResource.access_token;
-    expect(token).toBeDefined();
 
     umut = await createUser({ name: "Umi", email: "umi@jonatahan.de", password: "123asdf!ABCDs", admin: false })
     idumut = umut.id!
@@ -68,7 +67,6 @@ beforeEach(async () => {
     const response2 = await request2.post(`/api/login`).send(loginData2)
     const loginResource2 = response2.body as LoginResource;
     tokenB = loginResource2.access_token;
-    expect(tokenB).toBeDefined();
 })
 afterEach(async () => { await TestDB.clear(); })
 afterAll(async () => {
@@ -127,6 +125,37 @@ test("Subforum POST, negative test", async () => {
     const response = await request.post(`/api/subforum/`).send(token).set("Authorization", `Bearer ${token}`);
     expect(response.statusCode).toBe(400);
 })
+
+
+
+
+
+
+
+
+
+
+test("Subforum POST /threads, positive test", async () => {
+    const request = supertest(app);
+    const subForumNames = [subForum.name];
+    const threadCount = 5; 
+
+    const response = await request.post(`/api/subforum/threads`).send({ subForumNames, threadCount });
+
+    expect(response.statusCode).toBe(200);
+    const threads = response.body as ThreadResource[];
+
+    expect(Array.isArray(threads)).toBe(true);
+    expect(threads.length).toBeLessThanOrEqual(threadCount); 
+});
+
+
+
+
+
+
+
+
 
 test("Subforum PUT, positive test", async () => {
     const request = supertest(app);

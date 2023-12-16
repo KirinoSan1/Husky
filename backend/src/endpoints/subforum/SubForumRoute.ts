@@ -1,7 +1,7 @@
 import express from "express";
 import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
 import { body, matchedData, param, validationResult } from "express-validator";
-import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getSubForum, updateSubForum } from "./SubForumService";
+import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getLatestThreadsFromSubForums, getSubForum, updateSubForum } from "./SubForumService";
 import { SubForumResource } from "../../types/Resources";
 
 export const subForumRouter = express.Router();
@@ -33,6 +33,25 @@ subForumRouter.post("/:name/threads", optionalAuthentication,
             const subForumName = req.params.name;
             const count = req.query.count ? parseInt(req.query.count as string) : undefined;
             const threads = await getAllThreadsForSubForum(subForumName, count);
+            return res.send(threads);
+        } catch (err) {
+            res.status(400);
+            next(err);
+        }
+    });
+
+subForumRouter.post("/threads", optionalAuthentication,
+    body('threadCount').optional().isInt(),
+    body('subForumCount').optional().isInt(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        try {
+            const threadCount = req.body.threadCount ? parseInt(req.body.threadCount as string) : undefined;
+            const subForumCount = req.body.subForumCount ? parseInt(req.body.subForumCount as string) : undefined;
+            const threads = await getLatestThreadsFromSubForums(threadCount, subForumCount);
             return res.send(threads);
         } catch (err) {
             res.status(400);
