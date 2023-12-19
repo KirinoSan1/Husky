@@ -41,12 +41,12 @@ export default function ThreadSearch() {
     useEffect(() => {
         async function search() {
             if (location.state) {
-                setThreads(await searchThreadsByTitle(location.state))
+                setThreads(await searchThreadsByTitle(location.state));
             } else {
                 return;
             }
         }
-        search()
+        search();
     }, [])
 
 
