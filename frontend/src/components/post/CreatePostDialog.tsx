@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { KeyboardEvent, useContext, useEffect, useState } from "react";
 import { LoginContext } from "../login/LoginContext";
 import { Alert, Button } from "react-bootstrap";
 import LoadingIndicator from "../util/LoadingIndicator";
@@ -46,13 +46,19 @@ export default function CreatePostDialog() {
         return <></>;
     }
 
+    function handleKeyPress(e: KeyboardEvent<Element>): void {
+        if (e.key === 'Enter') {
+            handleSubmit();
+        }
+    }
+
     return (
         <>
             {error && <Alert id="createpostdialog-alert" variant="danger">{error}</Alert>}
             <div className="threadpage-horizontal-line" />
             <div id="create-post-container">
                 <h4>Add new post</h4>
-                <textarea id="createpostdialog-textarea" placeholder="Write something awesome!" onChange={handleUpdate} value={content} className="textarea" />
+                <textarea id="createpostdialog-textarea" placeholder="Write something awesome!" onChange={handleUpdate} value={content} className="textarea" onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)} />
                 <div className="button-bar">
                     <Button id="createpostdialog-button2" onClick={handleSubmit} disabled={content.length === 0 || loading}>Submit</Button>
                 </div>

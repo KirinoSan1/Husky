@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { KeyboardEvent, useContext, useEffect, useState } from "react";
 import { LoginContext } from "../login/LoginContext";
 import { Alert, Button, Dropdown } from "react-bootstrap";
 import LoadingIndicator from "../util/LoadingIndicator";
@@ -42,12 +42,18 @@ export function CreateThreadPage() {
     if (!loginInfo)
         return <Alert id="createthread-alert1" variant="danger">Error: You don't have permission to access this page</Alert>;
 
+    function handleKeyPress(e: KeyboardEvent<Element>): void {
+        if (e.key === 'Enter') {
+            handleSubmit();
+        }
+    }
+
     return (
         <>
             {error && <Alert id="createthread-alert2" variant="danger">{error}</Alert>}
             <h3 id="createthread-h3">Create New Thread</h3>
             <p id="createthread-p1">Please enter the title:</p>
-            <input id="createthread-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdateTitle} value={title}></input>
+            <input id="createthread-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdateTitle} value={title} onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}></input>
             <Dropdown id="createthread-dropdown">
                 <Dropdown.Toggle id="createthread-dropdown-toggle">{subForum.length === 0 ? "Choose Subforum" : subForum}</Dropdown.Toggle>
                 <Dropdown.Menu id="createthread-dropdown-menu">
@@ -59,7 +65,7 @@ export function CreateThreadPage() {
                 </Dropdown.Menu>
             </Dropdown>
             <p id="createthread-p2">Please create the initial post:</p>
-            <textarea id="createthread-textarea" className="textarea" placeholder="Write something awesome!" onChange={handleUpdateContent} value={content}></textarea>
+            <textarea id="createthread-textarea" className="textarea" placeholder="Write something awesome!" onChange={handleUpdateContent} value={content} onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}></textarea>
             <div id="createthread-button-bar">
                 <Button id="createthread-button1" variant="secondary" onClick={() => { navigate("/threads"); }}>Go Back</Button>
                 <Button id="createthread-button2" onClick={handleSubmit} disabled={title.length === 0 || subForum === "" || content.length === 0 || loading}>Submit</Button>

@@ -22,16 +22,20 @@ export default function Settings() {
 
     const handleFileChange = async (event: any) => {
         const file = event.target.files?.[0];
+        if (file == null) {
+            return;
+        }
         const base64 = await converttobase64(file);
         setSelectedFile({ myFile: base64 as string });
     };
 
-    const handleSubmitPicture = async () => { 
+    const handleSubmitPicture = async () => {
         setLoading(true);
         const response = await updateUserProfilePicture(userInfo, selectedFile.myFile);
         const obj = Object.assign({}, response);
         setUserInfo(obj);
-        setLoading(false) }
+        setLoading(false)
+    }
     const handleDeletePicture = async () => {
         setLoading(true)
         setSelectedFile({ myFile: LogoAs64base })
@@ -85,7 +89,7 @@ export default function Settings() {
                 setSuccess("password");
             } else if (pageKey === "ChangeProfile") {
                 setUserInfo(await updateUserProfilePicture(userInfo, selectedFile.myFile));
-                handleSelect("Profile Picture");
+                handleSelect("Profile");
                 setSuccess("changed profile");
             }
         } catch (error) {
@@ -97,6 +101,11 @@ export default function Settings() {
     if (!loginInfo)
         return <></>;
 
+    function handleKeyPress(e: any): void {
+        if (e.key === 'Enter') {
+             handleSubmit(e);
+        }
+    };
 
     return (
         <Tabs
@@ -117,7 +126,7 @@ export default function Settings() {
                     </ListGroup>
                     : <></>}
             </Tab>
-            <Tab id="settings-tabs-tab2" eventKey="ChangeUsername" title="Change Username">
+            <Tab id="settings-tabs-tab2" eventKey="ChangeUsername" title="Change Username" onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}>
                 <Alert id="settings-tabs-tab2-alert" show={!!error} variant="danger">{`An error occurred, please try again.\n${error}`}</Alert>
                 <Form id="settings-tabs-tab2-form">
                     <Form.Group id="settings-tabs-tab2-form-group1">
@@ -147,7 +156,7 @@ export default function Settings() {
                 <Button id="settings-tabs-tab2-button" disabled={loading} onClick={handleSubmit}>Submit Changes</Button>
                 {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
             </Tab>
-            <Tab eventKey="ChangeEmail" title="Change E-Mail">
+            <Tab eventKey="ChangeEmail" title="Change E-Mail" onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}>
                 <Alert id="settings-tabs-tab3-alert" show={!!error} variant="danger">{`An error occurred, please try again.\n${error}`}</Alert>
                 <Form id="settings-tabs-tab3-form">
                     <Form.Group id="settings-tabs-tab3-form-group1">
@@ -177,9 +186,9 @@ export default function Settings() {
                 <Button id="settings-tabs-tab3-button" disabled={loading} onClick={handleSubmit}>Submit Changes</Button>
                 {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
             </Tab>
-            <Tab eventKey="ChangePassword" title="Change Password">
+            <Tab eventKey="ChangePassword" title="Change Password" onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}>
                 <Alert id="settings-tabs-tab4-alert" show={!!error} variant="danger">{`An error occurred, please try again.\n${error}`}</Alert>
-                <Form id="settings-tabs-tab4-form">
+                <Form id="settings-tabs-tab4-form" >
                     <Form.Group id="settings-tabs-tab4-form-group1">
                         <Form.Label id="settings-tabs-tab4-form-group1-label">Old Password</Form.Label>
                         <Form.Control
@@ -217,13 +226,13 @@ export default function Settings() {
                 <Button id="settings-tabs-tab4-button" disabled={loading} onClick={handleSubmit}>Submit Changes</Button>
                 {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
             </Tab>
-            <Tab eventKey="ChangeProfile" title="Change Profile Picture">
+            <Tab eventKey="ChangeProfile" title="Change Profile Picture" onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}>
                 <Alert id="settings-tabs-tab5-alert" show={!!error} variant="danger">{`An error occurred, please try again.\n${error}`}</Alert>
                 {selectedFile && (
                     <div>
                         <p>Selected Image:</p>
                         <img
-                            src={ userInfo?.avatar || selectedFile.myFile}
+                            src={userInfo?.avatar || selectedFile.myFile}
                             alt="Avatar"
                             style={{ maxWidth: '100px', maxHeight: '100px' }}
                             loading="lazy"

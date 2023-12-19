@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { KeyboardEvent, useContext, useState } from "react";
 import { LoginContext } from "../login/LoginContext";
 import { Alert, Button, Modal } from "react-bootstrap";
 import LoadingIndicator from "../util/LoadingIndicator";
@@ -29,6 +29,15 @@ export function EditPostDialog({ contentPost, postNum, setShowEditDialog }: { co
     if (!loginInfo)
         return <></>;
 
+    function handleKeyPress(e: KeyboardEvent<Element>): void {
+        if (e.key === 'Enter') {
+            handleSubmit();
+        }
+        if(e.key === 'ESC'){
+            handleClose();
+        }
+    }
+
     return (
         <>
             <Modal id="editpost-modal" show={true} onHide={handleClose}>
@@ -37,7 +46,7 @@ export function EditPostDialog({ contentPost, postNum, setShowEditDialog }: { co
                 </Modal.Header>
                 <Modal.Body id="editpost-modal-body">
                     <p id="editpost-modal-body-p">If you modify your post, it will be permanently marked as edited!</p>
-                    <textarea id="editpost-modal-body-textarea" placeholder="Empty post" onChange={handleUpdateContent} value={content} className="textarea"></textarea>
+                    <textarea id="editpost-modal-body-textarea" placeholder="Empty post" onChange={handleUpdateContent} value={content} className="textarea" onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}></textarea>
                 </Modal.Body>
                 <Modal.Footer>
                     {error && <Alert id="editpost-modal-footer-alert" variant="danger">{error}</Alert>}

@@ -33,6 +33,15 @@ export default function LoginDialog() {
     if (loginInfo)
         return <Button variant="secondary" id="logindialog-button-logout" onClick={handleLogout}>Logout</Button>;
 
+    function handleKeyPress(e: React.KeyboardEvent<Element>): void {
+        if (e.key === 'Enter') {
+            handleSubmit(e);
+        }
+        if(e.key === 'ESC'){
+            handleClose();
+        }
+    }
+
     return (
         <>
             <Button id="logindialog-button-login" onClick={handleShow}>Login</Button>
@@ -43,8 +52,8 @@ export default function LoginDialog() {
                 </Modal.Header>
                 <Modal.Body id="logindialog-modal-body">
                     <Alert id="logindialog-modal-body-alert" show={!!error} variant="danger">{"An error occurred, please try again.\n" + error}</Alert>
-                    <Form id="logindialog-modal-body-form">
-                        <Form.Group id="logindialog-modal-body-form-group1">
+                    <Form id="logindialog-modal-body-form"  onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}>
+                        <Form.Group id="logindialog-modal-body-form-group1" >
                             <Form.Label id="logindialog-modal-body-form-group1-label">E-Mail</Form.Label>
                             <Form.Control
                                 type="email"
