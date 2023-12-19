@@ -11,7 +11,7 @@
     }
     height: fit-content;
     background-color: theme.$eighth-color;
-    border: 8px solid theme.$eighth-color;
+    padding: 8px;
     border-radius: 16px;
     & > [id*="div1"] {
         width: 20%;

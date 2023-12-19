@@ -272,7 +272,7 @@ form > div:first-of-type > .form-label {
   margin-right: 8px;
   height: fit-content;
   background-color: #393D40;
-  border: 8px solid #393D40;
+  padding: 8px;
   border-radius: 16px;
 }
 .threadpage-post > [id*=div1] {
@@ -408,7 +408,13 @@ form > div:first-of-type > .form-label {
   align-items: center;
 }
 #thread-div h3 {
-  margin-bottom: 32px;
+  margin-bottom: 0;
+  color: #38B6FF;
+}
+#thread-div .h3-underline {
+  margin-bottom: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(56, 182, 255, 0) 0%, #38b6ff 25%, #38b6ff 75%, rgba(56, 182, 255, 0) 100%);
 }
 #thread-div .button-bar {
   display: flex;
@@ -449,6 +455,10 @@ form > div:first-of-type > .form-label {
   width: 90%;
   margin-top: 24px;
   margin-bottom: 0;
+}
+#thread-div .threadpage-post:first-of-type {
+  background: radial-gradient(circle, rgba(57, 122, 160, 0.5) 0%, #393d40 100%);
+  border: 2px solid #38B6FF;
 }
 #thread-div #createpostdialog-textarea {
   margin-top: 24px;
