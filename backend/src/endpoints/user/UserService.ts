@@ -9,12 +9,22 @@ import { Thread } from "../thread/ThreadModel";
  * The password may not be returned.
  */
 export async function getUser(id: string): Promise<UserResource> {
-    const users = await User.findById(id).exec();
-    if (!users) {
-        throw new Error(" User not found")
+    const user = await User.findById(id).exec();
+    if (!user) {
+        throw new Error(" User not found");
     }
-    const userResource: UserResource = { id: users.id, name: users.name, email: users.email, admin: users.admin, mod: users.mod, avatar: users.avatar }
+    const userResource: UserResource = { id: user.id, name: user.name, email: user.email, admin: user.admin, mod: user.mod, avatar: user.avatar };
     return userResource;
+}
+
+export async function getUsersAvatar(userId: string): Promise<{ avatar: string }> {
+    const user = await User.findById(userId, "avatar").exec();
+
+    if (!user) {
+        throw new Error(`User with ID ${userId} not found.`);
+    }
+
+    return { avatar: user.avatar ?? "" };
 }
 
 export async function getAllThreadsForUser(userId: string, count?: number): Promise<(ThreadResource & { creatorName: string })[]> {

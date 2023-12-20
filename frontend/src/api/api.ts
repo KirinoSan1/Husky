@@ -363,9 +363,37 @@ export const updateUserProfilePicture = async (user: UserResource, myFile: strin
     } catch (error) {
         throw error;
     }
-
-
 };
+
+export async function getUsersAvatar(userID: string): Promise<string> {
+    try {
+        if (!userID) {
+            throw new Error("userID not defined");
+        }
+
+        const response = await fetch(
+            `${BASE_URL}/api/user/${userID}/avatar`,
+            {
+                method: "GET"
+            }
+        );
+
+        if (!response || !response.ok) {
+            throw new Error("network response was not OK");
+        }
+
+        const result = await response.json();
+
+        if (result === undefined || result.avatar === undefined) {
+            throw new Error("invalid result from server");
+        }
+
+        return result.avatar;
+
+    } catch (error) {
+        throw new Error("Error occurred during request: " + error);
+    }
+}
 
 export async function editPost(author: string, content: string, postNum: number, threadPageID: string, modified: "m" | "d" | ""): Promise<ThreadPageResource> {
     try {
@@ -426,7 +454,8 @@ export async function getUsersThreads(userID: string, count: number): Promise<Th
             {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${jwt}`
+                    "Authorization": `Bearer ${jwt}`,
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     count: count
@@ -461,8 +490,44 @@ export async function getSubforumsThreads(subforumName: string, count: number): 
             `${BASE_URL}/api/subforum/${subforumName}/threads`,
             {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     count: count
+                })
+            }
+        );
+
+        if (!response || !response.ok) {
+            throw new Error("network response was not OK");
+        }
+
+        const result: ThreadResource[] = await response.json();
+
+        if (result === undefined) {
+            throw new Error("invalid result from server");
+        }
+
+        return result;
+
+    } catch (error) {
+        throw new Error("Error occurred during request: " + error);
+    }
+}
+
+export async function getLatestThreads(subForumCount: number, threadCount: number): Promise<ThreadResource[]> {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/api/subforum/threads`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    subForumCount: subForumCount,
+                    threadCount: threadCount
                 })
             }
         );

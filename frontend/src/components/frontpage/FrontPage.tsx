@@ -1,17 +1,20 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "../util/Icon";
-import { getUsersThreads, getSubforumsThreads } from "../../api/api";
+import { getUsersThreads, getSubforumsThreads, getLatestThreads, getUsersAvatar } from "../../api/api";
 import { ThreadResource } from "../../types/Resources";
 import React from "react";
 import { LoginContext } from '../../components/login/LoginContext';
 import LoadingIndicator from "../util/LoadingIndicator";
+import { UserContext } from "../settings/UserContext";
 
 export default function FrontPage() {
     const [loginInfo] = useContext(LoginContext);
+    const [userInfo] = React.useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [threads, setThreads] = useState(new Map<string, ThreadResource[]>());
+    const [threadAvatars, setThreadAvatars] = useState(new Map<string, string>());
     const navigate = useNavigate();
 
     const handleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,84 +22,109 @@ export default function FrontPage() {
     };
 
     const handleSearch = async () => {
-        setLoading(true);
-        
         if (searchInput.length < 2) {
-            console.log("short");
-            return new Error("The input you did is to short.");
+            return new Error("Please enter at least 2 characters.");
         }
 
-        if(searchInput !== ""){
-            navigate("/threads",{replace: true, state: searchInput});
-        }else{
-            navigate("/threads")
-        }
-
-        setLoading(false);
+        navigate("/threads", { replace: true, state: searchInput });
     };
 
     const handleSearchEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (!loading && event.key === "Enter") {
+        if (event.key === "Enter") {
             event.preventDefault();
             handleSearch();
         }
     };
 
     useEffect(() => {
-        if (!loginInfo) {
-            return;
-        }
-
-        setLoading(true);
-
         const loadThreadRecommendations = async (): Promise<Map<string, ThreadResource[]>> => {
-            const threadMap: Map<string, ThreadResource[]> = new Map();
-            const subforumSlots: number = 2;
-            const threadSlots: number = 4;
-            let ownThreadsCount: number = 0;
+            const subforumSlots: number = 3;
+            const threadSlotsPerSubforum: number = 2;
+            const threadSlots: number = subforumSlots * threadSlotsPerSubforum;
 
-            const ownThreads = await getUsersThreads(loginInfo.userID, threadSlots);
-            ownThreadsCount = ownThreads.length;
-            ownThreads.forEach(thread => {
-                const subForumName: string = thread.subForum;
-                const entries: ThreadResource[] | undefined = threadMap.get(subForumName);
-                threadMap.set(subForumName, entries ? [...entries, thread] : [thread]);
+            const threadMap: Map<string, ThreadResource[]> = new Map();
+
+            if (loginInfo) {
+                const ownThreads: ThreadResource[] = await getUsersThreads(loginInfo.userID, threadSlots);
+
+                // add some threads of the currently logged in user
+                ownThreads.forEach((thread: ThreadResource) => {
+                    const subforum: string = thread.subForum;
+                    const entries: ThreadResource[] | undefined = threadMap.get(subforum);
+
+                    if (!entries && threadMap.size >= subforumSlots) {
+                        return;
+                    }
+
+                    if (entries && entries.length >= threadSlotsPerSubforum) {
+                        return;
+                    }
+
+                    threadMap.set(subforum, entries ? [...entries, thread] : [thread]);
+                });
+
+                // fill empty slots of the already existing topics
+                threadMap.forEach(async (threads: ThreadResource[], subforum: string) => {
+                    let emptySlots: number = threadSlotsPerSubforum - threads.length;
+
+                    if (emptySlots < 1) {
+                        return;
+                    }
+
+                    // taking the maximum amount of threads as second argument due to possible duplications
+                    const subforumsThreads: ThreadResource[] = await getSubforumsThreads(subforum, threadSlotsPerSubforum);
+
+                    subforumsThreads.filter((thread: ThreadResource) => thread.creator !== loginInfo.userID).forEach((thread: ThreadResource) => {
+                        if (--emptySlots > -1) {
+                            threads.push(thread);
+                        }
+                    });
+                });
+            }
+
+            const emptySubforumSlots: number = subforumSlots - threadMap.size;
+
+            if (emptySubforumSlots < 1) {
+                return threadMap;
+            }
+
+            const latestThreads: ThreadResource[] = await getLatestThreads(subforumSlots, threadSlotsPerSubforum);
+
+            latestThreads.filter((thread: ThreadResource) => !threadMap.has(thread.subForum)).forEach((thread: ThreadResource) => {
+                const entries: ThreadResource[] | undefined = threadMap.get(thread.subForum);
+                threadMap.set(thread.subForum, entries ? [thread, ...entries] : [thread]);
             });
 
-            if (threadMap.size > subforumSlots) {
-                // TODO cut map
-            }
-
-            const emptySlots: number = threadSlots - ownThreadsCount;
-
-            if (emptySlots < 1) {
-                return threadMap;
-            }
-
-            const avgSubforumThreadSlots: number = Math.round(emptySlots / threadMap.size);
-
-            if (avgSubforumThreadSlots < 1) {
-                return threadMap;
-            }
-
-            // fill empty slots with threads of the same topic/subforum
-            for (const entry of threadMap.entries()) {
-                const subforumName: string = entry[0];
-                const subforumsThreads: ThreadResource[] = await getSubforumsThreads(subforumName, avgSubforumThreadSlots);
-                threadMap.set(subforumName, [...entry[1], ...subforumsThreads]);
-            }
-
             return threadMap;
-        }
+        };
 
         const getThreadRecommendations = async () => {
             const threads: Map<string, ThreadResource[]> = await loadThreadRecommendations();
             setThreads(threads);
-        }
+        };
 
         getThreadRecommendations();
         setLoading(false);
     }, [loginInfo]);
+
+    useEffect(() => {
+        const loadThreadAvatars = async (): Promise<Map<string, string>> => {
+            const threadCreators: Set<string> = new Set<string>();
+            threads.forEach(threads => threads.forEach(thread => threadCreators.add(thread.creator)));
+
+            const avatars: Map<string, string> = new Map<string, string>();
+            threadCreators.forEach(async creator => avatars.set(creator, await getUsersAvatar(creator)));
+
+            return avatars;
+        };
+
+        const getThreadAvatars = async () => {
+            const avatars: Map<string, string> = await loadThreadAvatars();
+            setThreadAvatars(avatars);
+        };
+
+        getThreadAvatars();
+    }, [threads]);
 
     const handleClickThread = (event: React.MouseEvent) => {
         navigate("/threads/" + event.currentTarget.id);
@@ -104,7 +132,7 @@ export default function FrontPage() {
 
     return (
         <>
-            <img id="banner-logo" src="/images/logo.png" alt="Big Husky logo" />
+            <img id="banner-logo" src="/images/logo.png" alt="Big Husky logo" loading="lazy" />
             <label>
                 <input
                     type="search"
@@ -117,40 +145,38 @@ export default function FrontPage() {
                 </span>
             </label>
             {loading && <LoadingIndicator />}
-            {loginInfo && !loading && Array.from(threads.entries()).map(entry => {
-                const subforumName: string = entry[0];
-                let keyCounter: number = 0;
+            <div id="thread-recommendation-container">
+                {!loading && Array.from(threads.entries()).map(entry => {
+                    const subforumName: string = entry[0];
+                    let keyCounter: number = 0;
 
-                return (
-                    <section key={subforumName}>
-                        <h4>{subforumName}</h4>
-                        <ul>
-                            {entry[1].map((thread: any) => {
-                                return (
-                                    <li key={++keyCounter} id={thread.id} onClick={handleClickThread}>
-                                        <Icon
-                                            data="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1.06 1.06 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.512.512 0 0 0-.523-.516.539.539 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532 0 .312.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531 0 .313.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242l-.515 2.492zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z"
-                                            width={24}
-                                            height={24}
-                                        />
-                                        <p className="topic-entry-preview-title">{thread.title}</p>
-                                        <p>{thread.numPosts + (thread.numPosts === 1 ? " post" : " posts")}</p>
-                                        <div>
-                                            <img
-                                                src="/images/logo.png"
-                                                alt={"Profile avatar of " + thread.creatorName}
-                                                width={24}
-                                                height={24}
-                                            />
-                                            <p>{thread.creatorName}</p>
-                                        </div>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </section>
-                );
-            })}
+                    return (
+                        <section key={subforumName}>
+                            <h4>{subforumName}</h4>
+                            <ul>
+                                {entry[1].map((thread: any) => {
+                                    const threadAvatar: string | undefined = threadAvatars.get(thread.creator);
+                                    return (
+                                        <li key={++keyCounter} id={thread.id} className={userInfo && userInfo.name === thread.creatorName ? "own-thread" : undefined} onClick={handleClickThread}>
+                                            <Icon data="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1.06 1.06 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.512.512 0 0 0-.523-.516.539.539 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532 0 .312.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531 0 .313.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242l-.515 2.492zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z" />
+                                            <p className="topic-entry-preview-title">{thread.title}</p>
+                                            <p>{thread.numPosts + (thread.numPosts === 1 ? " post" : " posts")}</p>
+                                            <div>
+                                                <img
+                                                    src={threadAvatar ? threadAvatar : "/images/logo.png"}
+                                                    alt={"Profile avatar of " + thread.creatorName}
+                                                    loading="lazy"
+                                                />
+                                                <p>{thread.creatorName}</p>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </section>
+                    );
+                })}
+            </div>
         </>
     );
 }
