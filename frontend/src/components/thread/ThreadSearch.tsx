@@ -41,14 +41,14 @@ export default function ThreadSearch() {
     useEffect(() => {
         async function search() {
             if (location.state) {
+                setTitle(location.state);
                 setThreads(await searchThreadsByTitle(location.state));
             } else {
                 return;
             }
         }
         search();
-    }, [])
-
+    }, []);
 
     let count = 0;
     return (

@@ -37,45 +37,25 @@ export async function getAllThreadsForSubForum(subForumName: string, count?: num
     return threadArr;
 }
 
-export async function getLatestThreadsFromSubForums(threadCount?: number, subForumCount?: number): Promise<ThreadResource[]> {
+export async function getLatestThreadsFromSubForums(threadCount: number, subForumCount: number): Promise<ThreadResource[]> {
+    const subForums: string[] = (await SubForum.find({}, 'name').limit(subForumCount).exec()).map(subforum => subforum.name);
     const threadsFromSubForums: ThreadResource[] = [];
-    const subForumNames: string[] = [];
 
-    const allSubForums = await SubForum.find({}, 'name');
-    const randomSubForumIndices = getRandomIndices(allSubForums.length, subForumCount || 5);
+    for (const subForum of subForums) {
+        const threads = await Thread.find({ subForum: subForum }).sort({ createdAt: -1 }).limit(threadCount).exec();
 
-    for (const index of randomSubForumIndices) {
-        subForumNames.push(allSubForums[index].name);
+        threads.forEach(thread => threadsFromSubForums.push({
+            id: thread.id,
+            title: thread.title,
+            creator: thread.creator.toString(),
+            subForum: thread.subForum,
+            numPosts: thread.numPosts,
+            pages: thread.pages,
+            createdAt: thread.createdAt.toString()
+        }));
     }
 
-    for (const subForumName of subForumNames) {
-        const subforum = await SubForum.findOne({ name: subForumName }).exec();
-
-        if (!subforum) {
-            throw new Error(`Subforum with name ${subForumName} not found.`);
-        }
-
-        const threads = subforum.threads.slice();
-        const randomThreadIndices = getRandomIndices(threads.length, threadCount || 5);
-
-        for (const index of randomThreadIndices) {
-            const threadId = threads[index];
-            const thread = await Thread.findById(threadId).exec();
-
-            if (thread) {
-                threadsFromSubForums.push({
-                    id: thread.id,
-                    title: thread.title,
-                    creator: thread.creator.toString(),
-                    subForum: thread.subForum,
-                    numPosts: thread.numPosts,
-                    pages: thread.pages,
-                    createdAt: thread.createdAt.toString()
-                });
-            }
-        }
-    }
-    return threadsFromSubForums.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+    return threadsFromSubForums;
 }
 
 function getRandomIndices(maxLength: number, count: number): number[] {

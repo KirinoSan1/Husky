@@ -22,7 +22,7 @@ export async function login(email: string, password: string): Promise<{ success:
     }
     if (user.admin) {
         //if admin give role "a"
-        console.log( "wird zurückgegeben: " +{ success: true, id: user.id, name: user.name, role: "a" })
+        // console.log( "wird zurückgegeben: " + JSON.stringify({ success: true, id: user.id, name: user.name, role: "a" }));
         return { success: true, id: user.id, name: user.name, role: "a" }
     } else if (user.mod) {
         //if mod give role "m"

@@ -10,9 +10,13 @@
     width: 100%;
     align-items: center;
 
+    label,
+    #thread-recommendation-container {
+        min-width: 200px;
+    }
+
     label {
         width: 66%;
-        min-width: 200px;
         max-width: 500px;
         margin-bottom: 8vh;
         display: flex;
@@ -38,23 +42,32 @@
         span {
             height: 100%;
             background-color: theme.$seventh-color;
+            color: theme.$fifth-color;
             display: flex;
             flex-direction: row;
             align-items: center;
             padding: 0px 15px;
             border-radius: 0px 15px 15px 0px;
-            color: theme.$fifth-color;
+            transition: ease-in-out 200ms;
 
             &:hover {
                 cursor: pointer;
+                background-color: theme.$eighth-color;
             }
         }
     }
 
-    section {
+    #thread-recommendation-container {
         width: 90%;
         min-width: 200px;
         max-width: 750px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin-bottom: 5vh;
+    }
+
+    section {
         margin-bottom: 5vh;
 
         h4 {
@@ -71,7 +84,6 @@
             margin: 0;
             padding: 12px;
             border-radius: 20px;
-            cursor: pointer;
 
             li {
                 background-color: theme.$eighth-color;
@@ -80,7 +92,12 @@
                 align-items: center;
                 border-radius: 15px;
                 padding: 0px 16px 0px 8px;
+                cursor: pointer;
                 transition: ease-in-out 200ms;
+
+                &.own-thread {
+                    box-shadow: 0 1px 1px theme.$first-color inset, 0px 1px 6px theme.$first-color;
+                }
 
                 &:hover {
                     background-color: theme.$nineth-color;
@@ -97,6 +114,8 @@
                 svg {
                     margin: 0;
                     color: theme.$sixth-color;
+                    width: 24px;
+                    height: 24px;
                 }
 
                 p {
@@ -121,6 +140,7 @@
 
                 div {
                     width: 20%;
+                    min-width: 75px;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
@@ -130,8 +150,12 @@
                     transition: ease-in-out 200ms;
 
                     &:hover {
-                        background-color: theme.$eighth-color;
-                        border-radius: 15px;
+                        box-shadow: 0 1px 1px theme.$first-color inset, 0px 1px 6px theme.$first-color;
+                        border-radius: 12px;
+                    }
+
+                    p {
+                        min-height: 21px;
                     }
 
                     img {
@@ -139,6 +163,18 @@
                         border-radius: 50%;
                         width: 24px;
                         height: 24px;
+                        min-width: 24px;
+                        min-height: 24px;
+                    }
+
+                    @media screen and (max-width: 555px) {
+                        justify-content: center;
+                        width: 10%;
+                        min-width: 30px;
+
+                        p {
+                            display: none;
+                        }
                     }
                 }
             }

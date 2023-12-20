@@ -3,7 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config()
 import { requiresAuthentication } from "../../util/authentication";
-import { createUser, deleteUser, getAllThreadsForUser, getUser, updateUser } from "./UserService";
+import { createUser, deleteUser, getAllThreadsForUser, getUser, getUsersAvatar, updateUser } from "./UserService";
 import { body, matchedData, param, validationResult } from "express-validator";
 import sendEmail from "../../util/sendEmail";
 import crypto from "crypto"
@@ -27,6 +27,23 @@ userRouter.get("/:id", requiresAuthentication,
             next(err);
         }
     })
+
+userRouter.get("/:id/avatar",
+    param("id").isMongoId(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        try {
+            const avatar = await getUsersAvatar(req.params?.id);
+            res.send(avatar); // 200 by default
+        } catch (err) {
+            res.status(400);
+            next(err);
+        }
+    }
+);
 
 userRouter.get("/:id/verify/:token",
     param("id").isMongoId(),

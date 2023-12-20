@@ -3,6 +3,7 @@ import { optionalAuthentication, requiresAuthentication } from "../../util/authe
 import { body, matchedData, param, validationResult } from "express-validator";
 import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getLatestThreadsFromSubForums, getSubForum, updateSubForum } from "./SubForumService";
 import { SubForumResource } from "../../types/Resources";
+import bodyParser from "body-parser";
 
 export const subForumRouter = express.Router();
 
@@ -45,12 +46,14 @@ subForumRouter.post("/threads", optionalAuthentication,
     body('subForumCount').optional().isInt(),
     async (req, res, next) => {
         const errors = validationResult(req);
+
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
+
         try {
-            const threadCount = req.body.threadCount ? parseInt(req.body.threadCount as string) : undefined;
-            const subForumCount = req.body.subForumCount ? parseInt(req.body.subForumCount as string) : undefined;
+            const threadCount = req.body.threadCount ? parseInt(req.body.threadCount as string) : 2;
+            const subForumCount = req.body.subForumCount ? parseInt(req.body.subForumCount as string) : 2;
             const threads = await getLatestThreadsFromSubForums(threadCount, subForumCount);
             return res.send(threads);
         } catch (err) {
