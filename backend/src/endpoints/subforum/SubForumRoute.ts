@@ -1,9 +1,8 @@
 import express from "express";
 import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
 import { body, matchedData, param, validationResult } from "express-validator";
-import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getLatestThreadsFromSubForums, getSubForum, updateSubForum } from "./SubForumService";
+import { createSubForum, deleteSubForum, getAllSubForums, getAllThreadsForSubForum, getLatestThreadsFromSubForums, getSubForum, updateSubForum } from "./SubForumService";
 import { SubForumResource } from "../../types/Resources";
-import bodyParser from "body-parser";
 
 export const subForumRouter = express.Router();
 
@@ -17,7 +16,20 @@ subForumRouter.get("/:name", optionalAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
+
+subForumRouter.get("/", optionalAuthentication,
+    async (_req, res, next) => {
+        try {
+            const subForums = await getAllSubForums();
+            return res.send(subForums); // 200 by default
+        } catch (err) {
+            res.status(400);
+            next(err);
+        }
+    }
+);
 
 subForumRouter.post("/:name/threads", optionalAuthentication,
     param("name").isString(),
@@ -52,7 +64,8 @@ subForumRouter.post("/threads", optionalAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 subForumRouter.post("/", requiresAuthentication,
     body('name').isString(),
@@ -72,7 +85,8 @@ subForumRouter.post("/", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 subForumRouter.put("/:name", requiresAuthentication,
     param('name').isString(),
@@ -96,7 +110,8 @@ subForumRouter.put("/:name", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    });
+    }
+);
 
 subForumRouter.delete("/:id", requiresAuthentication,
     param('id').isMongoId(), async (req, res, next) => {
@@ -116,6 +131,7 @@ subForumRouter.delete("/:id", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 export default subForumRouter;
