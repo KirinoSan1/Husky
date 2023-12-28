@@ -88,8 +88,7 @@ test("Subforum GET, negative test for service error", async () => {
 
 test("Subforum GET, negative test", async () => {
     const request = supertest(app);
-    const response = await request.get(`/api/subforum/${subForum}`);
-
+    const response = await request.get(`/api/subforum/${subForum}`)
     expect(response.statusCode).toBe(400);
 });
 
@@ -97,6 +96,26 @@ test("Subforum GET, negative test 2", async () => {
     const invalidName = new mongoose.Types.ObjectId;
     const request = supertest(app);
     const response = await request.get(`/api/subforum/${invalidName}`);
+
+    expect(response.statusCode).toBe(400);
+});
+
+test("Subforum GET all subforums, positive test", async () => {
+    const request = supertest(app);
+    const response = await request.get(`/api/subforum`);
+
+    expect(response.statusCode).toBe(200);
+    const subForums = response.body;
+
+    expect(Array.isArray(subForums)).toBe(true);
+});
+
+test("Subforum GET all subforums, negative test", async () => {
+    const request = supertest(app);
+    jest.spyOn(threadService, "getAllSubForums").mockImplementationOnce(() => {
+        throw new Error("Simulated error in getAllSubForums");
+    });
+    const response = await request.get(`/api/subforum`);
 
     expect(response.statusCode).toBe(400);
 });

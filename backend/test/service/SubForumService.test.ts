@@ -5,7 +5,7 @@ import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
 import { IUser, User } from "../../src/endpoints/user/UserModel"
 import { Post } from "../../src/endpoints/post/PostModel";
 import { SubForumResource, ThreadResource } from "../../src/types/Resources";
-import { createSubForum, deleteSubForum, getAllThreadsForSubForum, getLatestThreadsFromSubForums, getSubForum, updateSubForum } from "../../src/endpoints/subforum/SubForumService";
+import { createSubForum, deleteSubForum, getAllSubForums, getAllThreadsForSubForum, getLatestThreadsFromSubForums, getSubForum, updateSubForum } from "../../src/endpoints/subforum/SubForumService";
 import { SubForum } from "../../src/endpoints/subforum/SubForumModel";
 import { Thread } from "../../src/endpoints/thread/ThreadModel";
 
@@ -74,6 +74,25 @@ test("GET subforum, Creates a new Thread and get the an Subforum with name", asy
     expect(result1.description).toBe(newSub.description);
     expect(result1.name).toBe(newSub.name);
     expect(result1.threads.toString()).toBe(newSub.threads.toString());
+});
+
+// ------------------------------------------------------------ getAllSubForums -------------------------------------------------------------------
+
+test("getAllSubForums - Get all subforums", async () => {
+    const subForumsData = [
+        { name: "Subforum 1", description: "Description for Subforum 1", threads: [] },
+        { name: "Subforum 2", description: "Description for Subforum 2", threads: [] },
+        { name: "Subforum 3", description: "Description for Subforum 3", threads: [] }
+    ];
+    const createdSubForums = await Promise.all(subForumsData.map(subForum => createSubForum(subForum)));
+    const allSubForums = await getAllSubForums();
+
+    expect(allSubForums.length).toBe(subForumsData.length);
+
+    createdSubForums.forEach((subForum, index) => {
+        expect(allSubForums[index].name).toBe(subForum.name);
+        expect(allSubForums[index].description).toBe(subForum.description);
+    });
 });
 
 // ----------------------------------------------------- getAllThreadsForSubForum -----------------------------------------------------------------

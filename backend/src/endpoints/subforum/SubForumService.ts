@@ -16,6 +16,16 @@ export async function getSubForum(name: string): Promise<SubForumResource> {
 }
 
 /**
+ * Retrieves all subforums.
+ * 
+ * @returns A promise resolving to an array of subforum resource objects.
+ */
+export async function getAllSubForums(): Promise<SubForumResource[]> {
+    const allSubForums = await SubForum.find().exec();
+    return allSubForums.map(subforum => subforum.toObject());
+}
+
+/**
  * Retrieves all threads for a specific subforum, optionally limited by count.
  * 
  * @param subForumName - The name of the subforum to retrieve threads from.
@@ -25,17 +35,22 @@ export async function getSubForum(name: string): Promise<SubForumResource> {
  */
 export async function getAllThreadsForSubForum(subForumName: string, count?: number): Promise<(ThreadResource & { creatorName: string })[]> {
     const subforum = await SubForum.findOne({ name: subForumName }).exec();
+
     if (!subforum) {
         throw new Error(`Subforum with name ${subForumName} not found.`);
     }
+
     let threads: Types.ObjectId[] = subforum.threads.slice(); // copy Array, to prevent side effects
 
     // Retrieve the thread objects based on the thread IDs from the subforum and sort them in descending order of creation date
     const threadObjects = await Thread.find({ _id: { $in: threads } }).sort({ createdAt: -1 }).exec();
+
     if (count && count > 0) {
         threadObjects.splice(count);
     }
+
     const threadArr: (ThreadResource & { creatorName: string })[] = [];
+
     for (const thread of threadObjects) {
         const userName = (await User.findById(thread.creator).exec())?.name;
         threadArr.push({
@@ -85,13 +100,21 @@ export async function getLatestThreadsFromSubForums(threadCount: number, subForu
  * @param subForumResource - The resource containing data to create the subforum.
  * @returns A promise resolving to the created subforum resource object.
  */
+/**
+ * Creates a new subforum based on the provided subforum resource.
+ * 
+ * @param subForumResource - The resource containing data to create the subforum.
+ * @returns A promise resolving to the created subforum resource object.
+ */
 export async function createSubForum(subForumResource: SubForumResource): Promise<SubForumResource> {
     const subforum = await SubForum.create({
         name: subForumResource.name,
         description: subForumResource.description,
         threads: subForumResource.threads
     });
+
     await subforum.save();
+
     return {
         id: subforum.id, name: subforum.name, description: subforum.description, threads: subforum.threads
     };
@@ -106,14 +129,18 @@ export async function createSubForum(subForumResource: SubForumResource): Promis
  */
 export async function updateSubForum(subForumResource: SubForumResource): Promise<SubForumResource> {
     const subforum = await SubForum.findById(subForumResource.id).exec();
+
     if (!subforum) {
         throw new Error(`The Subforum with the ID ${subForumResource.id} does not exist.`);
     }
+
     subforum.name = subForumResource.name;
     subforum.threads = new Types.DocumentArray<Types.ObjectId>(subForumResource.threads);
+
     if (subForumResource.description) {
         subforum.description = subForumResource.description;
     }
+
     const result = await subforum.save();
     return result.toObject();
 }
@@ -127,8 +154,10 @@ export async function updateSubForum(subForumResource: SubForumResource): Promis
  */
 export async function deleteSubForum(id: string): Promise<void> {
     const subForum = await SubForum.findById(id).exec();
+
     if (!subForum) {
         throw new Error(`Subforum with ID ${id} not found.`);
     }
+
     await SubForum.findByIdAndDelete(id).exec();
 }
