@@ -13,7 +13,6 @@ export interface IThreadPage {
 * Definition for the 'ThreadPageModel' type for the database model that includes 
 * user properties (IThreadPage).
 */
-
 type threadPageOverride = { posts: Types.DocumentArray<IPost> }
 type ThreadPageModel = Model<IThreadPage, {}, threadPageOverride>
 

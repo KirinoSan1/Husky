@@ -8,8 +8,9 @@ let pineappleThreadID: string;
 
 export async function prefillAdmin() {
     const admin = await User.findOne({ email: "admin@husky.de" }).exec();
-    if (admin)
+    if (admin) {
         return;
+    }
     await User.create({
         email: "admin@husky.de",
         name: "Husky Admin",
@@ -22,8 +23,9 @@ export async function prefillAdmin() {
 
 export async function prefillSubforums() {
     const forum = await SubForum.findOne({name: "Cuisine"}).exec();
-    if (forum)
+    if (forum) {
         return;
+    }
 
     const cuisineForum = await SubForum.create({
         name: "Cuisine",

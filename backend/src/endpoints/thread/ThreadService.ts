@@ -4,17 +4,20 @@ import { User } from "../user/UserModel";
 import { ThreadResource } from "../../types/Resources";
 
 /**
- * Returns the thread with the specified ID.
- * Throws an error if no thread is found.
+ * Retrieves a specific thread identified by its unique ID.
+ * 
+ * @param id - The unique identifier of the thread to retrieve.
+ * @returns A promise that resolves to a ThreadResource object representing the thread details.
+ * @throws Error if no thread is found with the provided ID or if the creator associated with the thread is not found.
  */
 export async function getThread(id: string): Promise<ThreadResource> {
     const thread = await Thread.findById(id).exec();
     if (!thread) {
-        throw new Error(`Thread with ID ${id} not found`)
+        throw new Error(`Thread with ID ${id} not found.`)
     }
     const creator = await User.findById(thread.creator).exec();
     if (!creator) {
-        throw new Error(`Creator not found`);
+        throw new Error(`Creator not found.`);
     }
 
     return {
@@ -23,6 +26,12 @@ export async function getThread(id: string): Promise<ThreadResource> {
     };
 }
 
+/**
+ * Retrieves threads with titles matching the provided string (case-insensitive).
+ * 
+ * @param title - The string to search for in thread titles.
+ * @returns A promise that resolves to an array of ThreadResource objects matching the title search.
+ */
 export async function getThreadtitle(title: string): Promise<ThreadResource[]> {
     const regex = new RegExp(title, 'i');
     const threads = await Thread.find({ title: regex }).exec();
@@ -39,9 +48,11 @@ export async function getThreadtitle(title: string): Promise<ThreadResource[]> {
     return threadResources;
 }
 
-
 /**
- * Create the Thread
+ * Creates a new thread based on the provided ThreadResource object.
+ * 
+ * @param threadResource - The details of the thread to be created.
+ * @returns A promise that resolves to the created ThreadResource object.
  */
 export async function createThread(threadResource: ThreadResource): Promise<ThreadResource> {
     const thread = await Thread.create({
@@ -54,7 +65,7 @@ export async function createThread(threadResource: ThreadResource): Promise<Thre
     });
     const creator = await User.findById(thread.creator).exec();
     if (!creator) {
-        throw new Error(`Creator with ID ${thread.creator} not found`)
+        throw new Error(`Creator with ID ${thread.creator} not found.`)
     }
     await thread.save();
 
@@ -65,14 +76,16 @@ export async function createThread(threadResource: ThreadResource): Promise<Thre
 }
 
 /**
- * Changes the data of a Thread.
- * Currently, only the following data can be modified: title and subForum.
- * If other data is modified, it will be ignored.
+ * Updates the data of an existing thread.
+ * Only the 'title' and 'subForum' fields can be modified.
+ * 
+ * @param threadResource - The updated details of the thread.
+ * @returns A promise that resolves to the updated ThreadResource object.
  */
 export async function updateThread(threadResource: ThreadResource): Promise<ThreadResource> {
     const thread = await Thread.findById(threadResource.id).exec();
     if (!thread) {
-        throw new Error(`Thread with ID ${threadResource.id} not found`);
+        throw new Error(`Thread with ID ${threadResource.id} not found.`);
     }
     if (threadResource.title) {
         thread.title = threadResource.title;
@@ -80,21 +93,21 @@ export async function updateThread(threadResource: ThreadResource): Promise<Thre
     if (threadResource.subForum) {
         thread.subForum = threadResource.subForum;
     }
-    // thread.pages = threadResource.pages should be or?
     await thread.save();
-    
+
     return { id: thread.id, title: thread.title, subForum: thread.subForum, creator: thread.creator.toString(), pages: thread.pages };
 }
 
 /**
- * When deleting, the Thread is identified by its ID.
- * If no Thread is found (or for any other reason cannot be deleted), an error is thrown.
- * When the Thread is deleted, all associated ThreadPages must also be deleted.
+ * Deletes a thread and its associated thread pages based on the provided ID.
+ * 
+ * @param id - The unique identifier of the thread to be deleted.
+ * @returns A promise that resolves when the thread and associated pages are successfully deleted.
  */
 export async function deleteThread(id: string): Promise<void> {
     const thread = await Thread.findById(id).exec();
     if (!thread) {
-        throw new Error(`Thread with ID ${id} not found`);
+        throw new Error(`Thread with ID ${id} not found.`);
     }
     await ThreadPage.deleteMany({ thread: thread.id });
     await Thread.findByIdAndDelete(id);

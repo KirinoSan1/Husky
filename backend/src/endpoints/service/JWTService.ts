@@ -1,18 +1,18 @@
-import { JwtPayload, sign, verify } from "jsonwebtoken";
 import dotenv from "dotenv";
-import { login } from "../authentication/AuthenticationService";
-
 dotenv.config();
+
+import { JwtPayload, sign, verify } from "jsonwebtoken";
+import { login } from "../authentication/AuthenticationService";
 
 export async function verifyPasswordAndCreateJWT(email: string, password: string): Promise<string | undefined> {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-        throw Error("JWT_SECRET not set");
+        throw Error("JWT_SECRET not set.");
     }
 
     const ttl = process.env.JWT_TTL;
     if (!ttl) {
-        throw new Error("JWT_TTL not set");
+        throw new Error("JWT_TTL not set.");
     }
 
     const loginResult = await login(email, password);
@@ -33,16 +33,16 @@ export async function verifyPasswordAndCreateJWT(email: string, password: string
 export function verifyJWT(jwtString: string | undefined): { userId: string, role: "u" | "a" | "m" } {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-        throw Error("JWT_SECRET not set");
+        throw Error("JWT_SECRET not set.");
     }
 
     const ttl = process.env.JWT_TTL;
     if (!ttl) {
-        throw new Error("JWT_TTL not set");
+        throw new Error("JWT_TTL not set.");
     }
 
     if (!jwtString) {
-        throw new Error("Invalid token");
+        throw new Error("Invalid token.");
     }
 
     try {
@@ -58,5 +58,5 @@ export function verifyJWT(jwtString: string | undefined): { userId: string, role
         throw new Error(err.message);
     }
 
-    throw new Error("Invalid payload");
+    throw new Error("Invalid payload.");
 }

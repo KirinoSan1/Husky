@@ -15,13 +15,29 @@ threadRouter.get("/:id", optionalAuthentication,
             return res.status(400).json({ errors: errors.array() });
         }
         const threadId = req.params!.id;
-
         try {
             const foundThread = await getThread(threadId);
             return res.send(foundThread);
         } catch (err) {
             res.status(404).json({ message: "Thread not found." });
             next(err);
+        }
+    });
+
+threadRouter.get("/find/:query", optionalAuthentication,
+    param("query").isString().isLength({ min: 2, max: 100 }),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const query = req.params!.query;
+        try {
+            const foundThread = await getThreadtitle(query);
+            return res.send(foundThread);
+        } catch (error: any) {
+            res.status(404);
+            next(error);
         }
     });
 
@@ -39,7 +55,8 @@ threadRouter.post("/", requiresAuthentication,
         const threadData = matchedData(req) as ThreadResource & { content: string };
         try {
             let createdThread = await createThread(threadData);
-            // if content is defined -> create threadpage and initial post
+
+            // If content is defined -> create threadpage and initial post
             if (threadData.content && threadData.numPosts === 1) {
                 await addPostNewPage(threadData.creator, threadData.content, createdThread.id!);
                 createdThread = await getThread(createdThread.id ?? "");
@@ -49,7 +66,7 @@ threadRouter.post("/", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    })
+    });
 
 threadRouter.put("/:id", requiresAuthentication,
     param("id").isMongoId(),
@@ -65,7 +82,6 @@ threadRouter.put("/:id", requiresAuthentication,
         const threadData = matchedData(req) as ThreadResource;
         const threadID = req.params.id;
         const creatorID = req.userId;
-
         try {
             const thread = await getThread(threadID);
             if (thread.creator !== creatorID) {
@@ -77,7 +93,7 @@ threadRouter.put("/:id", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    })
+    });
 
 threadRouter.delete("/:id", requiresAuthentication,
     param("id").isMongoId(),
@@ -88,7 +104,6 @@ threadRouter.delete("/:id", requiresAuthentication,
         }
         const threadID = req.params.id;
         const creatorID = req.userId;
-
         try {
             const thread = await getThread(threadID);
             if (thread.creator !== creatorID) {
@@ -100,25 +115,6 @@ threadRouter.delete("/:id", requiresAuthentication,
             res.status(404);
             next(err);
         }
-    })
-
-
-threadRouter.get("/find/:query", optionalAuthentication,
-    param("query").isString().isLength({ min: 2, max: 100 }),
-    async (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        const query = req.params!.query;
-        try {
-            const foundThread = await getThreadtitle(query);
-            return res.send(foundThread);
-        } catch (error: any) {
-            res.status(404)
-            next(error)
-        }
     });
-
 
 export default threadRouter;
