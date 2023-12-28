@@ -32,7 +32,7 @@ export async function requiresAuthentication(req: Request, res: Response, next: 
         try {
             const jwtString = auth.substring("Bearer ".length);
             const result = verifyJWT(jwtString);
-            req.userId = result.userId
+            req.userId = result.userId;
             req.role = result.role;
             next();
         } catch (error) {
@@ -57,6 +57,6 @@ export async function optionalAuthentication(req: Request, res: Response, next: 
     if (req.header("Authorization")) {
         requiresAuthentication(req, res, next);
     } else {
-        next()
+        next();
     }
 }

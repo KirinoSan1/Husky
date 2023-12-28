@@ -4,6 +4,9 @@ import { model, Schema, Types } from "mongoose"
  * cf. https://mongoosejs.com/docs/typescript.html
  */
 
+/**
+ * Interface with the appointed properties
+ */
 export interface IPost {
     content: string
     author: Types.ObjectId

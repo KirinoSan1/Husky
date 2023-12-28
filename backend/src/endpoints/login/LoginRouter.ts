@@ -14,13 +14,13 @@ loginRouter.post("/",
             return res.status(400).json({ errors: errors.array() });
         }
         try {
-            const data = matchedData(req)
+            const data = matchedData(req);
             const jwtString = await verifyPasswordAndCreateJWT(data.email, data.password);
             if (!jwtString) {
                 return res.status(401).json({ message: "Can't create a JWT." });
             } else {
-                let user = await User.findOne({email: data.email}).exec()
-                if(user!.verified == false){
+                let user = await User.findOne({ email: data.email }).exec();
+                if (user!.verified == false) {
                     return res.status(403).json({ message: "Not authorized. Please verify your email." });
                 }
                 const LoginRes = { token_type: "Bearer", access_token: jwtString };

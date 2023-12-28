@@ -13,15 +13,14 @@ import { MongoMemoryServer } from "mongodb-memory-server"
  * - https://nodkz.github.io/mongodb-memory-server/ 
  */
 export default class TestDB {
-    private static mongo: MongoMemoryServer | undefined
+    private static mongo: MongoMemoryServer | undefined;
     private static connected = false;
 
     static async connect() {
         if (TestDB.connected) {
-            throw new Error("MongoSB already connected.")
+            throw new Error("MongoSB already connected.");
         }
 
-        // External Server: (Anleitung siehe Blatt 01, Zusatzaufgabe)
         // await mongoose.connect("mongodb://localhost:27017/test");
 
         // MongoDB-Memory-Server:
@@ -50,15 +49,13 @@ export default class TestDB {
 
     static async clear() {
         if (!TestDB.connected) {
-            throw new Error("MongoSB not connected.")
+            throw new Error("MongoSB not connected.");
         }
         // await mongoose.connection.dropDatabase();
-        // no drop in order to not delete indexes:
+        // No drop in order to not delete indexes:
         const collections = Object.values(mongoose.connection.collections);
         for (const collection of collections) {
             await collection.deleteMany({});
         }
     }
 }
-
-

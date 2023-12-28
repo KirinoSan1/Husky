@@ -29,10 +29,10 @@ app.use("*", express.json({ limit: "5mb" }));
 app.use(bodyParser.json());
 
 app.use("/api/login", loginRouter);
-app.use("/api/user", userRouter)
-app.use("/api/post", postRouter)
-app.use("/api/threadpage", threadPageRouter)
-app.use("/api/thread", threadRouter)
-app.use("/api/subforum", subForumRouter)
+app.use("/api/user", userRouter);
+app.use("/api/post", postRouter);
+app.use("/api/threadpage", threadPageRouter);
+app.use("/api/thread", threadRouter);
+app.use("/api/subforum", subForumRouter);
 
 server.start(app, port);

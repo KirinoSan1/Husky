@@ -10,26 +10,18 @@ export const subForumRouter = express.Router();
 subForumRouter.get("/:name", optionalAuthentication,
     param("name").isString(),
     async (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
         try {
             const subForum = await getSubForum(req.params.name);
             return res.send(subForum); // 200 by default
         } catch (err) {
             res.status(400);
-            next(err)
+            next(err);
         }
-    })
+    });
 
 subForumRouter.post("/:name/threads", optionalAuthentication,
     param("name").isString(),
     async (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
         try {
             const subForumName = req.params.name;
             const count = req.query.count ? parseInt(req.query.count as string) : undefined;
@@ -76,12 +68,11 @@ subForumRouter.post("/", requiresAuthentication,
             const subForumResource = matchedData(req) as SubForumResource;
             const newSubForum = await createSubForum(subForumResource);
             return res.status(201).send(newSubForum);
-
         } catch (err) {
             res.status(400);
             next(err);
         }
-    })
+    });
 
 subForumRouter.put("/:name", requiresAuthentication,
     param('name').isString(),
@@ -105,7 +96,7 @@ subForumRouter.put("/:name", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    })
+    });
 
 subForumRouter.delete("/:id", requiresAuthentication,
     param('id').isMongoId(), async (req, res, next) => {
@@ -117,7 +108,7 @@ subForumRouter.delete("/:id", requiresAuthentication,
             return res.status(403).json({ error: 'Permission denied. Only admins can delete subforums.' });
         }
         try {
-            const subforumResource = matchedData(req) as SubForumResource
+            const subforumResource = matchedData(req) as SubForumResource;
             const subForumID = subforumResource.id;
             await deleteSubForum(subForumID!);
             return res.sendStatus(204)
@@ -125,6 +116,6 @@ subForumRouter.delete("/:id", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    })
+    });
 
-export default subForumRouter
+export default subForumRouter;

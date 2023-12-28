@@ -18,9 +18,9 @@ threadPageRouter.get("/:id", optionalAuthentication,
             return res.send(threadPage); // 200 by default
         } catch (err) {
             res.status(400);
-            next(err)
+            next(err);
         }
-    })
+    });
 
 threadPageRouter.get("/authors/:id", optionalAuthentication,
     param("id").isMongoId(),
@@ -31,24 +31,21 @@ threadPageRouter.get("/authors/:id", optionalAuthentication,
         }
         try {
             const authors = await getThreadPageAuthors(req.params.id);
-            return res.send(authors); // 200 by default
+            return res.send(authors); 
         } catch (err) {
             res.status(400);
             next(err);
         }
-    })
+    });
 
 threadPageRouter.post("/", requiresAuthentication,
     body('posts').isArray(),
-    //isLength({min: 1, max: 10}) didnt work. Had to use check.custom
-    //check custom spot
-    check("posts").custom(/*specialize the value*/value => {
-        //here is the actual validation
+    check("posts").custom(value => {
+        // Here is the actual validation
         if (!Array.isArray(value) || value.length < 1 || value.length > 10) {
             throw new Error("Invalid number of Posts. A ThreadPage has to contain at least 1 Post and a maximum of 10");
         }
-        //return true if validation passed
-        return true;
+        return true; // Return true if validation passed
     }),
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -63,7 +60,7 @@ threadPageRouter.post("/", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    })
+    });
 
 threadPageRouter.put("/:id", requiresAuthentication,
     param('id').isMongoId(),
@@ -86,8 +83,7 @@ threadPageRouter.put("/:id", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    }
-);
+    });
 
 threadPageRouter.patch("/:id/add", requiresAuthentication,
     param('id').isMongoId(),
@@ -107,8 +103,7 @@ threadPageRouter.patch("/:id/add", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    }
-);
+    });
 
 threadPageRouter.patch("/:id/edit", requiresAuthentication,
     param('id').isMongoId(),
@@ -130,8 +125,7 @@ threadPageRouter.patch("/:id/edit", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    }
-);
+    });
 
 threadPageRouter.delete("/:id", requiresAuthentication,
     param('id').isMongoId(),
@@ -141,7 +135,7 @@ threadPageRouter.delete("/:id", requiresAuthentication,
             return res.status(400).json({ errors: errors.array() });
         }
         try {
-            const loadedthreadPage = matchedData(req) as ThreadPageResource
+            const loadedthreadPage = matchedData(req) as ThreadPageResource;
             const threadPageToDelete = loadedthreadPage.id;
             await deleteThreadPage(threadPageToDelete!);
             return res.sendStatus(204)
@@ -151,4 +145,4 @@ threadPageRouter.delete("/:id", requiresAuthentication,
         }
     })
 
-export default threadPageRouter
+export default threadPageRouter;

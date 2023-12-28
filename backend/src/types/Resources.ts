@@ -29,7 +29,13 @@ export type ThreadPageResource = {
     createdAt?: Date
 }
 
-// Should Author be String or an ID?
+export type SubForumResource = {
+    id?: string,
+    name: string,
+    threads: Types.ObjectId[]
+    description?: string
+}
+
 export type PostResource = {
     id?: string
     content: string
@@ -58,11 +64,4 @@ export type LoginResource = {
     "access_token": string,
     /** Constant value */
     "token_type": "Bearer"
-}
-
-export type SubForumResource = {
-    id?: string,
-    name: string,
-    threads: Types.ObjectId[]
-    description?: string
 }
