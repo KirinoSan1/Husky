@@ -1,0 +1,12 @@
+export const MIN_LENGTH_EMAIL_ADDRESS = 3;
+export const MAX_LENGTH_EMAIL_ADDRESS = 320;
+export const MIN_LENGTH_USERNAME = 3;
+export const MAX_LENGTH_USERNAME = 20;
+export const MIN_LENGTH_PASSWORD = 8;
+export const MAX_LENGTH_PASSWORD = 256;
+export const MIN_LENGTH_THREAD_SEARCH_QUERY = 2;
+export const MAX_LENGTH_THREAD_SEARCH_QUERY = 100;
+export const MIN_LENGTH_THREAD_TITLE = 2;
+export const MAX_LENGTH_THREAD_TITLE = 100;
+export const MIN_LENGTH_POST_CONTENT = 2;
+export const MAX_LENGTH_POST_CONTENT = 1000;

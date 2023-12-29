@@ -5,6 +5,7 @@ import { searchThreadsByTitle } from "../../api/api";
 import LoadingIndicator from "../util/LoadingIndicator";
 import { Alert, Button } from "react-bootstrap";
 import { LoginContext } from "../login/LoginContext";
+import { MAX_LENGTH_THREAD_SEARCH_QUERY, MIN_LENGTH_THREAD_SEARCH_QUERY } from "../../types/Constants";
 
 export default function ThreadSearch() {
     const [loginInfo] = useContext(LoginContext);
@@ -26,10 +27,11 @@ export default function ThreadSearch() {
         setThreads(null);
         setError("");
         try {
-            if (title.length < 2) {
-                throw new Error("query must contain at least 2 characters");
+            if (title.length < MIN_LENGTH_THREAD_SEARCH_QUERY) {
+                throw String(`Your query must contain at least ${MIN_LENGTH_THREAD_SEARCH_QUERY} characters.`);
+            } else if (title.length > MAX_LENGTH_THREAD_SEARCH_QUERY) {
+                throw String(`Your query must contain no more than ${MAX_LENGTH_THREAD_SEARCH_QUERY} characters.`);
             }
-
             setThreads(await searchThreadsByTitle(title));
         } catch (error) {
             setError(String(error));
@@ -58,7 +60,7 @@ export default function ThreadSearch() {
                 <div className="threadsearch-horizontal-line"></div>
             </>}
             <p id="threadsearch-div-p0">Search for threads by title:</p>
-            <input id="threadsearch-div-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdate} value={title} onKeyPress={handleKeyPress}></input>
+            <input id="threadsearch-div-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdate} value={title} onKeyDown={handleKeyPress}></input>
             <Button id="threadsearch-div-button2" onClick={handleSearch}>Search</Button>
             {loading && <LoadingIndicator />}
             {(error || threads) && <div className="threadsearch-horizontal-line"></div>}

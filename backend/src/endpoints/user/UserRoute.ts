@@ -10,6 +10,7 @@ import sendEmail from "../../util/sendEmail";
 import crypto from "crypto"
 import { User } from "./UserModel";
 import { Token } from "../TokenModel";
+import { MAX_LENGTH_EMAIL_ADDRESS, MAX_LENGTH_PASSWORD, MAX_LENGTH_USERNAME, MIN_LENGTH_EMAIL_ADDRESS, MIN_LENGTH_PASSWORD, MIN_LENGTH_USERNAME } from "../../types/Constants";
 
 export const userRouter = express.Router();
 
@@ -75,9 +76,9 @@ userRouter.get("/:id/verify/:token",
     });
 
 userRouter.post("/",
-    body('email').isEmail().normalizeEmail().isLength({ min: 1, max: 100 }),
-    body('name').isString().isLength({ min: 3, max: 20 }),
-    body('password').isStrongPassword().isLength({ min: 1, max: 100 }),
+    body('email').isEmail().normalizeEmail().isLength({ min: MIN_LENGTH_EMAIL_ADDRESS, max: MAX_LENGTH_EMAIL_ADDRESS }),
+    body('name').isString().isLength({ min: MIN_LENGTH_USERNAME, max: MAX_LENGTH_USERNAME }),
+    body('password').isStrongPassword().isLength({ min: MIN_LENGTH_PASSWORD, max: MAX_LENGTH_PASSWORD }),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -85,7 +86,11 @@ userRouter.post("/",
         }
         const user = await User.findOne({ email: req.body.email });
         if (user) {
-            return res.status(409).json({ message: "User already exists" });
+            // mock the actual function call by sleeping for a duration
+            await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
+            // we do not want to show that the email address already exists
+            // pretend that everything worked as intended by returning 201
+            res.sendStatus(201);
         }
         try {
             const userResource = matchedData(req) as UserResource;
@@ -122,11 +127,11 @@ userRouter.put("/:id",
     requiresAuthentication,
     param("id").isMongoId(),
     body("avatar").isString(),
-    body('email').isEmail().normalizeEmail().isLength({ min: 1, max: 100 }),
+    body('email').isEmail().normalizeEmail().isLength({ min: MIN_LENGTH_EMAIL_ADDRESS, max: MAX_LENGTH_EMAIL_ADDRESS }),
     body('admin').isBoolean(),
     body('mod').isBoolean(),
-    body('name').isString().isLength({ min: 1, max: 100 }),
-    body('password').isStrongPassword().isLength({ min: 1, max: 100 }),
+    body('name').isString().isLength({ min: MIN_LENGTH_USERNAME, max: MAX_LENGTH_USERNAME }),
+    body('password').isStrongPassword().isLength({ min: MIN_LENGTH_PASSWORD, max: MAX_LENGTH_PASSWORD }),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -137,7 +142,7 @@ userRouter.put("/:id",
             const updatedUserResource = await updateUser(userResource);
             return res.send(updatedUserResource);
         } catch (err) {
-            res.status(400); // duplicate user
+            res.status(405); // duplicate user
             next(err);
         }
     });

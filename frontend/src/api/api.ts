@@ -5,65 +5,64 @@ import axios from "axios";
 const BASE_URL = "https://127.0.0.1";
 
 export async function login(loginData: { email: string, password: string }): Promise<LoginResource> {
-    try {
-        if (!loginData.email)
-            throw new Error("email not defined");
-        if (!loginData.password)
-            throw new Error("password not defined");
+    if (!loginData.email)
+        throw new Error("email not defined");
+    if (!loginData.password)
+        throw new Error("password not defined");
 
-        const response = await fetch(`${BASE_URL}/api/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(loginData),
-        });
+    const response = await fetch(`${BASE_URL}/api/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+    });
 
-        if (!response || !response.ok)
-            throw new Error("network response was not OK");
+    if (!response)
+        throw String("Something went wrong when connecting to the server, please try again later.");
+    if (response.status === 400 || response.status === 401)
+        throw String("Your login details are incorrect, please try again.");
+    if (response.status === 403)
+        throw String("Your account is not verified yet. Please click on the link in the confirmation mail to verify your account.");
+    if (response.status === 405)
+        throw String("The server encountered an unknown error, pleasy try again later.");
+    if (response.status !== 201)
+        throw String("An error occurred, please try again.");
 
-        const result: LoginResource = await response.json();
-        if (!result.access_token || !result.token_type)
-            throw new Error("invalid result from server");
-        return result;
-
-    } catch (error) {
-        throw new Error("Error occurred during login: " + error);
-    }
+    const result: LoginResource = await response.json();
+    if (!result.access_token || !result.token_type)
+        throw String("The server returned an invalid response, please try again later.");
+    return result;
 }
 
-export async function register(registrationData: { username: string, email: string, password1: string, password2: string }): Promise<Boolean> {
-    try {
-        if (!registrationData.username)
-            throw new Error("username not defined");
-        if (!registrationData.email)
-            throw new Error("email not defined");
-        if (!registrationData.password1)
-            throw new Error("first password not defined");
-        if (!registrationData.password2)
-            throw new Error("second password not defined");
-        if (registrationData.password1 !== registrationData.password2)
-            throw new Error("passwords do not match");
+export async function register(registrationData: { username: string, email: string, password1: string, password2: string }): Promise<void> {
+    if (!registrationData.username)
+        throw new Error("username not defined");
+    if (!registrationData.email)
+        throw new Error("email not defined");
+    if (!registrationData.password1)
+        throw new Error("first password not defined");
+    if (!registrationData.password2)
+        throw new Error("second password not defined");
+    if (registrationData.password1 !== registrationData.password2)
+        throw String("The passwords do not match, please try again.");
 
-        const response = await fetch(`${BASE_URL}/api/user/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ name: registrationData.username, email: registrationData.email, password: registrationData.password1 })
-        });
+    const response = await fetch(`${BASE_URL}/api/user/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: registrationData.username, email: registrationData.email, password: registrationData.password1 })
+    });
 
-        if (!response || !response.ok)
-            throw new Error("network response was not OK");
-
-        if (response.status === 201) {
-            return true
-        }
-        return false;
-
-    } catch (error) {
-        throw new Error("Error occurred during registration: " + error);
-    }
+    if (!response)
+        throw String("Something went wrong when connecting to the server, please try again later.");
+    if (response.status === 400)
+        throw String("Your credentials have been rejected, please make sure the provided email address is valid.");
+    if (response.status === 405)
+        throw String("The server encountered an unknown error, pleasy try again later.");
+    if (response.status !== 201)
+        throw String("An error occurred, please try again.");
 }
 
 export async function getUser(userID: string): Promise<UserResource> {
@@ -101,66 +100,71 @@ export async function updateUser(user: UserResource, data: {
     newName?: string, newEmail?: string, oldPassword: string, newPassword1?: string, newPassword2?: string
 }, toUpdate: "name" | "email" | "password"): Promise<UserResource> {
     user = Object.assign({}, user);
-    try {
-        if (!user)
-            throw new Error("user not defined");
-        if (!user.id || !user.name || !user.email)
-            throw new Error("user is missing fields");
-        if (!data)
-            throw new Error("data not defined");
-        if (!toUpdate)
-            throw new Error("toUpdate not defined");
-        if (toUpdate !== "name" && toUpdate !== "email" && toUpdate !== "password")
-            throw new Error("toUpdate contains invalid value");
-        if (toUpdate === "name" && (!data.newName || !data.oldPassword))
-            throw new Error("invalid data for updating username");
-        if (toUpdate === "email" && (!data.newEmail || !data.oldPassword))
-            throw new Error("invalid data for updating email");
-        if (toUpdate === "password" && (!data.oldPassword || !data.newPassword1 || !data.newPassword2 || data.newPassword1 !== data.newPassword2))
-            throw new Error("invalid data for updating password");
+    if (!user)
+        throw new Error("user not defined");
+    if (!user.id || !user.name || !user.email)
+        throw new Error("user is missing fields");
+    if (!data)
+        throw new Error("data not defined");
+    if (!toUpdate)
+        throw new Error("toUpdate not defined");
+    if (toUpdate !== "name" && toUpdate !== "email" && toUpdate !== "password")
+        throw new Error("toUpdate contains invalid value");
+    if (toUpdate === "name" && (!data.newName || !data.oldPassword))
+        throw new Error("invalid data for updating username");
+    if (toUpdate === "email" && (!data.newEmail || !data.oldPassword))
+        throw new Error("invalid data for updating email");
+    if (toUpdate === "password" && (!data.oldPassword || !data.newPassword1 || !data.newPassword2))
+        throw new Error("invalid data for updating password");
+    if (toUpdate === "password" && data.newPassword1 !== data.newPassword2)
+        throw String("The new passwords did not match, please try again.");
 
-        const jwt = getJWT();
-        if (!jwt)
-            throw new Error("no jwt found");
-        const loginInfo = getLoginInfo();
-        if (!loginInfo || !loginInfo.userID)
-            throw new Error("cannot find userID");
-        if (user.id !== loginInfo.userID)
-            throw new Error("userIDs do not match");
+    const jwt = getJWT();
+    if (!jwt)
+        throw new Error("no jwt found");
+    const loginInfo = getLoginInfo();
+    if (!loginInfo || !loginInfo.userID)
+        throw new Error("cannot find userID");
+    if (user.id !== loginInfo.userID)
+        throw new Error("userIDs do not match");
 
-        const bodyData = user as any;
-        if (toUpdate === "name") {
-            bodyData["name"] = data.newName;
-            bodyData["password"] = data.oldPassword;
-        } else if (toUpdate === "email") {
-            bodyData["email"] = data.newEmail;
-            bodyData["password"] = data.oldPassword;
-        } else if (toUpdate === "password") {
-            bodyData["password"] = data.newPassword1;
-        }
-
-        const response = await fetch(`${BASE_URL}/api/user/${bodyData.id}`, {
-            method: "PUT",
-            headers: {
-                "Authorization": `Bearer ${jwt}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(bodyData)
-        });
-
-        if (!response || !response.ok)
-            throw new Error("network response was not OK");
-
-        const result: UserResource = await response.json();
-        if (!result)
-            throw new Error("invalid result from server");
-        if (!result.id || !result.email || !result.name)
-            throw new Error("result from server is missing fields");
-        return result;
-
-    } catch (error) {
-        throw new Error("Error occurred during update: " + error);
+    const bodyData = user as any;
+    if (toUpdate === "name") {
+        bodyData["name"] = data.newName;
+        bodyData["password"] = data.oldPassword;
+    } else if (toUpdate === "email") {
+        bodyData["email"] = data.newEmail;
+        bodyData["password"] = data.oldPassword;
+    } else if (toUpdate === "password") {
+        bodyData["password"] = data.newPassword1;
     }
+
+    const response = await fetch(`${BASE_URL}/api/user/${bodyData.id}`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${jwt}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyData)
+    });
+
+    if (!response)
+        throw String("Something went wrong when connecting to the server, please try again later.");
+    if (response.status === 400)
+        throw String("Your credentials have been rejected, please make sure they fulfil our criteria and try again.");
+    if (response.status === 405 && toUpdate === "email")
+        throw String("The provided email address is already in use, please enter a different email address.");
+    if (response.status === 405 && toUpdate === "name")
+        throw String("The provided username is already in use, please enter a different username.");
+    if (response.status === 405)
+        throw String("The server encountered an unknown error, pleasy try again later.");
+    if (response.status !== 200)
+        throw String("An error occurred, please try again.");
+
+    const result: UserResource = await response.json();
+    if (!result || !result.id || !result.email || !result.name)
+        throw new Error("result from server is missing fields");
+    return result;
 }
 
 export async function getThread(threadID: string): Promise<ThreadResource> {
@@ -235,25 +239,32 @@ export async function getAuthors(threadPageID: string): Promise<AuthorsResource>
 }
 
 export async function searchThreadsByTitle(title: string): Promise<Array<ThreadResource>> {
-    try {
-        if (!title)
-            throw new Error("title not defined");
+    if (!title)
+        throw new Error("title not defined");
 
-        const response = await fetch(`${BASE_URL}/api/thread/find/${title}`, {
+    let response: Response;
+    try {
+        response = await fetch(`${BASE_URL}/api/thread/find/${title}`, {
             method: "GET"
         });
-        if (!response || !response.ok)
-            throw new Error("network response was not OK");
-
-        const result: Array<ThreadResource> = await response.json();
-        if (!result)
-            throw new Error("invalid result from server");
-        result.forEach((thread) => { thread.createdAt = new Date(thread.createdAt); });
-        return result;
-
     } catch (error) {
-        throw new Error("Error occurred during request: " + error);
+        throw String("Could not connect to server, please try again.");
     }
+
+    if (!response)
+        throw String("Something went wrong when connecting to the server, please try again later.");
+    if (response.status === 400)
+        throw String(`Please make sure your query is of appropriate length.`);
+    if (response.status === 405)
+        throw String("The server encountered an unknown error, pleasy try again later.");
+    if (response.status !== 200)
+        throw String("An error occurred, please try again.");
+
+    const result: Array<ThreadResource> = await response.json();
+    if (!result)
+        throw String("The server returned an invalid result, please try again later.");
+    result.forEach((thread) => { thread.createdAt = new Date(thread.createdAt); });
+    return result;
 }
 
 export async function createPost(content: string, userID: string, threadID: string, threadPageID: string): Promise<ThreadPageResource> {

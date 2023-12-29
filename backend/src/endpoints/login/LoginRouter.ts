@@ -6,7 +6,7 @@ import { User } from "../user/UserModel";
 const loginRouter = express.Router();
 
 loginRouter.post("/",
-    body('email').isEmail().normalizeEmail().isLength({ min: 1, max: 100 }),
+    body('email').isEmail().normalizeEmail().isLength({ min: 3, max: 320 }),
     body('password').isString(), // TODO: leads to inconsistencies - should only get checked on register
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -27,7 +27,7 @@ loginRouter.post("/",
                 return res.status(201).json(LoginRes);
             }
         } catch (error) {
-            res.sendStatus(400);
+            res.sendStatus(405);
             next(error);
         }
     });
