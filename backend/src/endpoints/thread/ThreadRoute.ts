@@ -4,6 +4,7 @@ import { body, matchedData, param, validationResult } from "express-validator";
 import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
 import { ThreadResource } from "../../types/Resources";
 import { addPostNewPage } from "../threadpage/ThreadPageService";
+import { MAX_LENGTH_THREAD_SEARCH_QUERY, MIN_LENGTH_THREAD_SEARCH_QUERY } from "../../types/Constants";
 
 const threadRouter = express.Router();
 
@@ -25,7 +26,7 @@ threadRouter.get("/:id", optionalAuthentication,
     });
 
 threadRouter.get("/find/:query", optionalAuthentication,
-    param("query").isString().isLength({ min: 2, max: 100 }),
+    param("query").isString().isLength({ min: MIN_LENGTH_THREAD_SEARCH_QUERY, max: MAX_LENGTH_THREAD_SEARCH_QUERY }),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -36,7 +37,7 @@ threadRouter.get("/find/:query", optionalAuthentication,
             const foundThread = await getThreadtitle(query);
             return res.send(foundThread);
         } catch (error: any) {
-            res.status(404);
+            res.status(405);
             next(error);
         }
     });
