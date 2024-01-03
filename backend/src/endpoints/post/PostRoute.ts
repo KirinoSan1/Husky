@@ -20,7 +20,8 @@ postRouter.get("/:id", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 postRouter.post("/", requiresAuthentication,
     body('author').isString(),
@@ -38,7 +39,8 @@ postRouter.post("/", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 postRouter.put("/:id", requiresAuthentication,
     param('id').isMongoId(),
@@ -59,7 +61,8 @@ postRouter.put("/:id", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    });
+    }
+);
 
 postRouter.delete("/:id", requiresAuthentication,
     param('id').isMongoId(),
@@ -77,6 +80,7 @@ postRouter.delete("/:id", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 export default postRouter;

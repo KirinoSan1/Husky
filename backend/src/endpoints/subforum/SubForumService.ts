@@ -100,21 +100,13 @@ export async function getLatestThreadsFromSubForums(threadCount: number, subForu
  * @param subForumResource - The resource containing data to create the subforum.
  * @returns A promise resolving to the created subforum resource object.
  */
-/**
- * Creates a new subforum based on the provided subforum resource.
- * 
- * @param subForumResource - The resource containing data to create the subforum.
- * @returns A promise resolving to the created subforum resource object.
- */
 export async function createSubForum(subForumResource: SubForumResource): Promise<SubForumResource> {
     const subforum = await SubForum.create({
         name: subForumResource.name,
         description: subForumResource.description,
         threads: subForumResource.threads
     });
-
     await subforum.save();
-
     return {
         id: subforum.id, name: subforum.name, description: subforum.description, threads: subforum.threads
     };
@@ -136,7 +128,6 @@ export async function updateSubForum(subForumResource: SubForumResource): Promis
 
     subforum.name = subForumResource.name;
     subforum.threads = new Types.DocumentArray<Types.ObjectId>(subForumResource.threads);
-
     if (subForumResource.description) {
         subforum.description = subForumResource.description;
     }

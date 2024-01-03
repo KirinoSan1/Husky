@@ -43,7 +43,8 @@ subForumRouter.post("/:name/threads", optionalAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 subForumRouter.post("/threads", optionalAuthentication,
     body('threadCount').optional().isInt(),

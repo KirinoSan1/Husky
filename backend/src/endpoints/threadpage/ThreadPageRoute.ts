@@ -20,7 +20,8 @@ threadPageRouter.get("/:id", optionalAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 threadPageRouter.get("/authors/:id", optionalAuthentication,
     param("id").isMongoId(),
@@ -36,7 +37,8 @@ threadPageRouter.get("/authors/:id", optionalAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 threadPageRouter.post("/", requiresAuthentication,
     body('posts').isArray(),
@@ -60,7 +62,8 @@ threadPageRouter.post("/", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 threadPageRouter.put("/:id", requiresAuthentication,
     param('id').isMongoId(),
@@ -83,7 +86,8 @@ threadPageRouter.put("/:id", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    });
+    }
+);
 
 threadPageRouter.patch("/:id/add", requiresAuthentication,
     param('id').isMongoId(),
@@ -103,7 +107,8 @@ threadPageRouter.patch("/:id/add", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    });
+    }
+);
 
 threadPageRouter.patch("/:id/edit", requiresAuthentication,
     param('id').isMongoId(),
@@ -125,7 +130,8 @@ threadPageRouter.patch("/:id/edit", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    });
+    }
+);
 
 threadPageRouter.delete("/:id", requiresAuthentication,
     param('id').isMongoId(),
@@ -143,6 +149,7 @@ threadPageRouter.delete("/:id", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    })
+    }
+);
 
 export default threadPageRouter;

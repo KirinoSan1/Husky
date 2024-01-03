@@ -28,7 +28,8 @@ userRouter.get("/:id", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 userRouter.get("/:id/avatar",
     param("id").isMongoId(),
@@ -44,7 +45,8 @@ userRouter.get("/:id/avatar",
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 userRouter.get("/:id/verify/:token",
     param("id").isMongoId(),
@@ -73,7 +75,8 @@ userRouter.get("/:id/verify/:token",
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 userRouter.post("/",
     body('email').isEmail().normalizeEmail().isLength({ min: MIN_LENGTH_EMAIL_ADDRESS, max: MAX_LENGTH_EMAIL_ADDRESS }),
@@ -103,7 +106,8 @@ userRouter.post("/",
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 userRouter.post("/:id/threads", requiresAuthentication,
     param("id").isMongoId(),
@@ -121,7 +125,8 @@ userRouter.post("/:id/threads", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 userRouter.put("/:id",
     requiresAuthentication,
@@ -145,7 +150,8 @@ userRouter.put("/:id",
             res.status(405); // duplicate user
             next(err);
         }
-    });
+    }
+);
 
 userRouter.put("/image/:id",
     async (req, res, next) => {
@@ -162,7 +168,8 @@ userRouter.put("/image/:id",
             res.status(400); // duplicate user
             next(err);
         }
-    });
+    }
+);
 
 userRouter.delete("/:id",
     requiresAuthentication,
@@ -180,6 +187,7 @@ userRouter.delete("/:id",
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 export default userRouter;

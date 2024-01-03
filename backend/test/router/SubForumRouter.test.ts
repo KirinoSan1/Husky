@@ -88,7 +88,8 @@ test("Subforum GET, negative test for service error", async () => {
 
 test("Subforum GET, negative test", async () => {
     const request = supertest(app);
-    const response = await request.get(`/api/subforum/${subForum}`)
+    const response = await request.get(`/api/subforum/${subForum}`);
+
     expect(response.statusCode).toBe(400);
 });
 
