@@ -30,6 +30,7 @@ loginRouter.post("/",
             res.sendStatus(405);
             next(error);
         }
-    });
+    }
+);
 
 export default loginRouter;

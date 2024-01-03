@@ -23,7 +23,8 @@ threadRouter.get("/:id", optionalAuthentication,
             res.status(404).json({ message: "Thread not found." });
             next(err);
         }
-    });
+    }
+);
 
 threadRouter.get("/find/:query", optionalAuthentication,
     param("query").isString().isLength({ min: MIN_LENGTH_THREAD_SEARCH_QUERY, max: MAX_LENGTH_THREAD_SEARCH_QUERY }),
@@ -40,7 +41,8 @@ threadRouter.get("/find/:query", optionalAuthentication,
             res.status(405);
             next(error);
         }
-    });
+    }
+);
 
 threadRouter.post("/", requiresAuthentication,
     body("title").isString().isLength({ min: 1, max: 100 }),
@@ -67,7 +69,8 @@ threadRouter.post("/", requiresAuthentication,
             res.status(400);
             next(err);
         }
-    });
+    }
+);
 
 threadRouter.put("/:id", requiresAuthentication,
     param("id").isMongoId(),
@@ -94,7 +97,8 @@ threadRouter.put("/:id", requiresAuthentication,
             res.status(400).json(`Error during update: ${err}`);
             next(err);
         }
-    });
+    }
+);
 
 threadRouter.delete("/:id", requiresAuthentication,
     param("id").isMongoId(),
@@ -116,6 +120,7 @@ threadRouter.delete("/:id", requiresAuthentication,
             res.status(404);
             next(err);
         }
-    });
+    }
+);
 
 export default threadRouter;
