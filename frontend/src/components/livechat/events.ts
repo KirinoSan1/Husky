@@ -1,0 +1,22 @@
+const EVENTS = {
+    connection: 'connection',
+    CLIENT: {
+        CREATE_ROOM: "CREATE_ROOM",
+        SEND_ROOM_MESSAGE: "SEND_ROOM_MESSAGE",
+        JOIN_ROOM: "JOIN_ROOM",
+        DISCONNECT_ROOM: "DISCONNECT_ROOM",
+        REOPEN_ROOM: "REOPEN_ROOM",
+        DELETE_ROOM: "DELETE_ROOM",
+        CONFIRM_DELETE_ROOM: "CONFIRM_DELETE_ROOM",
+        USER_LIMIT: "USER_LIMIT"
+    },
+    SERVER: {
+        ROOMS: "ROOMS",
+        JOINED_ROOM: "JOINED_ROOM",
+        ROOM_MESSAGE: "ROOM_MESSAGE",
+        CURRENT_USER: "CURRENT_USER",
+        DELETE_ROOM_CONFIRMATION: "DELETE_ROOM_CONFIRMATION"
+    },
+}
+
+export default EVENTS;
