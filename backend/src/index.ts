@@ -2,12 +2,15 @@ import express, { Express } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import loginRouter from "./endpoints/login/LoginRouter";
-import * as server from "./server";
+import * as serverModul from "./server";
 import userRouter from "./endpoints/user/UserRoute";
 import postRouter from "./endpoints/post/PostRoute";
 import { threadPageRouter } from "./endpoints/threadpage/ThreadPageRoute";
 import threadRouter from "./endpoints/thread/ThreadRoute";
 import { subForumRouter } from "./endpoints/subforum/SubForumRoute";
+import { Server } from "socket.io";
+import socket from "./Socket/socket";
+
 
 const app: Express = express();
 const port: number = 443;
@@ -25,14 +28,28 @@ app.use(function (request, response, next) {
     next();
 });
 
+
 app.use("*", express.json({ limit: "5mb" }));
 app.use(bodyParser.json());
 
 app.use("/api/login", loginRouter);
-app.use("/api/user", userRouter);
-app.use("/api/post", postRouter);
-app.use("/api/threadpage", threadPageRouter);
-app.use("/api/thread", threadRouter);
-app.use("/api/subforum", subForumRouter);
+app.use("/api/user", userRouter)
+app.use("/api/post", postRouter)
+app.use("/api/threadpage", threadPageRouter)
+app.use("/api/thread", threadRouter)
+app.use("/api/subforum", subForumRouter)
+// const io = new Server(server,{})
 
-server.start(app, port);
+// server.start(app, port);
+
+const server = serverModul.start(app, port, () => {
+    socket({ io })
+});
+
+app.get("/", (_, res) => { res.send('Server is up and running.') })
+
+
+const io = new Server(server, {
+    cors: { origin: ["https://127.0.0.1:3000", "https://localhost:3000"] }
+})
+

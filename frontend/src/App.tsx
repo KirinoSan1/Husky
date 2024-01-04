@@ -6,6 +6,7 @@ import { UserContext } from './components/settings/UserContext';
 import { getUser } from './api/api';
 import { UserResource } from './types/Resources';
 import { Outlet, useLocation } from 'react-router-dom';
+import SocketsProvider from './Socket/context/socket.context';
 
 export default function App() {
     const [loginInfo, setLoginInfo] = useState(getLoginInfo());
@@ -20,7 +21,7 @@ export default function App() {
             } catch (error) { }
         }
         getUserData();
-    }, [loginInfo,userInfo]);
+    }, [loginInfo, userInfo]);
 
     const route: string = useLocation().pathname.substring(1);
 
@@ -39,14 +40,16 @@ export default function App() {
             <div id="app-background">
                 <div id="app-background-gradient"></div>
             </div>
-            <LoginContext.Provider value={[loginInfo, setLoginInfo]}>
-                <UserContext.Provider value={[userInfo, setUserInfo]}>
-                    <Navigation />
-                    <main id={(route.length > 0 ? getRouteName() : "home") + "-page-container"}>
-                        <Outlet />
-                    </main>
-                </UserContext.Provider>
-            </LoginContext.Provider>
+            <SocketsProvider>
+                <LoginContext.Provider value={[loginInfo, setLoginInfo]}>
+                    <UserContext.Provider value={[userInfo, setUserInfo]}>
+                        <Navigation />
+                        <main id={(route.length > 0 ? getRouteName() : "home") + "-page-container"}>
+                            <Outlet />
+                        </main>
+                    </UserContext.Provider>
+                </LoginContext.Provider>
+            </SocketsProvider>
         </>
     );
 }
