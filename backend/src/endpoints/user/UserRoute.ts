@@ -4,7 +4,7 @@ dotenv.config();
 import { UserResource } from "../../types/Resources";
 import express from "express";
 import { requiresAuthentication } from "../../util/authentication";
-import { createUser, deleteUser, getAllThreadsForUser, getUser, getUsersAvatar, updateUser } from "./UserService";
+import { createUser, deleteUser, getAllThreadsForUser, getUser, getUsersAvatar, updateUser, votePost } from "./UserService";
 import { body, matchedData, param, validationResult } from "express-validator";
 import sendEmail from "../../util/sendEmail";
 import crypto from "crypto"
@@ -186,6 +186,28 @@ userRouter.delete("/:id",
         } catch (err) {
             res.status(400);
             next(err);
+        }
+    }
+);
+
+userRouter.patch("/vote", requiresAuthentication,
+    body("postID").isMongoId(),
+    body("userID").isMongoId(),
+    body("threadPageID").isMongoId(),
+    body("postNum").isNumeric(),
+    body("vote").isBoolean(),
+    body("remove").isBoolean(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        try {
+            const obj = await votePost(req.body.postID, req.body.userID, req.body.threadPageID, req.body.postNum, req.body.vote, req.body.remove);
+            res.send({ votedPosts: obj.votedPosts, upvotes: obj.upvotes, downvotes: obj.downvotes });
+        } catch (error) {
+            res.status(405);
+            next(error);
         }
     }
 );

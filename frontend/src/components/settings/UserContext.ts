@@ -7,7 +7,8 @@ export interface UserInfo {
     email: string,
     admin: boolean,
     mod: boolean,
-    avatar: string
+    avatar: string,
+    votedPosts: Map<string, boolean>
 }
 
 // const USERINFO_NAME = "userinfo";
@@ -15,7 +16,7 @@ export interface UserInfo {
 export const UserContext = React.createContext([] as any);
 
 
-// Maybe implemt it in the Future
+// Maybe implement it in the Future
 // export function setUserInfo(user: UserResource): void {
 //     if (!user)
 //         throw new Error("invalid user");

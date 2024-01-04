@@ -4,17 +4,33 @@ import { useContext, useState } from "react";
 import { LoginContext } from "../login/LoginContext";
 import { EditPostDialog } from "./EditPostDialog";
 import { DeletePostDialog } from "./DeletePostDialog";
+import { UserContext } from "../settings/UserContext";
+import { votePost } from "../../api/api";
+import { ThreadPageContext } from "../thread/Thread";
 
 export default function Post({ user, post, postNum, avatar }: { user: AuthorResource, post: PostResource, postNum: number, avatar: string }) {
     const [loginInfo] = useContext(LoginContext);
+    const [userInfo, setUserInfo] = useContext(UserContext);
+    const [threadPage] = useContext(ThreadPageContext);
     const [showEditDialog, setShowEditDialog] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [upvotes, setUpvotes] = useState(post.upvotes);
+    const [downvotes, setDownvotes] = useState(post.downvotes);
 
     const gotModified = post.modified && post.modified === "m";
     const gotDeleted = post.modified && post.modified === "d";
 
     const to2DigitFormat = (n: number): string => {
         return ("0" + n).slice(-2);
+    };
+
+    const handleVote = async (vote: boolean, remove: boolean) => {
+        try {
+            const res = await votePost(userInfo.id, post.id, threadPage.id, postNum, vote, remove);
+            setUserInfo({ ...userInfo, votedPosts: res.votedPosts });
+            setUpvotes(res.upvotes);
+            setDownvotes(res.downvotes);
+        } catch (error) { }
     };
 
     return (
@@ -35,7 +51,10 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
                     </p>
                     <p id={`post${postNum}-div2-div-p3`}>{`#${postNum + 1}`}</p>
                 </div>
-                <p id={`post${postNum}-div2-p3`}>{post.content}</p>
+                <p id={`post${postNum}-div2-p4`}>{post.content}</p>
+                <hr></hr>
+                <p id={`post${postNum}-div2-p5`}>Upvotes: {upvotes}</p>
+                <p id={`post${postNum}-div2-p6`}>Downvotes: {downvotes}</p>
                 {loginInfo && loginInfo.userID === post.author && (!post.modified || post.modified === "m") &&
                     <>
                         <Button id={`post${postNum}-div2-div-button1`} onClick={() => { setShowEditDialog(true); }}>Edit</Button>
@@ -44,7 +63,60 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
                         {showDeleteDialog && <DeletePostDialog postNum={postNum} setShowDeleteDialog={setShowDeleteDialog}></DeletePostDialog>}
                     </>
                 }
+                {loginInfo && loginInfo.userID !== post.author &&
+                    <>{
+                        userInfo && userInfo.votedPosts && userInfo.votedPosts.get(post.id) !== undefined ?
+                            <>{
+                                userInfo.votedPosts.get(post.id) === true ?
+                                    <>
+                                        <Button id={`post${postNum}-div2-div-button3`} variant="secondary" onClick={() => { handleVote(true, true); }}>{thumbsUpIcon}</Button>
+                                        <Button id={`post${postNum}-div2-div-button4`} onClick={() => { handleVote(false, false); }}>{thumbsDownIcon}</Button>
+                                    </>
+                                    :
+                                    <>
+                                        <Button id={`post${postNum}-div2-div-button5`} onClick={() => { handleVote(true, false); }}>{thumbsUpIcon}</Button>
+                                        <Button id={`post${postNum}-div2-div-button6`} variant="secondary" onClick={() => { handleVote(false, true); }}>{thumbsDownIcon}</Button>
+                                    </>
+                            }
+                            </>
+                            :
+                            <>
+                                <Button id={`post${postNum}-div2-div-button7`} onClick={() => { handleVote(true, false); }}>{thumbsUpIcon}</Button>
+                                <Button id={`post${postNum}-div2-div-button8`} onClick={() => { handleVote(false, false); }}>{thumbsDownIcon}</Button>
+                            </>
+                    }</>
+                }
             </div>
         </>
     );
 }
+
+// taken from https://feathericons.com/ | Icon name: 'thumbs-up'
+const thumbsUpIcon = (<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+>
+    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+</svg >);
+
+// taken from https://feathericons.com/ | Icon name: 'thumbs-down'
+const thumbsDownIcon = (<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+>
+    <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
+</svg>);

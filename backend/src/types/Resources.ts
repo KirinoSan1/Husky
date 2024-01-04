@@ -11,6 +11,7 @@ export type UserResource = {
     mod?: boolean
     createdAt?: Date
     verified?: Boolean
+    votedPosts?: Array<{postID: string, vote: boolean}>
 }
 
 export type ThreadResource = {

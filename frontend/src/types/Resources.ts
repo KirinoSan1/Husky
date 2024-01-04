@@ -12,6 +12,7 @@ export type UserResource = {
     createdAt: Date
     avatar: string
     file: File
+    votedPosts: Map<string, boolean>
 }
 
 export type AuthorResource = {
@@ -32,6 +33,8 @@ export type PostResource = {
     content: string
     author: string
     modified: "" | "m" | "d"
+    upvotes: number
+    downvotes: number
     createdAt: Date
 }
 
