@@ -13,6 +13,7 @@ export interface IUser {
     verified?: boolean
     createdAt?: Date
     avatar?: string
+    votedPosts: Map<string, boolean>
 }
 
 /**
@@ -36,8 +37,8 @@ const userSchema = new Schema<IUser, IUserMethods>({
     admin: { type: Boolean, default: false },
     verified: { type: Boolean, default: false },
     avatar: { type: String, default: "" },
-    createdAt: { type: Date }
-
+    createdAt: { type: Date },
+    votedPosts: { type: Map, of: Boolean, default: new Map() }
 }, { timestamps: true });
 
 /**

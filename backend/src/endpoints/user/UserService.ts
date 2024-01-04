@@ -1,4 +1,4 @@
-import { Types } from "mongoose"
+import { StringExpression, Types } from "mongoose"
 import { User } from "./UserModel";
 import { Post } from "../post/PostModel";
 import { ThreadPage } from "../threadpage/ThreadPageModel";
@@ -17,7 +17,7 @@ export async function getUser(id: string): Promise<UserResource> {
     if (!user) {
         throw new Error(`User with ID ${id} not found.`);
     }
-    const userResource: UserResource = { id: user.id, name: user.name, email: user.email, admin: user.admin, mod: user.mod, avatar: user.avatar };
+    const userResource: UserResource = { id: user.id, name: user.name, email: user.email, admin: user.admin, mod: user.mod, avatar: user.avatar, votedPosts: Array.from(user.votedPosts, ([postID, vote]) => { return { postID: postID, vote: vote }; }) };
     return userResource;
 }
 
@@ -85,7 +85,7 @@ export async function createUser(userResource: UserResource): Promise<UserResour
         admin: false,
         mod: false
     });
-    return { id: user.id, name: user.name, email: user.email, admin: user.admin, mod: user.mod, avatar: user.avatar };
+    return { id: user.id, name: user.name, email: user.email, admin: user.admin, mod: user.mod, avatar: user.avatar, votedPosts: Array.from(user.votedPosts, ([postID, vote]) => { return { postID: postID, vote: vote }; }) };
 }
 
 /**
@@ -113,7 +113,7 @@ export async function updateUser(userResource: UserResource): Promise<UserResour
     if (userResource.avatar) user.avatar = userResource.avatar;
 
     const savedUser = await user.save();
-    return { id: savedUser.id, name: savedUser.name, email: savedUser.email, admin: savedUser.admin, mod: savedUser.mod, avatar: savedUser.avatar };
+    return { id: savedUser.id, name: savedUser.name, email: savedUser.email, admin: savedUser.admin, mod: savedUser.mod, avatar: savedUser.avatar, votedPosts: Array.from(savedUser.votedPosts, ([postID, vote]) => { return { postID: postID, vote: vote }; }) };
 }
 
 /**
@@ -134,4 +134,76 @@ export async function deleteUser(id: string): Promise<void> {
     await Thread.deleteMany({ creator: new Types.ObjectId(id) }).exec();
     await ThreadPage.deleteMany({ creator: new Types.ObjectId(id) }).exec();
     await Post.deleteMany({ creator: new Types.ObjectId(id) }).exec();
+}
+
+export async function votePost(postID: string, userID: string, threadPageID: string, postNum: number, vote: boolean, remove: boolean): Promise<{votedPosts: Array<{ postID: string, vote: boolean }>, upvotes: number, downvotes: number}> {
+    if (!postID) {
+        throw new Error("postID not defined");
+    }
+    if (!userID) {
+        throw new Error("userID not defined");
+    }
+    if (!threadPageID) {
+        throw new Error("threadPageID not defined");
+    }
+    if (postNum === undefined && (postNum < 0 || postNum > 10)) {
+        throw new Error("postNum has invalid value");
+    }
+    if (vote === undefined) {
+        throw new Error("vote not defined");
+    }
+    if (remove === undefined) {
+        throw new Error("remote not defined");
+    }
+    const user = await User.findById(userID).exec();
+    if (!user) {
+        throw new Error("user not found");
+    }
+    const threadPage = await ThreadPage.findById(threadPageID).exec();
+    if (!threadPage) {
+        throw new Error("threadPage not found");
+    }
+    if (postNum >= threadPage.posts.length) {
+        throw new Error("post doesn't exist");
+    }
+    if (threadPage.posts[postNum].id !== postID) {
+        throw new Error("post ids do not match");
+    }
+    if (remove) { // remove vote
+        const post = user.votedPosts.get(postID);
+        if (post === undefined) { // vote doesn't exist
+            throw new Error("vote for post not found");
+        }
+        user.votedPosts.delete(postID);
+        if (post) { // remove upvote
+            threadPage.posts[postNum].upvotes!--;
+        } else { // remove downvote
+            threadPage.posts[postNum].downvotes!--;
+        }
+    } else { // add vote
+        const post = user.votedPosts.get(postID);
+        if (post !== undefined) { // post has been voted before
+            if (post === false && vote === true) { // upvote post which has been downvoted before
+                user.votedPosts.set(postID, vote);
+                threadPage.posts[postNum].downvotes!--;
+                threadPage.posts[postNum].upvotes!++;
+            } else if (post === true && vote === false) { // downvote post which has been upvoted before
+                user.votedPosts.set(postID, vote);
+                threadPage.posts[postNum].upvotes!--;
+                threadPage.posts[postNum].downvotes!++;
+            } else { // trying to upvote post which has been upvoted before or to downvote post which has been downvoted before
+                throw new Error("cannot set vote twice");
+            }
+        } else { // post has not been voted before
+            user.votedPosts.set(postID, vote);
+            if (vote) { // upvote post
+                threadPage.posts[postNum].upvotes!++;
+            } else { // downvote post
+                threadPage.posts[postNum].downvotes!++;
+            }
+        }
+    }
+    const savedUser = await user.save();
+    const savedThreadPage = await threadPage.save();
+    return {votedPosts: Array.from(savedUser.votedPosts, ([postID, vote]) => { return { postID: postID, vote: vote }; }), upvotes: savedThreadPage.posts[postNum].upvotes!, downvotes: savedThreadPage.posts[postNum].downvotes!};
 }

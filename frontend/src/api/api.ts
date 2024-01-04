@@ -1,5 +1,5 @@
 import { getJWT, getLoginInfo } from "../components/login/LoginContext";
-import { AuthorsResource, LoginResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
+import { AuthorsResource, LoginResource, PostResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
 import axios from "axios";
 
 const BASE_URL = "https://127.0.0.1";
@@ -84,12 +84,15 @@ export async function getUser(userID: string): Promise<UserResource> {
         if (!response || !response.ok)
             throw new Error("network response was not OK");
 
-        const result: UserResource = await response.json();
+        const result: any = await response.json();
         if (!result)
             throw new Error("invalid result from server");
         if (!result.id || !result.email || !result.name)
             throw new Error("result from server is missing fields");
-        return result;
+        const votedPosts = new Map<string, boolean>();
+        result.votedPosts.forEach((obj: { postID: string, vote: boolean }) => { votedPosts.set(obj.postID, obj.vote); });
+        result.votedPosts = votedPosts;
+        return result as UserResource;
 
     } catch (error) {
         throw new Error("Error occurred during get: " + error);
@@ -161,10 +164,13 @@ export async function updateUser(user: UserResource, data: {
     if (response.status !== 200)
         throw String("An error occurred, please try again.");
 
-    const result: UserResource = await response.json();
+    const result: any = await response.json();
     if (!result || !result.id || !result.email || !result.name)
         throw new Error("result from server is missing fields");
-    return result;
+    const votedPosts = new Map<string, boolean>();
+    result.votedPosts.forEach((obj: { postID: string, vote: boolean }) => { votedPosts.set(obj.postID, obj.vote); });
+    result.votedPosts = votedPosts;
+    return result as UserResource;
 }
 
 export async function getThread(threadID: string): Promise<ThreadResource> {
@@ -201,12 +207,15 @@ export async function getThreadPage(threadPageID: string): Promise<ThreadPageRes
         if (!response || !response.ok)
             throw new Error("network response was not OK");
 
-        const result: ThreadPageResource = await response.json();
+        const result: ThreadPageResource & { posts: Array<PostResource & { _id: string }> } = await response.json();
         if (!result)
             throw new Error("invalid result from server");
         if (!result.id || !result.posts)
             throw new Error("result from server is missing fields");
-        result.posts.forEach((post) => { post.createdAt = new Date(post.createdAt); });
+        result.posts.forEach((post: PostResource & { _id: string }) => {
+            post.createdAt = new Date(post.createdAt);
+            post.id = post._id;
+        });
         return result;
 
     } catch (error) {
@@ -560,7 +569,63 @@ export async function getLatestThreads(subForumCount: number, threadCount: numbe
     }
 }
 
+export async function votePost(userID: string, postID: string, threadPageID: string, postNum: number, vote: boolean, remove: boolean): Promise<{ votedPosts: Map<string, boolean>, upvotes: number, downvotes: number }> {
+    if (!userID) {
+        throw new Error("userID not defined");
+    }
+    if (!postID) {
+        throw new Error("postID not defined");
+    }
+    if (!postID) {
+        throw new Error("threadPageID not defined");
+    }
+    if (postNum === undefined) {
+        throw new Error("postNum not defined");
+    }
+    if (vote === undefined) {
+        throw new Error("vote not defined");
+    }
+    if (remove === undefined) {
+        throw new Error("remove not defined");
+    }
 
+    const jwt = getJWT();
+    if (!jwt) {
+        throw new Error("no jwt found");
+    }
+
+    const response = await fetch(
+        `${BASE_URL}/api/user/vote`,
+        {
+            method: "PATCH",
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                postID: postID,
+                userID: userID,
+                threadPageID: threadPageID,
+                postNum: postNum % 10,
+                vote: vote,
+                remove: remove
+            })
+        }
+    );
+
+    if (!response || response.status !== 200) {
+        throw new Error("network response was not OK");
+    }
+
+    const result: any = await response.json();
+    if (!result)
+        throw new Error("invalid result from server");
+    if (!result.votedPosts)
+        throw new Error("result from server is missing fields");
+    const votedPosts = new Map<string, boolean>();
+    result.votedPosts.forEach((obj: { postID: string, vote: boolean }) => { votedPosts.set(obj.postID, obj.vote); });
+    return { votedPosts: votedPosts, upvotes: result.upvotes, downvotes: result.downvotes };
+}
 
 export async function converttobase64(file: any) {
     return new Promise((resolve, reject) => {
