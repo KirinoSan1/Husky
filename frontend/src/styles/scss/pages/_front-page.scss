@@ -21,10 +21,18 @@
         margin-bottom: 8vh;
         display: flex;
         flex-direction: row;
+        border-radius: 15px;
+
+        &:focus-within {
+            box-shadow: 0 1px 1px theme.$first-color inset, 0px 0px 8px theme.$first-color;
+        }
 
         input {
             background-color: theme.$seventh-color;
             color: theme.$fifth-color;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
             width: 100%;
             padding: 10px 15px;
             border: none;
