@@ -1,0 +1,32 @@
+image: docker:20.10.16
+services:
+  - name: docker:20.10.16-dind
+    alias: docker
+stages:
+  - test
+  - build
+
+test-job:
+  stage: test
+  image: node:current-bullseye
+  script:
+    - cd backend
+    - npm install
+    - npx jest --collect-coverage --runInBand
+
+build-job:
+  stage: build
+  script:
+    - cd backend
+    - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker build -t registry.bht-berlin.de:443/macmud/husky:frontend .
+    - docker push registry.bht-berlin.de:443/macmud/husky:frontend
+    - cd ../frontend
+    - docker build -t registry.bht-berlin.de:443/macmud/husky:backend .
+    - docker push registry.bht-berlin.de:443/macmud/husky:backend
+  dependencies:
+    - test-job
+  only:
+    - dev
+  tags:
+    - docker-privileged

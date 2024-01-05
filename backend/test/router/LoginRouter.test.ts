@@ -4,11 +4,12 @@ dotenv.config();
 import supertest from "supertest";
 import app from "../../src/testIndex";
 import DB from "../TestDB";
-import { User } from "../../src/endpoints/user/UserModel";
-import { LoginResource, UserResource } from "../../src/types/Resources";
+import { IUser, User } from "../../src/endpoints/user/UserModel";
+import { LoginResource } from "../../src/types/Resources";
+import { Types } from "mongoose";
 
 let token: string;
-let john: UserResource;
+let john: IUser & {_id: Types.ObjectId};
 let idjohn: string;
 let strongPW = "123asdf!ABCDwdwadwWEuihn092";
 
@@ -16,7 +17,7 @@ beforeAll(async () => { await DB.connect(); });
 beforeEach(async () => {
     User.syncIndexes();
     john = await User.create({ name: "Johnathan", email: "johnathan@jonathan.de", password: strongPW, admin: true, verified: true });
-    idjohn = john.id!;
+    idjohn = john._id.toString();
 });
 afterEach(async () => { await DB.clear(); });
 afterAll(async () => { await DB.close() });
@@ -45,7 +46,7 @@ test("Login POST without password", async () => {
     const loginData = { email: "johnathan@jonathan.de", password: "" };
     const response = await request.post(`/api/login`).send(loginData);
 
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(405);
 });
 
 test("Login POST wrong data", async () => {

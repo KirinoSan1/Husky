@@ -4,17 +4,17 @@ dotenv.config();
 import supertest from "supertest";
 import app from "../../src/testIndex";
 import TestDB from "../TestDB";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import * as threadService from "../../src/endpoints/subforum/SubForumService"
 import { LoginResource, SubForumResource, ThreadResource, UserResource } from "../../src/types/Resources";
-import { User } from "../../src/endpoints/user/UserModel";
+import { IUser, User } from "../../src/endpoints/user/UserModel";
 import { Post } from "../../src/endpoints/post/PostModel";
 import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
 import { IThread, Thread } from "../../src/endpoints/thread/ThreadModel";
 import { SubForum } from "../../src/endpoints/subforum/SubForumModel";
 
-let userJohn: UserResource;
-let userUmut: UserResource;
+let userJohn: IUser & {_id: Types.ObjectId};
+let userUmut: IUser & {_id: Types.ObjectId};
 let idjohn: string;
 let idumut: string;
 
@@ -28,10 +28,10 @@ beforeAll(async () => { await TestDB.connect(); });
 beforeEach(async () => {
     User.syncIndexes();
     userJohn = await User.create({ name: "Johnathan", email: "johnathan@jonathan.de", password: "123asdf!ABCD", admin: true, verified: true });
-    idjohn = userJohn.id!
+    idjohn = userJohn._id.toString();
 
     userUmut = await User.create({ name: "Umi", email: "umi@jonatahan.de", password: "123asdf!ABCDs", admin: false, verified: true });
-    idumut = userUmut.id!;
+    idumut = userUmut._id.toString();
 
     // Login for token access
     const request = supertest(app);
@@ -48,14 +48,14 @@ beforeEach(async () => {
     tokenB = loginResource2.access_token;
     expect(tokenB).toBeDefined();
 
-    const post = await Post.create({ content: "Test.", author: userJohn.id, createdAt: new Date() });
-    const post2 = await Post.create({ content: "Test.", author: userJohn.id, createdAt: new Date() });
+    const post = await Post.create({ content: "Test.", author: idjohn, createdAt: new Date() });
+    const post2 = await Post.create({ content: "Test.", author: idjohn, createdAt: new Date() });
     let postid = post.id;
     let post2id = post2.id;
 
     const threadpage = await ThreadPage.create({ postid, post2id });
     const thread = await Thread.create({
-        creator: userJohn.id!,
+        creator: idjohn,
         title: "Thread",
         subForum: "Testing",
         pages: [threadpage.id!],

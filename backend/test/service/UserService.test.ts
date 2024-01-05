@@ -4,7 +4,7 @@ import { IUser, User } from "../../src/endpoints/user/UserModel"
 import { getUser, createUser, updateUser, deleteUser, getAllThreadsForUser, getUsersAvatar } from "../../src/endpoints/user/UserService"
 import { UserResource } from "../../src/types/Resources";
 
-const userJinx: IUser = { name: "Jinx", email: "jinx@gmail.com", password: "123asdf!ABCD", admin: false, verified: true };
+const userJinx: IUser = { name: "Jinx", email: "jinx@gmail.com", password: "123asdf!ABCD", admin: false, verified: true, votedPosts: new Map() };
 let idJinx: string;
 let threadId: string;
 
@@ -40,7 +40,7 @@ test("GetUsersAvatar positive test", async () => {
 });
 
 test("GetUsersAvatar positive test with defined avatar", async () => {
-    const userYuuta: IUser = { name: "Yuuta", email: "yuuta@gmail.com", password: "123asdf!ABCD", admin: false, avatar: "avatar.jpg", verified: true };
+    const userYuuta: IUser = { name: "Yuuta", email: "yuuta@gmail.com", password: "123asdf!ABCD", admin: false, avatar: "avatar.jpg", verified: true, votedPosts: new Map() };
     const yuuta = await User.create(userYuuta);
 
     const avatarObject = await getUsersAvatar(yuuta.id);
@@ -48,7 +48,7 @@ test("GetUsersAvatar positive test with defined avatar", async () => {
     expect(avatarObject).toBeDefined();
     expect(avatarObject.avatar).toBe("avatar.jpg"); 
 
-    const userKiri: IUser = { name: "Kiri", email: "kiri@gmail.com", password: "123asdf!ABCD", admin: false, avatar: undefined, verified: true };
+    const userKiri: IUser = { name: "Kiri", email: "kiri@gmail.com", password: "123asdf!ABCD", admin: false, avatar: undefined, verified: true, votedPosts: new Map() };
     const kiri = await User.create(userKiri);
 
     const avatarObject2 = await getUsersAvatar(kiri.id);

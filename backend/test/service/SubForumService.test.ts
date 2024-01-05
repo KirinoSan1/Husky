@@ -9,7 +9,7 @@ import { createSubForum, deleteSubForum, getAllSubForums, getAllThreadsForSubFor
 import { SubForum } from "../../src/endpoints/subforum/SubForumModel";
 import { Thread } from "../../src/endpoints/thread/ThreadModel";
 
-let userJinx: IUser = { email: "Jinx@gmail.com", name: "Jinx", password: "123", admin: false, verified: true }
+let userJinx: IUser = { email: "Jinx@gmail.com", name: "Jinx", password: "123", admin: false, verified: true, votedPosts: new Map() }
 let idJinx: string;
 const NON_EXISTING_ID = "635d2e796ea2e8c9bde5787c";
 
