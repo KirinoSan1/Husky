@@ -4,17 +4,17 @@ dotenv.config();
 import TestDB from "../TestDB";
 import supertest from "supertest";
 import app from "../../src/testIndex";
-import mongoose from "mongoose";
-import { User } from "../../src/endpoints/user/UserModel";
+import mongoose, { Types } from "mongoose";
+import { IUser, User } from "../../src/endpoints/user/UserModel";
 import { createThreadPage } from "../../src/endpoints/threadpage/ThreadPageService";
 import * as createThreadPage2 from "../../src/endpoints/threadpage/ThreadPageService"
-import { LoginResource, ThreadPageResource, UserResource } from "../../src/types/Resources";
+import { LoginResource, ThreadPageResource } from "../../src/types/Resources";
 import { Post } from "../../src/endpoints/post/PostModel";
 import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
 import { Thread } from "../../src/endpoints/thread/ThreadModel";
 
-let userJohn: UserResource;
-let userUmut: UserResource;
+let userJohn: IUser & {_id: Types.ObjectId};
+let userUmut: IUser & {_id: Types.ObjectId};
 let idJohn: string;
 let idUmut: string;
 
@@ -30,7 +30,7 @@ beforeAll(async () => { await TestDB.connect(); });
 beforeEach(async () => {
     User.syncIndexes();
     userJohn = await User.create({ name: "Johnathan", email: "johnathan@jonathan.de", password: "123asdf!ABCD", admin: true, verified: true });
-    idJohn = userJohn.id!;
+    idJohn = userJohn._id.toString();
 
     // Login for token access
     const request = supertest(app);
@@ -41,7 +41,7 @@ beforeEach(async () => {
     expect(token).toBeDefined();
 
     userUmut = await User.create({ name: "Umi", email: "umi@jonatahan.de", password: "123asdf!ABCDs", admin: false, verified: true });
-    idUmut = userUmut.id!;
+    idUmut = userUmut._id.toString();
 
     const request2 = supertest(app);
     const loginData2 = { email: "umi@jonatahan.de", password: "123asdf!ABCDs" };
@@ -318,8 +318,8 @@ test("ThreadPage PATCH edit, with invalid ID", async () => {
 test("ThreadPage DELETE, positive test", async () => {
     const request = supertest(app);
 
-    const post1 = await Post.create({ content: "Test.", author: userJohn.id, createdAt: new Date() });
-    const post2 = await Post.create({ content: "Test2.", author: userJohn.id, createdAt: new Date() });
+    const post1 = await Post.create({ content: "Test.", author: userJohn._id.toString(), createdAt: new Date() });
+    const post2 = await Post.create({ content: "Test2.", author: userJohn._id.toString(), createdAt: new Date() });
 
     const threadPage = await ThreadPage.create({ posts: [post1, post2], createdAt: new Date() });
     const response = await request.delete(`/api/threadpage/${threadPage.id}`).set("Authorization", `Bearer ${token}`);

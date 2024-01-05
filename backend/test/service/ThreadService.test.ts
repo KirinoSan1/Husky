@@ -7,7 +7,7 @@ import { IUser, User } from "../../src/endpoints/user/UserModel"
 import { Post } from "../../src/endpoints/post/PostModel";
 import { ThreadResource } from "../../src/types/Resources";
 
-let userJinx: IUser = { email: "Jinx@gmail.com", name: "Jinx", password: "123", admin: false, verified: true }
+let userJinx: IUser = { email: "Jinx@gmail.com", name: "Jinx", password: "123", admin: false, verified: true, votedPosts: new Map() }
 let idJinx: string
 const NON_EXISTING_ID = "635d2e796ea2e8c9bde5787c";
 

@@ -40,6 +40,11 @@
     },
     "scripts": {
         "start": "nodemon ./src/index.ts",
-        "test": "jest --collect-coverage"
-    }
+        "test": "jest --collect-coverage --runInBand"
+    },
+    "config": {
+        "mongodbMemoryServer": {
+          "version": "4.4.6"
+        }
+      }
 }

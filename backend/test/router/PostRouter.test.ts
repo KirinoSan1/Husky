@@ -10,10 +10,10 @@ import { createPost } from "../../src/endpoints/post/PostService";
 import { Post } from "../../src/endpoints/post/PostModel";
 import { ObjectId } from 'mongodb';
 
-let userJinx: IUser = { name: "John", email: "john@some-host.de", password: "123asdf!ABCD", admin: false, verified: true };
+let userJinx: IUser = { name: "John", email: "john@some-host.de", password: "123asdf!ABCD", admin: false, verified: true, votedPosts: new Map() };
 let idJinx: string;
 
-let userAqua: IUser = { name: "Aqua", email: "aqua@some-host.de", password: "1234asdf!ABCD", admin: false, verified: true };
+let userAqua: IUser = { name: "Aqua", email: "aqua@some-host.de", password: "1234asdf!ABCD", admin: false, verified: true, votedPosts: new Map() };
 let idAqua: string;
 
 let post: PostResource;

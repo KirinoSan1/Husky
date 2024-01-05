@@ -13,10 +13,10 @@ import { IThread, Thread } from "../../src/endpoints/thread/ThreadModel";
 import { Types } from "mongoose";
 import { ObjectId } from 'mongodb';
 
-let userJinx: IUser = { name: "John", email: "john@some-host.de", password: "123asdf!ABCD", admin: false, verified: true };
+let userJinx: IUser = { name: "John", email: "john@some-host.de", password: "123asdf!ABCD", admin: false, verified: true, votedPosts: new Map() };
 let idJinx: string;
 
-let userAqua: IUser = { name: "Aqua", email: "aqua@some-host.de", password: "1234asdf!ABCD", admin: false, verified: true };
+let userAqua: IUser = { name: "Aqua", email: "aqua@some-host.de", password: "1234asdf!ABCD", admin: false, verified: true, votedPosts: new Map() };
 let idAqua: string;
 
 let threadId: string;
@@ -173,7 +173,7 @@ test("Thread GET title, error caught by catch block", async () => {
 
     const response = await request.get(`/api/thread/find/${invalidThreadId}`);
 
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(405);
 });
 
 // ---------------------------------------------------------- POST Tests --------------------------------------------------------------

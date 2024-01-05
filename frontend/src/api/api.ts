@@ -2,7 +2,7 @@ import { getJWT, getLoginInfo } from "../components/login/LoginContext";
 import { AuthorsResource, LoginResource, PostResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
 import axios from "axios";
 
-const BASE_URL = "https://127.0.0.1";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 export async function login(loginData: { email: string, password: string }): Promise<LoginResource> {
     if (!loginData.email)
