@@ -129,19 +129,22 @@ function MessagesContainer() {
 
   return (
     <Row>
-      <Col xs={12} className="mb-3">
+      <Col xs={12} id="chats-page-messages">
         {roomId && rooms[roomId] && rooms[roomId].name && (
           <>
-            <h2 className="room-heading">{rooms[roomId].name}</h2>
-            <p className="room-userlimit">The current User are {currentUseronline[roomId].onlineUser}/{rooms[roomId].userlimit}</p>
+            <div className="h3-title">
+              <h3 className="room-heading">{rooms[roomId].name}</h3>
+              <div className="h3-underline"></div>
+            </div>
             <div className="room-details">
-              <span style={{ color: 'white' }}>{formatOnlineUsersCount(currentUseronline[roomId]?.onlineUser)}</span>
-              <br />
-              <span style={{ color: 'white' }}>Room will be closed in : {formatTimeToClose(rooms[roomId].ttl)}</span>
+              <span className="room-userlimit">Users online: {currentUseronline[roomId].onlineUser}/{rooms[roomId].userlimit}</span>
+              {/* <span>{formatOnlineUsersCount(currentUseronline[roomId]?.onlineUser)}</span> */}
+              <span> | </span>
+              <span>Room will be closed in: {formatTimeToClose(rooms[roomId].ttl)}</span>
             </div>
           </>
         )}
-        <div className="messages-container" style={{ display: 'grid' }}>
+        <div className="messages-container">
           {messages !== undefined && messages!.map(({ message, name, time, avatar }, index) => (
             <div
               key={index}
@@ -151,12 +154,12 @@ function MessagesContainer() {
               {name !== userInfo.name && avatar && (
                 <img src={avatar} alt={`${name}'s Avatar`} style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '5px' }} />
               )}
-              <div>
-                <span>
-                  {name} - {time}
-                </span>
-                <br />
-                <span style={{ backgroundColor: '#3498db', padding: '10px', borderRadius: '5px', width: '100%', display: 'inline-block' }}>
+              <div className="single-message">
+                <div className="single-message-details">
+                  <span className="single-message-name">{name}</span>
+                  <span className="single-message-time"> {time}</span>
+                </div>
+                <span className="single-message-content">
                   {message}
                 </span>
               </div>
@@ -178,7 +181,7 @@ function MessagesContainer() {
       </Col>
       <Col xs={12}>
         <Button onClick={handleSendMessage} variant="primary" w-100>
-          SEND
+          Send
         </Button>
 
         {roomId && rooms[roomId] && rooms[roomId].creatorId === userInfo.id && (

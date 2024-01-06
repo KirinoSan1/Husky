@@ -104,18 +104,54 @@ function RoomsContainer() {
     }
 
     return (
-        <Col xs={3} className="sidebar bg-dark text-light">
+        <>
             {error && (
                 <Alert key="primary" variant="primary">
                     {error}
                 </Alert>
             )}
+
+            <div>
+                <Form>
+                    <p>Create a room:</p>
+                    <Form.Control
+                        type="text"
+                        placeholder="Room name..."
+                        ref={newRoomRef}
+                        className="mb-2"
+                        onKeyPress={(e) => EnterJoin(e)}
+                    />
+                    <Form.Control as="select" ref={userlimitRef} className="custom-select">
+                        {!userlimitRef.current?.value && (
+                            <option value="" disabled hidden>
+                                Set a User limit
+                            </option>
+                        )}
+                        {Array.from({ length: 19 }, (_, index) => index + 2).map((limit) => (
+                            <option key={limit} value={limit}>
+                                {limit}
+                            </option>
+                        ))}
+                    </Form.Control>
+
+                    {userLiveChats.length < 3 ? (
+                        <Button variant="primary" onClick={handleCreateRoom}>
+                            Create New Room
+                        </Button>
+                    ) : (
+                        <Alert key="primary" variant="primary">
+                            You already have 3 Chatrooms open. Please delete them to open another.
+                        </Alert>
+                    )}
+                </Form>
+            </div>
+            <div className="livechat-horizontal-line"></div>
             <Form>
-                <h3>Search a Room</h3>
+                <p>Search for rooms by title:</p>
                 <Form.Control
                     type="text"
                     value={searchInput}
-                    placeholder="Search a Roomname..."
+                    placeholder="Room name..."
                     className="mb-2"
                     onChange={(e) => setSearchInput(e.target.value)}
                 />
@@ -131,40 +167,6 @@ function RoomsContainer() {
                     ))}
                 </ul>
             )}
-            <div className="mb-3">
-                <Form>
-                    <h3>Create a Room</h3>
-                    <Form.Control
-                        type="text"
-                        placeholder="Room name"
-                        ref={newRoomRef}
-                        className="mb-2"
-                        onKeyPress={(e) => EnterJoin(e)}
-                    />
-                    <Form.Control as="select" ref={userlimitRef} className="custom-select" size="sm">
-                        {!userlimitRef.current?.value && (
-                            <option value="" disabled hidden>
-                                Set a User limit
-                            </option>
-                        )}
-                        {Array.from({ length: 19 }, (_, index) => index + 2).map((limit) => (
-                            <option key={limit} value={limit}>
-                                {limit}
-                            </option>
-                        ))}
-                    </Form.Control>
-
-                    {userLiveChats.length < 3 ? (
-                        <Button variant="primary" onClick={handleCreateRoom} className="w-100">
-                            CREATE ROOM
-                        </Button>
-                    ) : (
-                        <Alert key="primary" variant="primary">
-                            You already have 3 Chatrooms open. Please delete them to open another.
-                        </Alert>
-                    )}
-                </Form>
-            </div>
 
             <ul className="list-group">
                 {Object.keys(rooms).map((key) => (
@@ -190,7 +192,7 @@ function RoomsContainer() {
                     </li>
                 ))}
             </ul>
-        </Col>
+        </>
     );
 }
 

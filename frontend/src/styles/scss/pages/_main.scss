@@ -1,5 +1,6 @@
 @use "../theme/theme";
 @use "../abstracts/variables";
+@use "../../../components/livechat/Livechat.module";
 @use "../../../components/post/Post.module";
 @use "../../../components/post/EditPostDialog.module";
 @use "../../../components/post/CreatePostDialog.module";
