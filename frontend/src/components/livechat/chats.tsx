@@ -17,10 +17,10 @@ export default function Chats() {
                 <div>You have to be logged in to use the LiveChat. </div>
             )}
             {userInfo?.name && loginInfo && (
-                <div>
+                <>
                     <RoomsContainer />
                     <MessagesContainer />
-                </div>
+                </>
             )}
         </div>
     );

@@ -263,6 +263,89 @@ form > div:first-of-type > .form-label {
   outline: 0;
 }
 
+#chats-page-container {
+  width: 50vw;
+  min-width: 400px;
+  height: 100%;
+}
+#chats-page-container > :first-child {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+#chats-page-container h3 {
+  margin-bottom: 0;
+  color: #38B6FF;
+}
+#chats-page-container .livechat-horizontal-line {
+  width: 100%;
+  height: 2px;
+  background-color: #393D40;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+#chats-page-container .h3-underline {
+  margin-bottom: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(56, 182, 255, 0) 0%, #38b6ff 25%, #38b6ff 75%, rgba(56, 182, 255, 0) 100%);
+}
+#chats-page-container .h3-title {
+  width: fit-content;
+}
+#chats-page-container .room-userlimit, #chats-page-container .room-details {
+  color: #B5B5B5;
+}
+#chats-page-container .room-heading {
+  margin-top: 8px;
+}
+#chats-page-container .messages-container {
+  width: 100%;
+  flex-grow: 1;
+  min-height: 0px;
+  max-height: 650px;
+  overflow: auto;
+  margin-top: 8px;
+}
+#chats-page-container .messages-container::-webkit-scrollbar {
+  margin-left: 10px;
+}
+#chats-page-container .messages-container .single-message-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+#chats-page-container .messages-container .single-message-time {
+  color: #B5B5B5;
+  font-size: 75%;
+  margin-left: 4px;
+}
+#chats-page-container .messages-container .single-message-content {
+  background-color: #393D40;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  display: inline-block;
+}
+#chats-page-container .row {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  border: 2px solid #393D40;
+  border-radius: 12px;
+}
+#chats-page-container .row:last-child .btn {
+  margin-top: 0;
+  margin-right: 10px;
+  margin-bottom: 16px;
+}
+#chats-page-container #chats-page-messages {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .threadpage-post {
   display: flex;
   flex-direction: row;
