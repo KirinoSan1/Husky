@@ -11,8 +11,13 @@ import { User } from "../user/UserModel";
  * @returns A promise resolving to the subforum resource object.
  */
 export async function getSubForum(name: string): Promise<SubForumResource> {
-    const subForum = await SubForum.find({ name: name }).exec();
-    return subForum[0].toObject(); // 0, because it can only exist one Subforum with that name.
+    const subForum = await SubForum.findOne({ name: name }).exec();
+
+    if (!subForum) {
+        throw new Error(`Subforum with name ${name} not found.`);
+    }
+
+    return subForum;
 }
 
 /**
@@ -21,7 +26,7 @@ export async function getSubForum(name: string): Promise<SubForumResource> {
  * @returns A promise resolving to an array of subforum resource objects.
  */
 export async function getAllSubForums(): Promise<SubForumResource[]> {
-    const allSubForums = await SubForum.find().exec();
+    const allSubForums = await SubForum.find({}, ["name", "description"]).exec();
     return allSubForums.map(subforum => subforum.toObject());
 }
 

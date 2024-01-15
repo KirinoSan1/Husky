@@ -46,7 +46,7 @@ export function EditPostDialog({ contentPost, postNum, setShowEditDialog }: { co
                 </Modal.Header>
                 <Modal.Body id="editpost-modal-body">
                     <p id="editpost-modal-body-p">If you modify your post, it will be permanently marked as edited!</p>
-                    <textarea id="editpost-modal-body-textarea" placeholder="Empty post" onChange={handleUpdateContent} value={content} className="textarea" onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)}></textarea>
+                    <textarea id="editpost-modal-body-textarea" placeholder="Empty post" onChange={handleUpdateContent} value={content} className="textarea" onKeyPress={(e: React.KeyboardEvent) => handleKeyPress(e)} />
                 </Modal.Body>
                 <Modal.Footer>
                     {error && <Alert id="editpost-modal-footer-alert" variant="danger">{error}</Alert>}

@@ -1,7 +1,7 @@
 export type LoginResource = {
     "access_token": string
     "token_type": "Bearer"
-}
+};
 
 export type UserResource = {
     id: string
@@ -13,7 +13,7 @@ export type UserResource = {
     avatar: string
     file: File
     votedPosts: Map<string, boolean>
-}
+};
 
 export type AuthorResource = {
     id: string
@@ -22,11 +22,16 @@ export type AuthorResource = {
     mod: boolean
     createdAt: Date
     avatar: string
-}
+};
 
 export type AuthorsResource = {
     authors: Array<AuthorResource>
-}
+};
+
+export type SubforumResource = {
+    name: string,
+    description: string
+};
 
 export type PostResource = {
     id: string
@@ -36,13 +41,13 @@ export type PostResource = {
     upvotes: number
     downvotes: number
     createdAt: Date
-}
+};
 
 export type ThreadPageResource = {
     id: string,
     posts: PostResource[],
     createdAt: Date
-}
+};
 
 export type ThreadResource = {
     id: string
@@ -53,6 +58,6 @@ export type ThreadResource = {
     numPosts: number
     pages: string[]
     createdAt: Date
-}
+};
 
-export type SubForumName = "" | "Cuisine" | "History" | "Mathematics" | "Philosophy" | "Science" ;
+export type SubForumName = "" | "Cuisine" | "History" | "Mathematics" | "Philosophy" | "Science";

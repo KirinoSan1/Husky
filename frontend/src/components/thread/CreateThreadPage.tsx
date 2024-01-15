@@ -77,7 +77,7 @@ export function CreateThreadPage() {
                         required
                         minLength={MIN_LENGTH_THREAD_TITLE}
                         maxLength={MAX_LENGTH_THREAD_TITLE}
-                    ></Form.Control>
+                    />
                     <Form.Control.Feedback type="invalid">Please choose a meaningful title for the thread. The title must not be shorter than {MIN_LENGTH_THREAD_TITLE} characters.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group>
@@ -109,7 +109,7 @@ export function CreateThreadPage() {
                         required
                         minLength={MIN_LENGTH_POST_CONTENT}
                         maxLength={MAX_LENGTH_POST_CONTENT}
-                    ></Form.Control>
+                    />
                     <Form.Control.Feedback type="invalid">The initial post must contain at least {MIN_LENGTH_POST_CONTENT} characters.</Form.Control.Feedback>
                 </Form.Group>
                 <div id="createthread-button-bar">
@@ -117,7 +117,7 @@ export function CreateThreadPage() {
                     <Button id="createthread-button2" type="submit" disabled={loading || success}>Submit</Button>
                 </div>
             </Form>
-            {loading && <LoadingIndicator></LoadingIndicator>}
+            {loading && <LoadingIndicator />}
         </>
     );
 }

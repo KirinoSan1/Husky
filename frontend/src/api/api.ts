@@ -1,5 +1,5 @@
 import { getJWT, getLoginInfo } from "../components/login/LoginContext";
-import { AuthorsResource, LoginResource, PostResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
+import { AuthorsResource, LoginResource, PostResource, SubforumResource, ThreadPageResource, ThreadResource, UserResource } from "../types/Resources";
 import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
@@ -446,10 +446,17 @@ export async function editPost(author: string, content: string, postNum: number,
             })
         });
 
-        const result: ThreadPageResource = await response.json();
-        if (!result.id || !result.posts)
+        const result: ThreadPageResource & { posts: Array<PostResource & { _id: string }> } = await response.json();
+
+        if (!result.id || !result.posts) {
             throw new Error("result from server is missing fields");
-        result.posts.forEach((post) => { post.createdAt = new Date(post.createdAt); });
+        }
+
+        result.posts.forEach((post: PostResource & { _id: string }) => {
+            post.createdAt = new Date(post.createdAt);
+            post.id = post._id;
+        });
+
         return result;
 
     } catch (error) {
@@ -488,6 +495,32 @@ export async function getUsersThreads(userID: string, count: number): Promise<Th
         }
 
         const result: (ThreadResource & { creatorName: string })[] = await response.json();
+
+        if (result === undefined) {
+            throw new Error("invalid result from server");
+        }
+
+        return result;
+
+    } catch (error) {
+        throw new Error("Error occurred during request: " + error);
+    }
+}
+
+export async function getSubforums(): Promise<SubforumResource[]> {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/api/subforum`,
+            {
+                method: "GET"
+            }
+        );
+
+        if (!response || !response.ok) {
+            throw new Error("network response was not OK");
+        }
+
+        const result: SubforumResource[] = await response.json();
 
         if (result === undefined) {
             throw new Error("invalid result from server");

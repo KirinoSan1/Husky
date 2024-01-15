@@ -25,24 +25,27 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
     };
 
     const handleVote = async (vote: boolean, remove: boolean) => {
+        console.log("handleVote");
         try {
             const res = await votePost(userInfo.id, post.id, threadPage.id, postNum, vote, remove);
             setUserInfo({ ...userInfo, votedPosts: res.votedPosts });
             setUpvotes(res.upvotes);
             setDownvotes(res.downvotes);
-        } catch (error) { }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
         <>
             <div id={`post${postNum}-div1`}>
-                <img id={`post${postNum}-div1-img`} src={avatar || "/images/logo.png"} alt={"Profile Pic"} width="100" height="100"></img>
+                <img id={`post${postNum}-div1-img`} src={avatar || "/images/logo.png"} alt={"Profile Pic"} width="100" height="100" />
                 <p id={`post${postNum}-div1-p1`}>{user.name}</p>
                 {user.mod && !user.admin && <p id={`post${postNum}-div1-p3`}>Moderator</p>}
                 {user.admin && <p id={`post${postNum}-div1-p4`}>Admin</p>}
                 <p id={`post${postNum}-div1-p2`}>{`Member since: ${user.createdAt.toLocaleDateString()}`}</p>
             </div>
-            <div className="post-vertical-line"></div>
+            <div className="post-vertical-line" />
             <div id={`post${postNum}-div2`}>
                 <div id={`post${postNum}-div2-div`}>
                     <p id={`post${postNum}-div2-div-p2`}>
@@ -52,15 +55,15 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
                     <p id={`post${postNum}-div2-div-p3`}>{`#${postNum + 1}`}</p>
                 </div>
                 <p id={`post${postNum}-div2-p4`}>{post.content}</p>
-                <hr></hr>
+                <hr />
                 <p id={`post${postNum}-div2-p5`}>Upvotes: {upvotes}</p>
                 <p id={`post${postNum}-div2-p6`}>Downvotes: {downvotes}</p>
                 {loginInfo && loginInfo.userID === post.author && (!post.modified || post.modified === "m") &&
                     <>
                         <Button id={`post${postNum}-div2-div-button1`} onClick={() => { setShowEditDialog(true); }}>Edit</Button>
-                        {showEditDialog && <EditPostDialog contentPost={post.content} postNum={postNum} setShowEditDialog={setShowEditDialog}></EditPostDialog>}
+                        {showEditDialog && <EditPostDialog contentPost={post.content} postNum={postNum} setShowEditDialog={setShowEditDialog} />}
                         <Button id={`post${postNum}-div2-div-button2`} onClick={() => { setShowDeleteDialog(true); }}>Delete</Button>
-                        {showDeleteDialog && <DeletePostDialog postNum={postNum} setShowDeleteDialog={setShowDeleteDialog}></DeletePostDialog>}
+                        {showDeleteDialog && <DeletePostDialog postNum={postNum} setShowDeleteDialog={setShowDeleteDialog} />}
                     </>
                 }
                 {loginInfo && loginInfo.userID !== post.author &&

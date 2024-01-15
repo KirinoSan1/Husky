@@ -5,9 +5,12 @@ import LoadingIndicator from "../util/LoadingIndicator";
 import { LoginContext, getLoginInfo, removeJWT, setJWT } from "./LoginContext";
 import { login } from "../../api/api";
 import { MAX_LENGTH_EMAIL_ADDRESS, MAX_LENGTH_PASSWORD, MIN_LENGTH_EMAIL_ADDRESS, MIN_LENGTH_PASSWORD } from "../../types/Constants";
+import { UserContext } from "../settings/UserContext";
 
 export default function LoginDialog() {
     const [loginInfo, setLoginInfo] = React.useContext(LoginContext);
+    const [, setUserInfo] = React.useContext(UserContext);
+
     const [showDialog, setShowDialog] = useState(false);
     const [loginData, setLoginData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
@@ -16,7 +19,7 @@ export default function LoginDialog() {
 
     const handleShow = () => { setShowDialog(true); };
     const handleClose = () => { setShowDialog(false); setValidated(false); setLoginData({ email: "", password: "" }); setError(""); };
-    const handleLogout = () => { removeJWT(); setLoginInfo(null); };
+    const handleLogout = () => { removeJWT(); setLoginInfo(null); setUserInfo(null); };
     const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>) => { setLoginData({ ...loginData, [e.target.name]: e.target.value }); setValidated(true); };
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -68,7 +71,7 @@ export default function LoginDialog() {
                                 minLength={MIN_LENGTH_EMAIL_ADDRESS}
                                 maxLength={MAX_LENGTH_EMAIL_ADDRESS}
                                 id="logindialog-modal-body-form-group1-control"
-                            ></Form.Control>
+                            />
                             <Form.Control.Feedback id="logindialog-modal-body-form-group1-feedback" type="invalid">Please enter your email address.</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group id="logindialog-modal-body-form-group2">
@@ -83,7 +86,7 @@ export default function LoginDialog() {
                                 minLength={MIN_LENGTH_PASSWORD}
                                 maxLength={MAX_LENGTH_PASSWORD}
                                 id="logindialog-modal-body-form-group2-control"
-                            ></Form.Control>
+                            />
                             <Form.Control.Feedback id="logindialog-modal-body-form-group2-feedback" type="invalid">Please enter your password. Passwords shorter than {MIN_LENGTH_PASSWORD} characters are not allowed.</Form.Control.Feedback>
                         </Form.Group>
                     </Modal.Body>

@@ -10,7 +10,7 @@ import { UserContext } from "../settings/UserContext";
 
 export default function FrontPage() {
     const [loginInfo] = useContext(LoginContext);
-    const [userInfo] = React.useContext(UserContext);
+    const [userInfo] = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
     const [loading, setLoading] = useState(true);
     const [threads, setThreads] = useState(new Map<string, ThreadResource[]>());

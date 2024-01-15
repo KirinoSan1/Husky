@@ -67,7 +67,7 @@ export default function CreateAccountDialog() {
                                 minLength={MIN_LENGTH_USERNAME}
                                 maxLength={MAX_LENGTH_USERNAME}
                                 id="createaccount-modal-body-form-group1-control"
-                            ></Form.Control>
+                            />
                             <Form.Control.Feedback id="createaccount-modal-body-form-group1-feedback" type="invalid">Enter a username which is at least {MIN_LENGTH_USERNAME} but no more than {MAX_LENGTH_USERNAME} characters long.</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group id="createaccount-modal-body-form-group2">
@@ -82,7 +82,7 @@ export default function CreateAccountDialog() {
                                 minLength={MIN_LENGTH_EMAIL_ADDRESS}
                                 maxLength={MAX_LENGTH_EMAIL_ADDRESS}
                                 id="createaccount-modal-body-form-group2-control"
-                            ></Form.Control>
+                            />
                             <Form.Control.Feedback id="createaccount-modal-body-form-group2-feedback" type="invalid">Enter a valid email address.</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group id="createaccount-modal-body-form-group3">
@@ -104,7 +104,7 @@ export default function CreateAccountDialog() {
                                 // I stole this from here: https://stackoverflow.com/questions/2370015/regular-expression-for-password-validation
                                 pattern='^.*(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&?@]).*$'
                                 id="createaccount-modal-body-form-group3-control"
-                            ></Form.Control>
+                            />
                             <Form.Control.Feedback id="createaccount-modal-body-form-group3-feedback" type="invalid">Enter a strong password. The password must be no shorter than {MIN_LENGTH_PASSWORD} characters and must contain a lowercase letter, an uppercase letter, a number, and a symbol.</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group id="createaccount-modal-body-form-group4">
@@ -119,12 +119,12 @@ export default function CreateAccountDialog() {
                                 minLength={MIN_LENGTH_PASSWORD}
                                 maxLength={MAX_LENGTH_PASSWORD}
                                 id="createaccount-modal-body-form-group4-control"
-                            ></Form.Control>
+                            />
                             <Form.Control.Feedback id="createaccount-modal-body-form-group4-feedback" type="invalid">Please repeat the password from above.</Form.Control.Feedback>
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer id="createaccount-modal-footer">
-                        {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
+                        {loading ? <LoadingIndicator /> : <></>}
                         <Button id="createaccount-modal-footer-button-cancel" variant="secondary" onClick={handleClose}>Cancel</Button>
                         <Button id="createaccount-modal-footer-button-submit" type="submit" disabled={loading || success}>Submit</Button>
                     </Modal.Footer>

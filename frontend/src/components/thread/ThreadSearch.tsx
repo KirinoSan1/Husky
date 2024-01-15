@@ -45,8 +45,6 @@ export default function ThreadSearch() {
             if (location.state) {
                 setTitle(location.state);
                 setThreads(await searchThreadsByTitle(location.state));
-            } else {
-                return;
             }
         }
         search();
@@ -57,13 +55,13 @@ export default function ThreadSearch() {
         <div id="threadsearch-div">
             {loginInfo && <>
                 <Button id="threadsearch-div-button1" onClick={() => { navigate("/threads/create"); }}>Create New Thread</Button>
-                <div className="threadsearch-horizontal-line"></div>
+                <div className="threadsearch-horizontal-line" />
             </>}
             <p id="threadsearch-div-p0">Search for threads by title:</p>
-            <input id="threadsearch-div-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdate} value={title} onKeyDown={handleKeyPress}></input>
+            <input id="threadsearch-div-input" className="form-control" type="search" placeholder="Title..." onChange={handleUpdate} value={title} onKeyDown={handleKeyPress} />
             <Button id="threadsearch-div-button2" onClick={handleSearch}>Search</Button>
             {loading && <LoadingIndicator />}
-            {(error || threads) && <div className="threadsearch-horizontal-line"></div>}
+            {(error || threads) && <div className="threadsearch-horizontal-line" />}
             {error && <Alert id="threadsearch-div-alert" variant="danger">{`${error}`}</Alert>}
             {threads && threads.length === 0 && <p id="threadsearch-div-p1">Nothing found</p>}
             {threads && threads.length > 0 && threads.map((thread) => (

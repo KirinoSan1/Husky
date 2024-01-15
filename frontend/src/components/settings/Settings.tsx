@@ -146,7 +146,7 @@ export default function Settings() {
                             minLength={MIN_LENGTH_USERNAME}
                             maxLength={MAX_LENGTH_USERNAME}
                             id="settings-tabs-tab2-form-group1-control"
-                        ></Form.Control>
+                        />
                         <Form.Control.Feedback id="settings-tabs-tab2-form-group1-feedback" type="invalid">Please enter a new username. A username should be at least {MIN_LENGTH_USERNAME} but no more than {MAX_LENGTH_USERNAME} characters long.</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group id="settings-tabs-tab2-form-group2">
@@ -161,11 +161,11 @@ export default function Settings() {
                             minLength={MIN_LENGTH_PASSWORD}
                             maxLength={MAX_LENGTH_PASSWORD}
                             id="settings-tabs-tab2-form-group2-control"
-                        ></Form.Control>
+                        />
                         <Form.Control.Feedback id="settings-tabs-tab2-form-group2-feedback" type="invalid">Please enter your password. Passwords shorter than {MIN_LENGTH_PASSWORD} characters are not allowed.</Form.Control.Feedback>
                     </Form.Group>
                     <Button id="settings-tabs-tab2-button" type="submit" disabled={loading}>Submit Changes</Button>
-                    {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
+                    {loading ? <LoadingIndicator /> : <></>}
                 </Form>
             </Tab>
             <Tab eventKey="ChangeEmail" title="Change E-Mail">
@@ -184,7 +184,7 @@ export default function Settings() {
                             minLength={MIN_LENGTH_EMAIL_ADDRESS}
                             maxLength={MAX_LENGTH_EMAIL_ADDRESS}
                             id="settings-tabs-tab3-form-group1-control"
-                        ></Form.Control>
+                        />
                         <Form.Control.Feedback id="settings-tabs-tab3-form-group1-feedback" type="invalid">Please a new valid email address.</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group id="settings-tabs-tab3-form-group2">
@@ -199,11 +199,11 @@ export default function Settings() {
                             minLength={MIN_LENGTH_PASSWORD}
                             maxLength={MAX_LENGTH_PASSWORD}
                             id="settings-tabs-tab3-form-group2-control"
-                        ></Form.Control>
+                        />
                         <Form.Control.Feedback id="settings-tabs-tab3-form-group2-feedback" type="invalid">Please enter your password. Passwords shorter than {MIN_LENGTH_PASSWORD} characters are not allowed.</Form.Control.Feedback>
                     </Form.Group>
                     <Button id="settings-tabs-tab3-button" type="submit" disabled={loading}>Submit Changes</Button>
-                    {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
+                    {loading ? <LoadingIndicator /> : <></>}
                 </Form>
             </Tab>
             <Tab eventKey="ChangePassword" title="Change Password">
@@ -221,7 +221,7 @@ export default function Settings() {
                             minLength={MIN_LENGTH_PASSWORD}
                             maxLength={MAX_LENGTH_PASSWORD}
                             id="settings-tabs-tab4-form-group1-control"
-                        ></Form.Control>
+                        />
                         <Form.Control.Feedback id="settings-tabs-tab4-form-group1-feedback" type="invalid">Please enter your old password. Passwords shorter than {MIN_LENGTH_PASSWORD} characters are not allowed.</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group id="settings-tabs-tab4-form-group2">
@@ -237,7 +237,7 @@ export default function Settings() {
                             maxLength={MAX_LENGTH_PASSWORD}
                             pattern='^.*(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&?@]).*$'
                             id="settings-tabs-tab4-form-group2-control"
-                        ></Form.Control>
+                        />
                         <Form.Control.Feedback id="settings-tabs-tab4-form-group1-feedback" type="invalid">Please enter a new strong password. The password must be no shorter than {MIN_LENGTH_PASSWORD} characters and must contain a lowercase letter, an uppercase letter, a number, and a symbol.</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group id="settings-tabs-tab4-form-group3">
@@ -252,11 +252,11 @@ export default function Settings() {
                             minLength={MIN_LENGTH_PASSWORD}
                             maxLength={MAX_LENGTH_PASSWORD}
                             id="settings-tabs-tab4-form-group3-control"
-                        ></Form.Control>
+                        />
                         <Form.Control.Feedback id="settings-tabs-tab4-form-group1-feedback" type="invalid">Please repeat the password from above.</Form.Control.Feedback>
                     </Form.Group>
                     <Button id="settings-tabs-tab4-button" type="submit" disabled={loading}>Submit Changes</Button>
-                    {loading ? <LoadingIndicator></LoadingIndicator> : <></>}
+                    {loading ? <LoadingIndicator /> : <></>}
                 </Form>
             </Tab>
             <Tab eventKey="ChangeProfile" title="Change Profile Picture">
