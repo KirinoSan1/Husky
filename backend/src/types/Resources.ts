@@ -2,25 +2,25 @@ import { Types } from "mongoose"
 import { IPost } from "../endpoints/post/PostModel"
 
 export type UserResource = {
-    avatar?: string
-    id?: string
-    name: string
-    email: string
-    password?: string
-    admin?: boolean
-    mod?: boolean
-    createdAt?: Date
-    verified?: Boolean
+    avatar?: string,
+    id?: string,
+    name: string,
+    email: string,
+    password?: string,
+    admin?: boolean,
+    mod?: boolean,
+    createdAt?: Date,
+    verified?: Boolean,
     votedPosts?: Array<{postID: string, vote: boolean}>
 }
 
 export type ThreadResource = {
-    id?: string
-    title: string
-    creator: string
-    subForum: string
-    numPosts?: number
-    pages: Types.ObjectId[]
+    id?: string,
+    title: string,
+    creator: string,
+    subForum: string,
+    numPosts?: number,
+    pages: Types.ObjectId[],
     createdAt?: string
 }
 
@@ -38,21 +38,21 @@ export type SubForumResource = {
 }
 
 export type PostResource = {
-    id?: string
-    content: string
-    author: string
-    upvotes?: number
-    downvotes?: number
-    modified: "" | "m" | "d"
+    id?: string,
+    content: string,
+    author: string,
+    upvotes?: number,
+    downvotes?: number,
+    modified: "" | "m" | "d",
     createdAt?: Date
 }
 
 export type AuthorResource = {
-    id: string
-    name: string
-    admin: boolean
-    mod: boolean
-    createdAt: Date
+    id: string,
+    name: string,
+    admin: boolean,
+    mod: boolean,
+    createdAt: Date,
     avatar: string
 }
 

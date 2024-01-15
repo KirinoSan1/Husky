@@ -1,4 +1,4 @@
-import { StringExpression, Types } from "mongoose"
+import { Types } from "mongoose";
 import { User } from "./UserModel";
 import { Post } from "../post/PostModel";
 import { ThreadPage } from "../threadpage/ThreadPageModel";
@@ -45,28 +45,34 @@ export async function getUsersAvatar(userId: string): Promise<{ avatar: string }
  * @throws Error if the user with the provided ID is not found.
  */
 export async function getAllThreadsForUser(userId: string, count?: number): Promise<(ThreadResource & { creatorName: string })[]> {
-    const user = await User.findById(userId).exec();
+    const user = await User.findById(userId, ["name", "avatar"]).exec();
+
     if (!user) {
         throw new Error(`User with ID ${userId} not found.`);
     }
+
     let threadsQuery = Thread.find({ creator: new Types.ObjectId(userId) }).sort({ createdAt: -1 });
+
     if (count && count > 0) {
         threadsQuery = threadsQuery.limit(count);
     }
+
     const threads = await threadsQuery.exec();
-    const threadArr: (ThreadResource & { creatorName: string })[] = [];
+    const threadArr: (ThreadResource & { creatorName: string, creatorAvatar?: string })[] = [];
+
     for (const thread of threads) {
-        const userName = (await User.findById(thread.creator).exec())?.name;
         threadArr.push({
             id: thread.id,
             title: thread.title,
             creator: thread.creator.toString(),
+            creatorName: user.name,
+            creatorAvatar: user.avatar,
             subForum: thread.subForum,
             numPosts: thread.numPosts,
-            pages: thread.pages,
-            creatorName: userName!
+            pages: thread.pages
         });
     }
+
     return threadArr;
 }
 

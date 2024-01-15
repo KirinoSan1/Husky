@@ -3,7 +3,7 @@ dotenv.config();
 
 import { UserResource } from "../../types/Resources";
 import express from "express";
-import { requiresAuthentication } from "../../util/authentication";
+import { optionalAuthentication, requiresAuthentication } from "../../util/authentication";
 import { createUser, deleteUser, getAllThreadsForUser, getUser, getUsersAvatar, updateUser, votePost } from "./UserService";
 import { body, matchedData, param, validationResult } from "express-validator";
 import sendEmail from "../../util/sendEmail";

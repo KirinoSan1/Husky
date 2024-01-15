@@ -54,18 +54,24 @@ export async function getAllThreadsForSubForum(subForumName: string, count?: num
         threadObjects.splice(count);
     }
 
-    const threadArr: (ThreadResource & { creatorName: string })[] = [];
+    const threadArr: (ThreadResource & { creatorName: string, creatorAvatar?: string })[] = [];
 
     for (const thread of threadObjects) {
-        const userName = (await User.findById(thread.creator).exec())?.name;
+        const creator = await User.findById(thread.creator, ["name", "avatar"]).exec();
+
+        if (!creator) {
+            throw new Error(`User with id ${thread.creator} not found.`);
+        }
+
         threadArr.push({
             id: thread.id,
             title: thread.title,
             creator: thread.creator.toString(),
+            creatorName: creator.name,
+            creatorAvatar: creator.avatar,
             subForum: thread.subForum,
             numPosts: thread.numPosts,
-            pages: thread.pages,
-            creatorName: userName!
+            pages: thread.pages
         });
     }
     return threadArr;
@@ -79,21 +85,30 @@ export async function getAllThreadsForSubForum(subForumName: string, count?: num
  * @returns An array of ThreadResource objects representing the latest threads.
  */
 export async function getLatestThreadsFromSubForums(threadCount: number, subForumCount: number): Promise<ThreadResource[]> {
-    const subForums: string[] = (await SubForum.find({}, 'name').limit(subForumCount).exec()).map(subforum => subforum.name);
-    const threadsFromSubForums: ThreadResource[] = [];
+    const subForums: string[] = (await SubForum.find({}, "name").limit(subForumCount).exec()).map(subforum => subforum.name);
+    const threadsFromSubForums: (ThreadResource & { creatorName: string, creatorAvatar?: string })[] = [];
 
     for (const subForum of subForums) {
         const threads = await Thread.find({ subForum: subForum }).sort({ createdAt: -1 }).limit(threadCount).exec();
 
-        threads.forEach(thread => threadsFromSubForums.push({
-            id: thread.id,
-            title: thread.title,
-            creator: thread.creator.toString(),
-            subForum: thread.subForum,
-            numPosts: thread.numPosts,
-            pages: thread.pages,
-            createdAt: thread.createdAt.toString()
-        }));
+        for (const thread of threads) {
+            const creator = await User.findById(thread.creator, ["name", "avatar"]).exec();
+
+            if (!creator) {
+                throw new Error(`User with id ${thread.creator} not found.`);
+            }
+
+            threadsFromSubForums.push({
+                id: thread.id,
+                title: thread.title,
+                creator: thread.creator.toString(),
+                creatorName: creator.name,
+                creatorAvatar: creator.avatar,
+                subForum: thread.subForum,
+                numPosts: thread.numPosts,
+                pages: thread.pages
+            });
+        }
     }
 
     return threadsFromSubForums;
