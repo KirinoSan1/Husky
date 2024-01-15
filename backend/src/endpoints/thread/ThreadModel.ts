@@ -7,7 +7,7 @@ export interface IThread {
     title: string;
     creator: Types.ObjectId;
     subForum: string;
-    numPosts?: number;
+    numPosts: number;
     pages: Types.ObjectId[]; // Array of ThreadPage IDs
     createdAt: Date;
 }

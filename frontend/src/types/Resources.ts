@@ -53,7 +53,8 @@ export type ThreadResource = {
     id: string
     title: string
     creator: string
-    creatorName: string
+    creatorName: string,
+    creatorAvatar?: string,
     subForum: string
     numPosts: number
     pages: string[]

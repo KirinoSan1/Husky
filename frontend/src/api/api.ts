@@ -494,7 +494,7 @@ export async function getUsersThreads(userID: string, count: number): Promise<Th
             throw new Error("network response was not OK");
         }
 
-        const result: (ThreadResource & { creatorName: string })[] = await response.json();
+        const result: ThreadResource[] = await response.json();
 
         if (result === undefined) {
             throw new Error("invalid result from server");
