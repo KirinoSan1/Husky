@@ -86,7 +86,7 @@ export default function Thread() {
                     <div id="thread-div">
                         <div>
                             <h3 id={`thread-div-p1`}>{`${thread.title}`}</h3>
-                            <div className="h3-underline"></div>
+                            <div className="h3-underline" />
                         </div>
                         <div className="button-bar">
                             <Button id="thread-div-button1" className={"previous" + (pageNum < 1 ? " hidden" : "")} onClick={handlePrevious}>

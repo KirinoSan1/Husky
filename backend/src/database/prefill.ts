@@ -29,27 +29,27 @@ export async function prefillSubforums() {
 
     const cuisineForum = await SubForum.create({
         name: "Cuisine",
-        description: "blub",
+        description: "Tasty recipes, cooking tips and tricks or just nice discussions about food",
         threads: []
     });
     const historyForum = await SubForum.create({
         name: "History",
-        description: "blub",
+        description: "Interesting contributions about historical events",
         threads: []
     });
     const mathematicsForum = await SubForum.create({
         name: "Mathematics",
-        description: "blub",
+        description: "The right place for your homework questions or other mathematical problems",
         threads: []
     });
     const philosophyForum = await SubForum.create({
         name: "Philosophy",
-        description: "blub",
+        description: "\"The world of reality has its limits; the world of imagination is boundless.\" ~Jean-Jacques Rousseau",
         threads: []
     });
     const scienceForum = await SubForum.create({
         name: "Science",
-        description: "blub",
+        description: "Systematic Comprehensive Investigation and Exploration of Natural Causes and Effects",
         threads: []
     });
 

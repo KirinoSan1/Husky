@@ -3,7 +3,7 @@ import { useSockets } from "../../../Socket/context/socket.context";
 import EVENTS from "../events";
 import { UserContext } from "../../settings/UserContext";
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { formatOnlineUsersCount, formatTimeToClose } from "../../util/Formatter";
+import { formatTimeToClose } from "../../util/Formatter";
 import { LoginContext } from "../../login/LoginContext";
 
 function MessagesContainer() {
@@ -134,7 +134,7 @@ function MessagesContainer() {
           <>
             <div className="h3-title">
               <h3 className="room-heading">{rooms[roomId].name}</h3>
-              <div className="h3-underline"></div>
+              <div className="h3-underline" />
             </div>
             <div className="room-details">
               <span className="room-userlimit">Users online: {currentUseronline[roomId].onlineUser}/{rooms[roomId].userlimit}</span>

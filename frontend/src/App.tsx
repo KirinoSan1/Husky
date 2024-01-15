@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import { LoginContext, getLoginInfo } from './components/login/LoginContext';
-import Navigation from './components/navigation/Navigation';
-import { UserContext } from './components/settings/UserContext';
-import { getUser } from './api/api';
-import { UserResource } from './types/Resources';
-import { Outlet, useLocation } from 'react-router-dom';
-import SocketsProvider from './Socket/context/socket.context';
+import { useEffect, useState } from "react";
+import "./App.css";
+import { LoginContext, getLoginInfo } from "./components/login/LoginContext";
+import Navigation from "./components/navigation/Navigation";
+import { UserContext } from "./components/settings/UserContext";
+import { getUser } from "./api/api";
+import { UserResource } from "./types/Resources";
+import { Outlet, useLocation } from "react-router-dom";
+import SocketsProvider from "./Socket/context/socket.context";
 
 export default function App() {
     const [loginInfo, setLoginInfo] = useState(getLoginInfo());
@@ -21,7 +21,7 @@ export default function App() {
             } catch (error) { }
         }
         getUserData();
-    }, [loginInfo, userInfo]);
+    }, [loginInfo]);
 
     const route: string = useLocation().pathname.substring(1);
 
@@ -38,7 +38,7 @@ export default function App() {
     return (
         <>
             <div id="app-background">
-                <div id="app-background-gradient"></div>
+                <div id="app-background-gradient" />
             </div>
             <SocketsProvider>
                 <LoginContext.Provider value={[loginInfo, setLoginInfo]}>

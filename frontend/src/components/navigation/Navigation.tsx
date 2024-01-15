@@ -23,15 +23,17 @@ export default function Navigation() {
                             userInfo ?
                                 <>
                                     <p>{userInfo?.name}</p>
-                                    {userInfo?.avatar ? (
+                                    {userInfo?.avatar ?
                                         <img
                                             key={userInfo.avatar}
-                                            id="profile-section-avatar" src={userInfo.avatar} alt="Avatar" />
-                                    )
-                                        : <img id="profile-section-avatar" src="/images/logo.png" alt="Avatar" />
+                                            id="profile-section-avatar" src={userInfo.avatar} alt="Avatar"
+                                        />
+                                        :
+                                        <img id="profile-section-avatar" src="/images/logo.png" alt="Avatar" />
                                     }
                                 </>
-                                : (<img id="profile-section-avatar" src="/images/logo.png" alt="Avatar" />)
+                                :
+                                <img id="profile-section-avatar" src="/images/logo.png" alt="Avatar" />
                         }
                     >
                         <Link className="dropdown-item" to="/profile">Profile</Link>

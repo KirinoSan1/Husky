@@ -2,6 +2,7 @@ import { Thread } from "./ThreadModel";
 import { ThreadPage } from "../threadpage/ThreadPageModel";
 import { User } from "../user/UserModel";
 import { ThreadResource } from "../../types/Resources";
+import { SubForum } from "../subforum/SubForumModel";
 
 /**
  * Retrieves a specific thread identified by its unique ID.
@@ -63,10 +64,20 @@ export async function createThread(threadResource: ThreadResource): Promise<Thre
         numPosts: threadResource.numPosts,
         createdAt: Date.now()
     });
+
     const creator = await User.findById(thread.creator).exec();
+
     if (!creator) {
         throw new Error(`Creator with ID ${thread.creator} not found.`)
     }
+
+    const subForum = await SubForum.findOne({ name: thread.subForum }, "_id").exec();
+
+    if (!subForum) {
+        throw new Error(`Subforum with name ${thread.subForum} not found.`);
+    }
+
+    await subForum.updateOne({ $push: { threads: thread.id }});
     await thread.save();
 
     return {

@@ -14,6 +14,7 @@ import FrontPage from "./components/frontpage/FrontPage";
 import { CreateThreadPage } from "./components/thread/CreateThreadPage";
 import Confirmation from "./components/registration/confirmation";
 import Chats from "./components/livechat/chats";
+import TopicsPage from "./components/topic/TopicsPage";
 
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -25,12 +26,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                 children: [
                     { path: "", element: <FrontPage /> },
                     { path: "threads", element: <ThreadSearch /> },
-                    
-                    //Currently a placeholder, otherwise the socket gets buggy
-                    { path: "topics", element: <ThreadSearch /> },
-
+                    { path: "topics", element: <TopicsPage /> },
                     { path: "threads/:id", element: <Navigate to="1" /> },
-                    { path: "topics", element: <ThreadSearch /> },
                     { path: "threads/:id/:page", element: <Thread /> },
                     { path: "threads/create", element: <CreateThreadPage /> },
                     { path: "settings", element: <Settings /> },

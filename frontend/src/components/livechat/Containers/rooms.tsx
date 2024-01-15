@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useSockets } from '../../../Socket/context/socket.context';
 import EVENTS from '../events';
-import { Form, Button, Col, Alert } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { formatTimeToClose, formatOnlineUsersCount } from '../../util/Formatter';
 import { UserContext } from '../../settings/UserContext';
 import { LoginContext } from '../../login/LoginContext';
@@ -145,7 +145,7 @@ function RoomsContainer() {
                     )}
                 </Form>
             </div>
-            <div className="livechat-horizontal-line"></div>
+            <div className="livechat-horizontal-line" />
             <Form>
                 <p>Search for rooms by title:</p>
                 <Form.Control
