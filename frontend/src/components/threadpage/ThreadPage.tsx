@@ -7,7 +7,7 @@ import CreatePostDialog from "../post/CreatePostDialog";
 export default function ThreadPage({ authors, pageCount }: { authors: Map<string, AuthorResource>, pageCount: number }) {
     const [threadPage] = useContext(ThreadPageContext);
     const [pageNum] = useContext(PageNumContext);
-    
+
     let postNum = 0;
     return (
         <div id={`threadpage${pageNum}-div`}>

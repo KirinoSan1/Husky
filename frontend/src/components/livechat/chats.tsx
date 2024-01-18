@@ -3,6 +3,7 @@ import RoomsContainer from "./Containers/rooms";
 import MessagesContainer from "./Containers/messages";
 import { UserContext } from "../settings/UserContext";
 import { LoginContext } from "../login/LoginContext";
+import { Alert } from "react-bootstrap";
 
 export default function Chats() {
     const [userInfo] = useContext(UserContext);
@@ -14,7 +15,7 @@ export default function Chats() {
     return (
         <div>
             {(!userInfo?.name || !loginInfo) && (
-                <div>You have to be logged in to use the LiveChat. </div>
+                <Alert key="danger" variant="danger">You have to be logged in to use the LiveChat.</Alert>
             )}
             {userInfo?.name && loginInfo && (
                 <>

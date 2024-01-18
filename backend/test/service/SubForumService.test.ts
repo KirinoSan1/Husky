@@ -30,11 +30,17 @@ test("GET subforum, Creates a new Thread and get the an Subforum with name", asy
     let postid = post.id;
     let post2id = post2.id;
 
+    await SubForum.create({
+        name: "computer science",
+        description: "geek stuff",
+        threads: []
+    });
+
     const threadpage = await ThreadPage.create({ postid, post2id })
     const thread: ThreadResource = ({
         creator: idJinx,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [threadpage.id!],
         numPosts: 2
     });
@@ -42,7 +48,7 @@ test("GET subforum, Creates a new Thread and get the an Subforum with name", asy
     const thread2: ThreadResource = ({
         creator: idJinx,
         title: "Thread2",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [threadpage.id!],
         numPosts: 2
     });
@@ -172,6 +178,8 @@ test("getAllThreadsForSubForum - Get all threads for a subforum without a limit"
 });
 
 test("getAllThreadsForSubForum - Creates a new Thread and added to an Subforum returns it", async () => {
+    const subForum = await SubForum.create({ name: "Sample Subforum", description: "sample", threads: [] });
+
     const post = await Post.create({
         content: "Test.",
         author: idJinx,
@@ -191,20 +199,26 @@ test("getAllThreadsForSubForum - Creates a new Thread and added to an Subforum r
     }
     const createdThreads = await Promise.all(threadPromises);
     const threadIds = createdThreads.map(thread => new Types.ObjectId(thread.id!));
-    const subforum = await SubForum.create({ name: "Sample Subforum", description: "Test", threads: threadIds });
+    const subforum = await SubForum.create({ name: "Sample Subforum 2", description: "Test", threads: threadIds });
     subforum.threads.map(thread => new Types.ObjectId(thread.id!));
     await updateSubForum(subforum);
 
-    const fetchedThreads = await getAllThreadsForSubForum("Sample Subforum", 5);
+    const fetchedThreads = await getAllThreadsForSubForum("Sample Subforum 2", 5);
 
     expect(fetchedThreads.length).toBe(5);
 });
 
 test("getAllThreadsForSubForum - No user found", async () => {
+    const subForum = await SubForum.create({
+        name: "Testing Subforum",
+        description: "geek stuff",
+        threads: []
+    });
+
     const threadWithNonExistingUser = {
         title: "Thread with Non-existing User",
         creator: NON_EXISTING_ID,
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [],
         numPosts: 0,
         createdAt: new Date()
@@ -212,12 +226,12 @@ test("getAllThreadsForSubForum - No user found", async () => {
     const createdThread = await Thread.create(threadWithNonExistingUser);
 
     try {
-        const subForum = await SubForum.create({ name: "Testing Subforum", description: "This is a test.", threads: [createdThread] });
-        const threads = await getAllThreadsForSubForum(subForum.name);
-        expect(Array.isArray(threads)).toBe(true);
+        await updateSubForum({ name: "Testing Subforum", description: "This is a test.", threads: [new Types.ObjectId(createdThread.id)], id: subForum.id });
+        await expect(getAllThreadsForSubForum(subForum.name)).rejects.toThrow();
+        // expect(Array.isArray(threads)).toBe(true);
 
-        const threadWithoutCreator = threads.find(thread => thread.id === createdThread.id);
-        expect(threadWithoutCreator?.creatorName).toBeUndefined();
+        // const threadWithoutCreator = threads.find(thread => thread.id === createdThread.id);
+        // expect(threadWithoutCreator?.creatorName).toBeUndefined();
     } catch (error) {
         expect(error).toBeUndefined(); // If an error occurs, it should not reach this point
     }
@@ -226,6 +240,7 @@ test("getAllThreadsForSubForum - No user found", async () => {
 // ----------------------------------------------------- getLatestThreadsFromSubForums -----------------------------------------------------------------
 
 test("getLatestThreadsFromSubForums - get threads from specified subforums", async () => {
+
     const subForumNames2 = ["Thread", "Thread2"];
     const threadCount = 5;
 
@@ -250,6 +265,9 @@ test("getLatestThreadsFromSubForums - get threads from specified subforums", asy
     const thread5: ThreadResource = ({ creator: idJinx, title: "Thread55", subForum: "Thread2", pages: [threadpage.id!], numPosts: 2 });
     const thread6: ThreadResource = ({ creator: idJinx, title: "Thread66", subForum: "Thread2", pages: [threadpage.id!], numPosts: 2 });
 
+    const subForum1 = await createSubForum({ name: "Thread", description: "Description for the new SubForum", threads: [] });
+    const subForum2 = await createSubForum({ name: "Thread2", description: "Description for the new SubForum 2", threads: [] });
+
     await Thread.create(thread);
     await Thread.create(thread2);
     await Thread.create(thread3);
@@ -257,11 +275,8 @@ test("getLatestThreadsFromSubForums - get threads from specified subforums", asy
     await Thread.create(thread5);
     await Thread.create(thread6);
 
-    const subForum1: SubForumResource = { name: "Thread", description: "Description for the new SubForum", threads: [new Types.ObjectId(thread.id!), new Types.ObjectId(thread2.id!), new Types.ObjectId(thread3.id!)] };
-    const subForum2: SubForumResource = { name: "Thread2", description: "Description for the new SubForum 2", threads: [new Types.ObjectId(thread4.id!), new Types.ObjectId(thread5.id!), new Types.ObjectId(thread6.id!)] };
-
-    const forum = await createSubForum(subForum1)
-    const forum2 = await createSubForum(subForum2)
+    await updateSubForum({ name: "Thread", description: "Description for the new SubForum", threads: [new Types.ObjectId(thread.id!), new Types.ObjectId(thread2.id!), new Types.ObjectId(thread3.id!)], id: subForum1.id });
+    await updateSubForum({ name: "Thread2", description: "Description for the new SubForum 2", threads: [new Types.ObjectId(thread4.id!), new Types.ObjectId(thread5.id!), new Types.ObjectId(thread6.id!)], id: subForum2.id });
 
     const latestThreads = await getLatestThreadsFromSubForums(threadCount, subForumNames2.length);
 
@@ -270,7 +285,6 @@ test("getLatestThreadsFromSubForums - get threads from specified subforums", asy
     for (let i = 0; i < latestThreads.length - 1; i++) {
         const currentThreadCreatedAt = new Date(latestThreads[i].createdAt!);
         const nextThreadCreatedAt = new Date(latestThreads[i + 1].createdAt!);
-
         expect(currentThreadCreatedAt.getTime()).toBeGreaterThanOrEqual(nextThreadCreatedAt.getTime());
     }
 });
@@ -283,11 +297,17 @@ test("POST subforum, Creates a new Thread and added to an Subforum returns it", 
     let postid = post.id;
     let post2id = post2.id;
 
+    await SubForum.create({
+        name: "computer science",
+        description: "geek stuff",
+        threads: []
+    });
+
     const threadpage = await ThreadPage.create({ postid, post2id });
     const thread: ThreadResource = ({
         creator: idJinx,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [threadpage.id!],
         numPosts: 2
     });
@@ -312,11 +332,23 @@ test("PUT subforum, updates a subforum", async () => {
     let postid = post.id;
     let post2id = post2.id;
 
+    await SubForum.create({
+        name: "computer science",
+        description: "geek stuff",
+        threads: []
+    });
+
+    await SubForum.create({
+        name: "Testing",
+        description: "descr",
+        threads: []
+    });
+
     const threadpage = await ThreadPage.create({ postid, post2id });
     const thread: ThreadResource = ({
         creator: idJinx,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [threadpage.id!],
         numPosts: 2
     });
@@ -357,6 +389,12 @@ test("PUT subforum negative, Creates a new Thread and added to an Subforum", asy
     const post2 = await Post.create({ content: "Test.", author: idJinx, createdAt: new Date() });
     let postid = post.id;
     let post2id = post2.id;
+
+    await SubForum.create({
+        name: "Testing",
+        description: "description",
+        threads: []
+    });
 
     const threadpage = await ThreadPage.create({ postid, post2id });
     const thread: ThreadResource = ({
@@ -401,6 +439,12 @@ test("DELETE subforum", async () => {
     const post2 = await Post.create({ content: "Test.", author: idJinx, createdAt: new Date() });
     let postid = post.id;
     let post2id = post2.id;
+
+    await SubForum.create({
+        name: "Testing",
+        description: "testing",
+        threads: []
+    });
 
     const threadpage = await ThreadPage.create({ postid, post2id });
     const thread: ThreadResource = ({

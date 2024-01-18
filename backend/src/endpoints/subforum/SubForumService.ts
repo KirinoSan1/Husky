@@ -104,6 +104,7 @@ export async function getLatestThreadsFromSubForums(threadCount: number, subForu
                 creator: thread.creator.toString(),
                 creatorName: creator.name,
                 creatorAvatar: creator.avatar,
+                createdAt: thread.createdAt.toString(),
                 subForum: thread.subForum,
                 numPosts: thread.numPosts,
                 pages: thread.pages

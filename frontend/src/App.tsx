@@ -21,7 +21,7 @@ export default function App() {
             } catch (error) { }
         }
         getUserData();
-    }, [loginInfo]);
+    }, [loginInfo,userInfo]);
 
     const route: string = useLocation().pathname.substring(1);
 

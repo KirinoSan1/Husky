@@ -193,6 +193,7 @@ test("Subforum POST threads, count is not falsy", async () => {
             creator: newUser.id,
             subForum: testingSubforum.id,
             pages: [],
+            numPosts: 0,
             createdAt: new Date()
         };
         await Thread.create(threadData);

@@ -1,12 +1,16 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "../util/Icon";
-import { getUsersThreads, getSubforumsThreads, getLatestThreads } from "../../api/api";
+import { getUsersThreads, getSubforumsThreads, getLatestThreads, getUsersAvatar } from "../../api/api";
 import { ThreadResource } from "../../types/Resources";
 import React from "react";
 import { LoginContext } from '../../components/login/LoginContext';
 import LoadingIndicator from "../util/LoadingIndicator";
 import { UserContext } from "../settings/UserContext";
+import { useSockets } from "../../Socket/context/socket.context";
+import EVENTS from "../livechat/events";
+import { Alert, Button } from "react-bootstrap";
+import { formatOnlineUsersCount, formatTimeToClose } from "../util/Formatter";
 
 export default function FrontPage() {
     const [loginInfo] = useContext(LoginContext);
@@ -15,6 +19,9 @@ export default function FrontPage() {
     const [threads, setThreads] = useState<Map<string, ThreadResource[]> | null>(null);
 
     const navigate = useNavigate();
+    const { rooms, currentUseronline, socket } = useSockets()
+    const [liveChats, setLiveChat] = useState<any[]>([]);
+    const [error, setError] = useState("")
 
     const handleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(event.currentTarget.value);
@@ -34,6 +41,23 @@ export default function FrontPage() {
             handleSearch();
         }
     };
+
+    useEffect(() => {
+        const fetchChats = async () => {
+            const chatPromises = Object.keys(rooms).map(async (key) => {
+                const room = rooms[key];
+                const onlineUser = currentUseronline[key]?.onlineUser || 0;
+                const ava = await getUsersAvatar(room.creatorId);
+                return { ...room, onlineUser, ava, key };
+            });
+
+            const combinedChats = await Promise.all(chatPromises);
+            setLiveChat(combinedChats.slice(0, 5));
+        };
+
+        fetchChats();
+    }, [rooms, currentUseronline]);
+
 
     useEffect(() => {
         const loadThreadRecommendations = async (): Promise<Map<string, ThreadResource[]>> => {
@@ -75,7 +99,7 @@ export default function FrontPage() {
 
                     // taking the maximum amount of threads as second argument due to possible duplications
                     const subforumsThreads: ThreadResource[] = await getSubforumsThreads(subforum, threadSlotsPerSubforum);
-                    
+
                     subforumsThreads.filter((thread: ThreadResource) => thread.creator !== loginInfo.userID).forEach((thread: ThreadResource) => {
                         if (--emptySlots > -1) {
                             threads.push(thread);
@@ -112,6 +136,25 @@ export default function FrontPage() {
         navigate("/threads/" + event.currentTarget.id);
     };
 
+    const handleClickChat = (key: string) => {
+
+        if (!loginInfo) {
+            setError("You have to be logged in to join a LiveChat.")
+            return;
+        }
+
+        if (currentUseronline[key].onlineUser >= rooms[key].userlimit) {
+            setError("This room is already full.")
+            return;
+        }
+        navigate(`/chats/`);
+        socket.emit(EVENTS.CLIENT.JOIN_ROOM, key);
+    };
+
+    const handleClose = () => {
+        setError("")
+    }
+
     return (
         <>
             <img id="banner-logo" src="/images/logo.png" alt="Big Husky logo" loading="lazy" />
@@ -133,7 +176,7 @@ export default function FrontPage() {
                     let keyCounter: number = 0;
 
                     return (
-                        <section key={subforumName}>
+                        <><section key={subforumName}>
                             <h4>{subforumName}</h4>
                             <ul>
                                 {entry[1].map((thread: ThreadResource) => {
@@ -154,12 +197,44 @@ export default function FrontPage() {
                                                 <p>{creatorName}</p>
                                             </div>
                                         </li>
-                                    ); 
+                                    );
                                 })}
                             </ul>
                         </section>
+                        </>
                     );
                 })}
+                {liveChats.length >= 1 && <section>
+                    <h4>LiveChats</h4>
+                    {error && (
+                        <Alert variant="danger" key="danger" onClose={handleClose} dismissible>
+                            <p>{error}</p>
+                        </Alert>
+                    )}
+                    <ul>
+                        {liveChats.map((room, index) => (
+                            <li key={index} className={userInfo && userInfo.id === room.creatorId ? "own-thread" : undefined} onClick={() => handleClickChat(room.key)}>
+                                   <img
+                                        src= "/images/live_logo.svg"
+                                        alt={"Profile avatar of " + room.creatorname}
+                                        loading="lazy"
+                                    />
+                                <p className="topic-entry-preview-title">{room.name}</p>
+
+                                <p>{room.onlineUser}/{room.userlimit} online </p>
+                                <div>
+                                    <img
+                                        src={room.ava ? room.ava : "/images/logo.png"}
+                                        alt={"Profile avatar of " + room.creatorname}
+                                        loading="lazy"
+                                    />
+                                    <p>{room.creatorname}</p>
+                                  
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </section>}
             </div>
         </>
     );

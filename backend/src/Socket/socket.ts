@@ -30,12 +30,11 @@ export function formatTime(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
 }
 
-// const rooms: Record<string, { name: string }> = {};
-let rooms: Record<string, { name: string, messages: { message: string, name: string, time: string, avatar: string }[], ttl: number, reopen: boolean, creatorId: string, userlimit:number }> = {};
+let rooms: Record<string, { name: string, messages: { message: string, name: string, time: string, avatar: string }[], ttl: number, reopen: boolean, creatorId: string, userlimit: number, creatorname: string }> = {};
 const currentUser: Record<string, { onlineUser: number }> = {}
 
 // The plus one is for the time to display 48
-const defaultTTL = 48 * 60 * 60 * 1000 + 1; 
+const defaultTTL = 48 * 60 * 60 * 1000 + 1;
 
 function socket({ io }: { io: Server }) {
     console.log("Socket enabled");
@@ -47,7 +46,7 @@ function socket({ io }: { io: Server }) {
      */
     io.on(EVENTS.connection, (socket: Socket) => {
 
-        socket.on(EVENTS.CLIENT.CREATE_ROOM, async ({ roomName, userid , userlimit}) => {
+        socket.on(EVENTS.CLIENT.CREATE_ROOM, async ({ roomName, userid, userlimit, creatorname }) => {
 
             // create a roomId
             const roomId = nanoid();
@@ -58,7 +57,8 @@ function socket({ io }: { io: Server }) {
                 ttl: Date.now() + defaultTTL,
                 reopen: false,
                 creatorId: userid,
-                userlimit,
+                creatorname,
+                userlimit
             };
 
             currentUser[roomId] = {
