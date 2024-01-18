@@ -62,10 +62,12 @@
             bottom: 0;
         }
     }
-    .threadpage-post {
-        &:first-of-type {
-            background: radial-gradient(circle, rgba(57,122,160,0.5) 0%, rgba($color: theme.$eighth-color, $alpha: 1) 100%);
-            border: 2px solid theme.$first-color;
+    #threadpage0-div {
+        .threadpage-post {
+            &:first-of-type {
+                background: radial-gradient(circle, rgba(57,122,160,0.5) 0%, rgba($color: theme.$eighth-color, $alpha: 1) 100%);
+                border: 2px solid theme.$first-color;
+            }
         }
     }
     #createpostdialog-textarea {
