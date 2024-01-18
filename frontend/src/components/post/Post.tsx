@@ -55,9 +55,7 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
                     <p id={`post${postNum}-div2-div-p3`}>{`#${postNum + 1}`}</p>
                 </div>
                 <p id={`post${postNum}-div2-p4`}>{post.content}</p>
-                <hr />
-                <p id={`post${postNum}-div2-p5`}>Upvotes: {upvotes}</p>
-                <p id={`post${postNum}-div2-p6`}>Downvotes: {downvotes}</p>
+                <div className="post-horizontal-line" />
                 {loginInfo && loginInfo.userID === post.author && (!post.modified || post.modified === "m") &&
                     <>
                         <Button id={`post${postNum}-div2-div-button1`} onClick={() => { setShowEditDialog(true); }}>Edit</Button>
@@ -72,20 +70,38 @@ export default function Post({ user, post, postNum, avatar }: { user: AuthorReso
                             <>{
                                 userInfo.votedPosts.get(post.id) === true ?
                                     <>
-                                        <Button id={`post${postNum}-div2-div-button3`} variant="secondary" onClick={() => { handleVote(true, true); }}>{thumbsUpIcon}</Button>
+                                        <div className="vote-button upvote">
+                                            <Button id={`post${postNum}-div2-div-button3`} variant="secondary" onClick={() => { handleVote(true, true); }}>{thumbsUpIcon}</Button>
+                                            <div className="votes">{upvotes}</div>
+                                        </div>
+                                        <div className="vote-button downvote">
                                         <Button id={`post${postNum}-div2-div-button4`} onClick={() => { handleVote(false, false); }}>{thumbsDownIcon}</Button>
+                                            <div className="votes">{downvotes}</div>
+                                        </div>
                                     </>
                                     :
                                     <>
-                                        <Button id={`post${postNum}-div2-div-button5`} onClick={() => { handleVote(true, false); }}>{thumbsUpIcon}</Button>
+                                        <div className="vote-button upvote">
+                                            <Button id={`post${postNum}-div2-div-button5`} onClick={() => { handleVote(true, false); }}>{thumbsUpIcon}</Button>
+                                            <div className="votes">{upvotes}</div>
+                                        </div>
+                                        <div className="vote-button downvote">
                                         <Button id={`post${postNum}-div2-div-button6`} variant="secondary" onClick={() => { handleVote(false, true); }}>{thumbsDownIcon}</Button>
+                                            <div className="votes">{downvotes}</div>
+                                        </div>
                                     </>
                             }
                             </>
                             :
                             <>
-                                <Button id={`post${postNum}-div2-div-button7`} onClick={() => { handleVote(true, false); }}>{thumbsUpIcon}</Button>
-                                <Button id={`post${postNum}-div2-div-button8`} onClick={() => { handleVote(false, false); }}>{thumbsDownIcon}</Button>
+                                <div className="vote-button upvote">
+                                    <Button id={`post${postNum}-div2-div-button7`} onClick={() => { handleVote(true, false); }}>{thumbsUpIcon}</Button>
+                                    <div className="votes">{upvotes}</div>
+                                </div>
+                                <div className="vote-button downvote">
+                                    <Button id={`post${postNum}-div2-div-button8`} onClick={() => { handleVote(false, false); }}>{thumbsDownIcon}</Button>
+                                    <div className="votes">{downvotes}</div>
+                                </div>
                             </>
                     }</>
                 }
