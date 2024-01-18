@@ -37,12 +37,10 @@ function MessagesContainer() {
 
 
   useEffect(() => {
-    console.log("inside ef")
     if (!loginInfo.role === null) {
-      console.log(roomId + "     inside Logininfo")
       socket.emit(EVENTS.CLIENT.DISCONNECT_ROOM, roomId);
     } else {
-      console.log(loginInfo)
+      return;
     }
 
   }, [roomId, loginInfo])
@@ -138,7 +136,6 @@ function MessagesContainer() {
             </div>
             <div className="room-details">
               <span className="room-userlimit">Users online: {currentUseronline[roomId].onlineUser}/{rooms[roomId].userlimit}</span>
-              {/* <span>{formatOnlineUsersCount(currentUseronline[roomId]?.onlineUser)}</span> */}
               <span> | </span>
               <span>Room will be closed in: {formatTimeToClose(rooms[roomId].ttl)}</span>
             </div>
@@ -180,7 +177,7 @@ function MessagesContainer() {
         />
       </Col>
       <Col xs={12}>
-        <Button onClick={handleSendMessage} variant="primary" w-100>
+        <Button onClick={handleSendMessage} variant="primary" >
           Send
         </Button>
 
@@ -190,17 +187,15 @@ function MessagesContainer() {
             disabled={!roomClosed || isRoomReopen}
             onClick={handleReopenRoom}
             title={!isRoomReopen ? "You can reopen this Chat one more time, once the Timer is done." : "Room has already been Reopend. "}
-            w-100
           >
             Reopen
           </Button>
         )}
-        {roomId && <Button variant="danger" disabled={leaveButtonDisabled} onClick={handleLeaveRoom} w-100> Leave Room </Button>}
+        {roomId && <Button variant="danger" disabled={leaveButtonDisabled} onClick={handleLeaveRoom}> Leave Room </Button>}
         {roomId && rooms[roomId] && rooms[roomId].creatorId === userInfo.id && (
           <Button
             variant="danger"
             onClick={handleDeleteRoom}
-            w-100
           >
             Delete Room
           </Button>

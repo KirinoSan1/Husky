@@ -6,6 +6,7 @@ import { ThreadPage } from "../../src/endpoints/threadpage/ThreadPageModel";
 import { IUser, User } from "../../src/endpoints/user/UserModel"
 import { Post } from "../../src/endpoints/post/PostModel";
 import { ThreadResource } from "../../src/types/Resources";
+import { SubForum } from "../../src/endpoints/subforum/SubForumModel";
 
 let userJinx: IUser = { email: "Jinx@gmail.com", name: "Jinx", password: "123", admin: false, verified: true, votedPosts: new Map() }
 let idJinx: string
@@ -16,6 +17,12 @@ beforeEach(async () => {
     await User.syncIndexes();
     const jinx = await User.create(userJinx);
     idJinx = jinx.id;
+
+    const scienceForum = await SubForum.create({
+        name: "computer science",
+        description: "geek stuff",
+        threads: []
+    });
 });
 afterEach(async () => await DB.clear());
 afterAll(async () => await DB.close());
@@ -63,7 +70,7 @@ test("Creates a new Thread and returns it", async () => {
     const thread: ThreadResource = ({
         creator: idJinx,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [threadpage.id!],
         numPosts: 2
     });
@@ -88,7 +95,7 @@ test("Creates a new Thread and search the Titel, one example", async () => {
     const thread: ThreadResource = ({
         creator: idJinx,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [post.id, post2.id],
         numPosts: 2,
     });
@@ -107,7 +114,7 @@ test("Creates a new Thread and search the Titel case insensitive", async () => {
     const thread: ThreadResource = ({
         creator: idJinx,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [post.id, post2.id],
         numPosts: 2
     });
@@ -115,7 +122,7 @@ test("Creates a new Thread and search the Titel case insensitive", async () => {
     const thread1: ThreadResource = ({
         creator: idJinx,
         title: "thread",
-        subForum: "testing",
+        subForum: "computer science",
         pages: [post.id, post2.id],
         numPosts: 2
     });
@@ -123,7 +130,7 @@ test("Creates a new Thread and search the Titel case insensitive", async () => {
     const thread2: ThreadResource = ({
         creator: idJinx,
         title: "thethread",
-        subForum: "testing",
+        subForum: "computer science",
         pages: [post.id, post2.id],
         numPosts: 2
     });
@@ -131,7 +138,7 @@ test("Creates a new Thread and search the Titel case insensitive", async () => {
     const thread3: ThreadResource = ({
         creator: idJinx,
         title: "the thread",
-        subForum: "testing",
+        subForum: "computer science",
         pages: [post.id, post2.id],
         numPosts: 2
     });
@@ -154,7 +161,7 @@ test("Creates a new Thread and search for an non existing Titel", async () => {
     const thread: ThreadResource = ({
         creator: idJinx,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [post.id, post2.id],
         numPosts: 2,
     });
@@ -169,7 +176,7 @@ test("Error when User not found", async () => {
     const threadRes: ThreadResource = ({
         creator: NON_EXISTING_ID,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [post.id, post2.id],
         numPosts: 2
     });

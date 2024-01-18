@@ -248,6 +248,7 @@ test("User POST/threads, returns threads for a user", async () => {
         creator: new mongoose.Types.ObjectId(idjohn),
         subForum: "Testing Subforum",
         pages: [],
+        numPosts: 0,
         createdAt: new Date()
     };
     const createdThread = await Thread.create(threadData);
@@ -277,6 +278,7 @@ test("User POST/threads, count is not falsy", async () => {
             creator: newUser.id,
             subForum: "Testing Subforum",
             pages: [],
+            numPosts: 0,
             createdAt: new Date()
         };
         await Thread.create(threadData);

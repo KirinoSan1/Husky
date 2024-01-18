@@ -12,6 +12,7 @@ import * as ThreadService from "../../src/endpoints/thread/ThreadService";
 import { IThread, Thread } from "../../src/endpoints/thread/ThreadModel";
 import { Types } from "mongoose";
 import { ObjectId } from 'mongodb';
+import { SubForum } from "../../src/endpoints/subforum/SubForumModel";
 
 let userJinx: IUser = { name: "John", email: "john@some-host.de", password: "123asdf!ABCD", admin: false, verified: true, votedPosts: new Map() };
 let idJinx: string;
@@ -51,6 +52,12 @@ beforeEach(async () => {
     token2 = loginResource2.access_token;
     expect(token2).toBeDefined();
 
+    const scienceForum = await SubForum.create({
+        name: "computer science",
+        description: "geek stuff",
+        threads: []
+    });
+
     const post = await Post.create({ content: "Test.", author: jinx.id, createdAt: new Date() });
     const post2 = await Post.create({ content: "Test.", author: jinx.id, createdAt: new Date() });
     postid = post.id;
@@ -59,7 +66,7 @@ beforeEach(async () => {
     const thread = await Thread.create({
         creator: jinx._id,
         title: "Thread",
-        subForum: "Testing",
+        subForum: "computer science",
         pages: [post.id, post2.id],
         numPosts: 2,
         createdAt: Date.now()
@@ -133,7 +140,7 @@ test("Thread GET title, positive test", async () => {
 test("Thread GET title, has more than one object", async () => {
     const request = supertest(app);
     const thread = await createThread({ title: "Jinxs Store", creator: idJinx!, subForum: "computer science", numPosts: 3, pages: [postid, post2id] });
-    const thread2 = await createThread({ title: "Store", creator: idJinx!, subForum: "science", numPosts: 3, pages: [postid, post2id] });
+    const thread2 = await createThread({ title: "Store", creator: idJinx!, subForum: "computer science", numPosts: 3, pages: [postid, post2id] });
     const response = await request.get(`/api/thread/${thread2.id}`);
 
     expect(response.status).toBe(200);
@@ -194,7 +201,7 @@ test("Thread POST, with content and numPosts equals 1", async () => {
         .send({
             title: 'New Thread',
             creator: idJinx,
-            subForum: 'Testing',
+            subForum: 'computer science',
             numPosts: 1,
             content: 'This is a test content for the thread.',
             pages: []

@@ -6,6 +6,8 @@ import { getAuthors, getThread, getThreadPage } from "../../api/api";
 import { AuthorResource, ThreadPageResource, ThreadResource } from "../../types/Resources";
 import { Location, NavigateFunction, useLocation, useNavigate, useParams } from "react-router-dom";
 import Icon from "../util/Icon";
+import { useSockets } from "../../Socket/context/socket.context";
+import EVENTS from "../livechat/events";
 
 export const ThreadContext = React.createContext([] as any);
 export const ThreadPageContext = React.createContext([] as any);
@@ -18,14 +20,37 @@ export default function Thread() {
     const [threadPage, setThreadPage] = useState<ThreadPageResource | null>(null);
     const [authors, setAuthors] = useState<Map<string, AuthorResource> | null>(null);
     const [error, setError] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
     const navigate: NavigateFunction = useNavigate();
     const route: Location = useLocation();
+    const [searchInput, setSearchInput] = useState('');
+    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const { rooms, socket, currentUseronline } = useSockets();
 
     const setCurrentPageNum = (page: number) => {
         const currentPath: string = route.pathname;
         navigate(currentPath.substring(0, currentPath.length - 1) + (page + 1));
         setPageNum(page);
     }
+
+    useEffect(() => {
+        if (thread) {
+            setSearchInput(thread.title);
+            const threadtitle = thread.title.trim().split(" ")
+
+            const filteredSuggestions = Object.keys(rooms).filter((key) => {
+                const room = rooms[key];
+                if (room && room.name) {
+                    return threadtitle.some((title) => room.name.toLowerCase().includes(title.toLowerCase()));
+                }
+                return false;
+            })
+
+            setSuggestions(filteredSuggestions.slice(0, 3));
+        } else {
+            return;
+        }
+    }, [searchInput, rooms, thread, searchInput, route, error]);
 
     useEffect(() => {
         async function loadThread() {
@@ -38,7 +63,7 @@ export default function Thread() {
         }
         loadThread();
     }, []);
-    
+
     useEffect(() => {
         async function loadThreadPage() {
             setThreadPage(null);
@@ -73,8 +98,22 @@ export default function Thread() {
     const handlePrevious = () => { setCurrentPageNum(pageNum - 1); };
     const handleNext = () => { setCurrentPageNum(pageNum + 1); };
 
-    if (error)
-        return <Alert id="thread-alert" variant="danger">{`An error occured when loading the page: ${error}`}</Alert>;
+
+    const handleJoinRoom = (key: string) => {
+        setShowAlert(true)
+        if (currentUseronline[key].onlineUser >= rooms[key].userlimit) {
+            setError("This room is already full.")
+            return;
+        }
+
+        navigate(`/chats`);
+        socket.emit(EVENTS.CLIENT.JOIN_ROOM, key);
+    };
+
+
+    const handleClose = ()=>{
+        setError("")
+    }
 
     if (!thread || !threadPage || !authors)
         return <LoadingIndicator />;
@@ -83,6 +122,21 @@ export default function Thread() {
         <ThreadContext.Provider value={[thread, setThread]}>
             <ThreadPageContext.Provider value={[threadPage, setThreadPage]}>
                 <PageNumContext.Provider value={[pageNum, setPageNum]}>
+                    {error && (
+                        <Alert variant="danger" key="danger" onClose={handleClose} dismissible>
+                            <p>{error}</p>
+                        </Alert>
+                    )}
+                    {suggestions && suggestions.length > 0 && (
+                        <Alert key="primary" variant="primary">
+                            You might be interested in those Livechats :
+                            {suggestions.map((key) => (
+                                <React.Fragment key={key} >
+                                    <Button style={{ marginLeft: '10px' }} onClick={() => handleJoinRoom(key)}>{rooms[key].name}</Button>
+                                </React.Fragment>
+                            ))}
+                        </Alert>
+                    )}
                     <div id="thread-div">
                         <div>
                             <h3 id={`thread-div-p1`}>{`${thread.title}`}</h3>

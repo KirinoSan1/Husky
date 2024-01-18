@@ -8,7 +8,7 @@ import EVENTS from '../../components/livechat/events'
 interface SocketInterface {
     socket: Socket
     roomId?: string
-    rooms: Record<string, { name: string, messages: { message: string, name: string, time: string, avatar: string }[], ttl: number, reopen: boolean, creatorId: string , userlimit:number}>;
+    rooms: Record<string, { name: string, messages: { message: string, name: string, time: string, avatar: string }[], ttl: number, reopen: boolean, creatorId: string, userlimit: number, creatorname: string}>;
     messages?: { message: string, time: string, name: string, avatar: string }[]
     setMessages: Function;
     currentUseronline: Record<string, { onlineUser: number }>;
@@ -26,7 +26,7 @@ const SocketContext = createContext<SocketInterface>({
     rooms: {},
     messages: [],
     currentUseronline: {},
-    setRoomId: ()=> false,
+    setRoomId: () => false,
 })
 
 function SocketsProvider(props: any) {

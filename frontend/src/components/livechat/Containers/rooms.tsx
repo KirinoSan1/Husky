@@ -65,7 +65,8 @@ function RoomsContainer() {
             return;
         }
         setPrevRoomId(roomId!);
-        socket.emit(EVENTS.CLIENT.CREATE_ROOM, { roomName, userid: userInfo.id, userlimit });
+
+        socket.emit(EVENTS.CLIENT.CREATE_ROOM, { roomName, userid: userInfo.id, userlimit, creatorname: userInfo.name});
 
         newRoomRef.current.value = '';
         setError(null)
@@ -100,7 +101,7 @@ function RoomsContainer() {
 
     if (roomId) {
         // Don't render anything if roomId is null
-        return null; 
+        return null;
     }
 
     return (
@@ -113,7 +114,7 @@ function RoomsContainer() {
 
             <div>
                 <Form>
-                    <p>Create a room:</p>
+                    <h4>Create a room:</h4>
                     <Form.Control
                         type="text"
                         placeholder="Room name..."
@@ -121,19 +122,23 @@ function RoomsContainer() {
                         className="mb-2"
                         onKeyPress={(e) => EnterJoin(e)}
                     />
+                    <h4>Set a User limit:</h4>
+
                     <Form.Control as="select" ref={userlimitRef} className="custom-select">
                         {!userlimitRef.current?.value && (
                             <option value="" disabled hidden>
                                 Set a User limit
                             </option>
                         )}
+
                         {Array.from({ length: 19 }, (_, index) => index + 2).map((limit) => (
                             <option key={limit} value={limit}>
                                 {limit}
                             </option>
                         ))}
-                    </Form.Control>
 
+                    </Form.Control>
+                    {/* <h4>Subforum: </h4> */}
                     {userLiveChats.length < 3 ? (
                         <Button variant="primary" onClick={handleCreateRoom}>
                             Create New Room
@@ -143,11 +148,12 @@ function RoomsContainer() {
                             You already have 3 Chatrooms open. Please delete them to open another.
                         </Alert>
                     )}
+
                 </Form>
             </div>
             <div className="livechat-horizontal-line" />
             <Form>
-                <p>Search for rooms by title:</p>
+                <h4>Search for rooms by title:</h4>
                 <Form.Control
                     type="text"
                     value={searchInput}
@@ -156,6 +162,7 @@ function RoomsContainer() {
                     onChange={(e) => setSearchInput(e.target.value)}
                 />
             </Form>
+
             {searchInput && suggestions.length > 0 && (
                 <ul className="list-group suggestions-list bg-dark">
                     {suggestions.map((key) => (
@@ -169,6 +176,7 @@ function RoomsContainer() {
             )}
 
             <ul className="list-group">
+                <h4>Rooms to join: </h4>
                 {Object.keys(rooms).map((key) => (
                     <li key={key} className="list-group-item bg-dark" style={{ color: 'white' }}>
                         <div className="room-info">
