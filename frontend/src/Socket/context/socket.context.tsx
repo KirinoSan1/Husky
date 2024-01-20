@@ -1,9 +1,8 @@
 import io, { Socket } from 'socket.io-client'
-import { SOCKET_URL } from '../default'
 import { createContext, useContext, useEffect, useState } from 'react'
 import EVENTS from '../../components/livechat/events'
 
-
+const SOCKET_URL = String(process.env.REACT_APP_BACKEND_URL);
 
 interface SocketInterface {
     socket: Socket
