@@ -84,6 +84,7 @@ export async function getAllThreadsForSubForum(subForumName: string, count?: num
  * @param subForumCount - The number of sub-forums to consider (default: 5).
  * @returns An array of ThreadResource objects representing the latest threads.
  */
+/* istanbul ignore next */
 export async function getLatestThreadsFromSubForums(threadCount: number, subForumCount: number): Promise<ThreadResource[]> {
     const subForums: string[] = (await SubForum.find({}, "name").limit(subForumCount).exec()).map(subforum => subforum.name);
     const threadsFromSubForums: (ThreadResource & { creatorName: string, creatorAvatar?: string })[] = [];

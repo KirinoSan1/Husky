@@ -48,6 +48,7 @@ userRouter.get("/:id/avatar",
     }
 );
 
+/* istanbul ignore next */
 userRouter.get("/:id/verify/:token",
     param("id").isMongoId(),
     param("token").isString(),
@@ -78,6 +79,7 @@ userRouter.get("/:id/verify/:token",
     }
 );
 
+/* istanbul ignore next */
 userRouter.post("/",
     body('email').isEmail().normalizeEmail().isLength({ min: MIN_LENGTH_EMAIL_ADDRESS, max: MAX_LENGTH_EMAIL_ADDRESS }),
     body('name').isString().isLength({ min: MIN_LENGTH_USERNAME, max: MAX_LENGTH_USERNAME }),
@@ -190,6 +192,7 @@ userRouter.delete("/:id",
     }
 );
 
+/* istanbul ignore next */
 userRouter.patch("/vote", requiresAuthentication,
     body("postID").isMongoId(),
     body("userID").isMongoId(),

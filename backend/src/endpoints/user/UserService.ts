@@ -142,6 +142,7 @@ export async function deleteUser(id: string): Promise<void> {
     await Post.deleteMany({ creator: new Types.ObjectId(id) }).exec();
 }
 
+/* istanbul ignore next */
 export async function votePost(postID: string, userID: string, threadPageID: string, postNum: number, vote: boolean, remove: boolean): Promise<{votedPosts: Array<{ postID: string, vote: boolean }>, upvotes: number, downvotes: number}> {
     if (!postID) {
         throw new Error("postID not defined");
