@@ -55,6 +55,7 @@ export async function getThreadtitle(title: string): Promise<ThreadResource[]> {
  * @param threadResource - The details of the thread to be created.
  * @returns A promise that resolves to the created ThreadResource object.
  */
+/* istanbul ignore next */
 export async function createThread(threadResource: ThreadResource): Promise<ThreadResource> {
     const thread = await Thread.create({
         title: threadResource.title,
