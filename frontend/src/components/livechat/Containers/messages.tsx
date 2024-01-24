@@ -7,7 +7,7 @@ import { formatTimeToClose } from "../../util/Formatter";
 import { LoginContext } from "../../login/LoginContext";
 
 function MessagesContainer() {
-  const { socket, messages, roomId, setMessages, currentUseronline, rooms, setRoomId } = useSockets();
+  const { socket, messages, roomId, setMessages, currentUseronline, rooms, setRoomId, userinChat } = useSockets();
   const newMessageRef = useRef<any>(null);
   const messageEndRef = useRef<any>(null);
   const [userInfo] = useContext(UserContext);
@@ -15,8 +15,9 @@ function MessagesContainer() {
   const [leaveButtonDisabled, setLeaveButtonDisabled] = useState(false);
   const [isRoomReopen, setIsRoomReopen] = useState<boolean>(false);
   const [loginInfo] = useContext(LoginContext)
+  const [userinChatState, setUserinChatState] = useState(userinChat);
 
-  useEffect(() => { }, [socket, messages, roomId, setMessages, currentUseronline, roomClosed])
+  useEffect(() => { }, [socket, messages, roomId, setMessages, currentUseronline, roomClosed, userinChat])
 
   useEffect(() => {
     if (!roomId || !rooms[roomId] || !rooms[roomId].ttl) {
@@ -34,11 +35,17 @@ function MessagesContainer() {
     return () => clearInterval(intervalId);
   }, [roomId, rooms, isRoomReopen, roomClosed]);
 
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView();
+  }, [messages]);
 
+  useEffect(() => {
+    setUserinChatState(userinChat);
+  }, [userinChat])
 
   useEffect(() => {
     if (!loginInfo.role === null) {
-      socket.emit(EVENTS.CLIENT.DISCONNECT_ROOM, roomId);
+      socket.emit(EVENTS.CLIENT.DISCONNECT_ROOM, roomId, userInfo.id);
     } else {
       return;
     }
@@ -118,6 +125,7 @@ function MessagesContainer() {
     if (leaveButtonDisabled) {
       return;
     }
+    socket.emit(EVENTS.CLIENT.DISCONNECT_ROOM, roomId, userInfo.id)
     setLeaveButtonDisabled(true);
     window.location.reload();
     setTimeout(() => {
@@ -138,6 +146,11 @@ function MessagesContainer() {
               <span className="room-userlimit">Users online: {currentUseronline[roomId].onlineUser}/{rooms[roomId].userlimit}</span>
               <span> | </span>
               <span>Room will be closed in: {formatTimeToClose(rooms[roomId].ttl)}</span>
+              {/* {rooms[roomId] && rooms[roomId].inChat.join(",")}
+              <span> | </span>
+              {rooms[roomId] && userinChatState.join(",")}
+              <span> | Länge </span>
+              {rooms[roomId] && userinChatState.length} */}
             </div>
           </>
         )}

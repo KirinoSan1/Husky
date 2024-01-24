@@ -17,11 +17,11 @@ export default function FrontPage() {
     const [userInfo] = useContext(UserContext);
     const [searchInput, setSearchInput] = useState("");
     const [threads, setThreads] = useState<Map<string, ThreadResource[]> | null>(null);
-
     const navigate = useNavigate();
-    const { rooms, currentUseronline, socket } = useSockets()
+    const { rooms, currentUseronline, socket, userinChat } = useSockets()
     const [liveChats, setLiveChat] = useState<any[]>([]);
     const [error, setError] = useState("")
+    const [userinChatState, setUserinChatState] = useState(userinChat);
 
     const handleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(event.currentTarget.value);
@@ -41,6 +41,10 @@ export default function FrontPage() {
             handleSearch();
         }
     };
+
+    useEffect(() => {
+        setUserinChatState(userinChat);
+    }, [userinChat])
 
     useEffect(() => {
         const fetchChats = async () => {
@@ -142,13 +146,16 @@ export default function FrontPage() {
             setError("You have to be logged in to join a LiveChat.")
             return;
         }
+        const userInChat = userinChatState.includes(userInfo.id);
+        const roomUserLimitReached = currentUseronline[key].onlineUser >= rooms[key].userlimit;
 
-        if (currentUseronline[key].onlineUser >= rooms[key].userlimit) {
+        console.log(`user found: ${rooms[key].inChat.includes(userInfo.id)} | current user: ${currentUseronline[key].onlineUser} | room user limit: ${rooms[key].userlimit}`);
+        if (!userInChat && roomUserLimitReached) {
             setError("This room is already full.")
             return;
         }
         navigate(`/chats/`);
-        socket.emit(EVENTS.CLIENT.JOIN_ROOM, key);
+        socket.emit(EVENTS.CLIENT.JOIN_ROOM, key, userInfo.id);
     };
 
     const handleClose = () => {
@@ -214,11 +221,11 @@ export default function FrontPage() {
                     <ul>
                         {liveChats.map((room, index) => (
                             <li key={index} className={userInfo && userInfo.id === room.creatorId ? "own-thread" : undefined} onClick={() => handleClickChat(room.key)}>
-                                   <img
-                                        src= "/images/live_logo.svg"
-                                        alt={"Profile avatar of " + room.creatorname}
-                                        loading="lazy"
-                                    />
+                                <img
+                                    src="/images/live_logo.svg"
+                                    alt="livelogo"
+                                    loading="lazy"
+                                />
                                 <p className="topic-entry-preview-title">{room.name}</p>
 
                                 <p>{room.onlineUser}/{room.userlimit} online </p>
@@ -229,7 +236,6 @@ export default function FrontPage() {
                                         loading="lazy"
                                     />
                                     <p>{room.creatorname}</p>
-                                  
                                 </div>
                             </li>
                         ))}
