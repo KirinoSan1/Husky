@@ -7,9 +7,10 @@ import { UserContext } from '../../settings/UserContext';
 import { LoginContext } from '../../login/LoginContext';
 
 function RoomsContainer() {
-    const { socket, roomId, rooms, currentUseronline } = useSockets();
+    const { socket, roomId, rooms, currentUseronline, userinChat } = useSockets();
     const newRoomRef = useRef<any>(null);
     const userlimitRef = useRef<any>(null);
+    const subforumRef = useRef<any>(null);
     const [prevRoomId, setPrevRoomId] = useState<string | null>(null);
     const [searchInput, setSearchInput] = useState('');
     const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -17,6 +18,7 @@ function RoomsContainer() {
     const [userLiveChats, setUserLiveChats] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loginInfo] = useContext(LoginContext)
+    const [userinChatState, setUserinChatState] = useState(userinChat);
 
 
     useEffect(() => {
@@ -59,14 +61,19 @@ function RoomsContainer() {
     function handleCreateRoom() {
         const roomName = newRoomRef.current.value.trim();
         const userlimit = userlimitRef.current.value.trim();
-
+        const subforum = subforumRef.current.value.trim();
         if (!roomName || !userlimit) {
+            setError('Room name is required.');
+            return;
+        }
+        if (!subforum) {
             setError('Room name and user limit are required.');
             return;
         }
         setPrevRoomId(roomId!);
 
-        socket.emit(EVENTS.CLIENT.CREATE_ROOM, { roomName, userid: userInfo.id, userlimit, creatorname: userInfo.name});
+
+        socket.emit(EVENTS.CLIENT.CREATE_ROOM, { roomName, userid: userInfo.id, userlimit, creatorname: userInfo.name, subforum });
 
         newRoomRef.current.value = '';
         setError(null)
@@ -79,11 +86,17 @@ function RoomsContainer() {
         if (roomId) {
             setPrevRoomId(roomId);
         }
-        if (currentUseronline[key].onlineUser >= rooms[key].userlimit) {
+
+        const userInChat = userinChatState.includes(userInfo.id);
+        const roomUserLimitReached = currentUseronline[key].onlineUser >= rooms[key].userlimit;
+
+        console.log(`user found: ${rooms[key].inChat.includes(userInfo.id)} | current user: ${currentUseronline[key].onlineUser} | room user limit: ${rooms[key].userlimit}`);
+        if (!userInChat && roomUserLimitReached) {
             setError("This room is already full.")
             return;
         }
-        socket.emit(EVENTS.CLIENT.JOIN_ROOM, key);
+
+        socket.emit(EVENTS.CLIENT.JOIN_ROOM, key, userInfo.id);
         setError(null)
     }
 
@@ -104,6 +117,13 @@ function RoomsContainer() {
         return null;
     }
 
+    const subforums = [
+        'Cuisine',
+        'History',
+        'Mathematics',
+        'Philosophy',
+        'Science'
+    ];
     return (
         <>
             {error && (
@@ -134,6 +154,17 @@ function RoomsContainer() {
                         {Array.from({ length: 19 }, (_, index) => index + 2).map((limit) => (
                             <option key={limit} value={limit}>
                                 {limit}
+                            </option>
+                        ))}
+
+                    </Form.Control>
+
+                    <h4>Choose your Subforum :</h4>
+
+                    <Form.Control as="select" ref={subforumRef} className="custom-select">
+                        {subforums.map((subforum, index) => (
+                            <option key={index} value={subforum}>
+                                {subforum}
                             </option>
                         ))}
 

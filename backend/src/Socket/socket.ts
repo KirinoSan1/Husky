@@ -18,7 +18,8 @@ const EVENTS = {
         JOINED_ROOM: "JOINED_ROOM",
         ROOM_MESSAGE: "ROOM_MESSAGE",
         CURRENT_USER: "CURRENT_USER",
-        DELETE_ROOM_CONFIRMATION: "DELETE_ROOM_CONFIRMATION"
+        DELETE_ROOM_CONFIRMATION: "DELETE_ROOM_CONFIRMATION",
+        IN_CHAT: "IN_CHAT"
     },
 }
 
@@ -30,7 +31,22 @@ export function formatTime(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
 }
 
-let rooms: Record<string, { name: string, messages: { message: string, name: string, time: string, avatar: string }[], ttl: number, reopen: boolean, creatorId: string, userlimit: number, creatorname: string }> = {};
+let rooms: Record<string, {
+    name: string,
+    messages: {
+        message: string,
+        name: string,
+        time: string,
+        avatar: string
+    }[],
+    ttl: number,
+    reopen: boolean,
+    creatorId: string,
+    userlimit: number,
+    creatorname: string,
+    subForum: string,
+    inChat: string[]
+}> = {};
 const currentUser: Record<string, { onlineUser: number }> = {}
 
 // The plus one is for the time to display 48
@@ -39,14 +55,13 @@ const defaultTTL = 48 * 60 * 60 * 1000 + 1;
 function socket({ io }: { io: Server }) {
     console.log("Socket enabled");
 
-
-
+    
     /**
      * When A User creates a new room.
      */
     io.on(EVENTS.connection, (socket: Socket) => {
 
-        socket.on(EVENTS.CLIENT.CREATE_ROOM, async ({ roomName, userid, userlimit, creatorname }) => {
+        socket.on(EVENTS.CLIENT.CREATE_ROOM, async ({ roomName, userid, userlimit, creatorname, subForum }) => {
 
             // create a roomId
             const roomId = nanoid();
@@ -58,7 +73,9 @@ function socket({ io }: { io: Server }) {
                 reopen: false,
                 creatorId: userid,
                 creatorname,
-                userlimit
+                userlimit,
+                subForum,
+                inChat: [userid]
             };
 
             currentUser[roomId] = {
@@ -70,7 +87,8 @@ function socket({ io }: { io: Server }) {
             socket.broadcast.emit(EVENTS.SERVER.CURRENT_USER, currentUser);
             // broadcast an event saying there is a new room
             socket.broadcast.emit(EVENTS.SERVER.ROOMS, rooms);
-
+            // send the current Array of Userids
+            socket.emit(EVENTS.SERVER.IN_CHAT, { inChat: rooms[roomId].inChat })
             socket.emit(EVENTS.SERVER.CURRENT_USER, currentUser);
             // emit back to the room creator with all the rooms
             socket.emit(EVENTS.SERVER.ROOMS, rooms);
@@ -119,32 +137,49 @@ function socket({ io }: { io: Server }) {
          * When a user joins a room
          */
 
-        socket.on(EVENTS.CLIENT.JOIN_ROOM, async (roomId: string) => {
+        socket.on(EVENTS.CLIENT.JOIN_ROOM, async (roomId: string, userId: string) => {
+            if (rooms[roomId].inChat.includes(userId)) {
+                await socket.join(roomId);
+                socket.emit(EVENTS.SERVER.JOINED_ROOM, { roomId, messages: rooms[roomId].messages || [] });
+                socket.emit(EVENTS.SERVER.IN_CHAT, { inChat: rooms[roomId].inChat })
+                io.emit(EVENTS.SERVER.IN_CHAT, { inChat: rooms[roomId].inChat })
+                return;
+            }
+            rooms[roomId].inChat.push(userId);
             await socket.join(roomId);
+            socket.emit(EVENTS.SERVER.IN_CHAT, { inChat: rooms[roomId].inChat })
+            io.emit(EVENTS.SERVER.IN_CHAT, { inChat: rooms[roomId].inChat })
             let current = 0;
             if (currentUser[roomId]) {
-                current = currentUser[roomId].onlineUser || 0;
-                currentUser[roomId] = { onlineUser: ++current }
-
+                current = rooms[roomId].inChat.length || 0;
+                currentUser[roomId] = { onlineUser: current }
                 socket.emit(EVENTS.SERVER.CURRENT_USER, currentUser);
                 io.emit(EVENTS.SERVER.CURRENT_USER, currentUser);
             }
             socket.emit(EVENTS.SERVER.JOINED_ROOM, { roomId, messages: rooms[roomId].messages || [] });
-
         });
 
 
-        socket.on(EVENTS.CLIENT.DISCONNECT_ROOM, async (roomId: string) => {
+
+
+        socket.on(EVENTS.CLIENT.DISCONNECT_ROOM, async (roomId: string, userId: string) => {
+            if (rooms[roomId]) {
+                rooms[roomId].inChat = rooms[roomId].inChat.filter((elem) => elem !== userId);
+                let inChatArray = rooms[roomId].inChat;
+                socket.emit(EVENTS.SERVER.IN_CHAT, { inChat: inChatArray });
+                io.to(roomId).emit(EVENTS.SERVER.IN_CHAT, { inChat: inChatArray });
+            }
+        
             if (currentUser[roomId]) {
-                let current = currentUser[roomId].onlineUser || 0;
-                currentUser[roomId] = { onlineUser: --current };
+                let current = rooms[roomId].inChat.length;
+                currentUser[roomId] = { onlineUser: current };
                 socket.emit(EVENTS.SERVER.CURRENT_USER, currentUser);
                 io.emit(EVENTS.SERVER.CURRENT_USER, currentUser);
             } else {
                 socket.emit(EVENTS.SERVER.CURRENT_USER, currentUser);
             }
         });
-
+        
 
         socket.on(EVENTS.CLIENT.CONFIRM_DELETE_ROOM, ({ roomId, confirmed }) => {
             if (confirmed) {
@@ -156,14 +191,11 @@ function socket({ io }: { io: Server }) {
                 io.to(roomId).emit(EVENTS.SERVER.JOINED_ROOM, { roomId: null, messages: [] });
             }
         });
-
-
         socket.emit(EVENTS.SERVER.CURRENT_USER, currentUser);
         socket.emit(EVENTS.SERVER.ROOMS, rooms)
     });
 
 }
-
 
 
 export default socket;

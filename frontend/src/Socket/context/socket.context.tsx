@@ -7,11 +7,27 @@ const SOCKET_URL = String(process.env.REACT_APP_BACKEND_URL);
 interface SocketInterface {
     socket: Socket
     roomId?: string
-    rooms: Record<string, { name: string, messages: { message: string, name: string, time: string, avatar: string }[], ttl: number, reopen: boolean, creatorId: string, userlimit: number, creatorname: string}>;
+    rooms: Record<string, {
+        name: string,
+        messages: {
+            message: string,
+            name: string,
+            time: string,
+            avatar: string
+        }[],
+        ttl: number,
+        reopen: boolean,
+        creatorId: string,
+        userlimit: number,
+        creatorname: string,
+        subForum: string,
+        inChat: string[]
+    }>;
     messages?: { message: string, time: string, name: string, avatar: string }[]
     setMessages: Function;
     currentUseronline: Record<string, { onlineUser: number }>;
     setRoomId: Function
+    userinChat: string[]
 }
 
 
@@ -26,6 +42,7 @@ const SocketContext = createContext<SocketInterface>({
     messages: [],
     currentUseronline: {},
     setRoomId: () => false,
+    userinChat: []
 })
 
 function SocketsProvider(props: any) {
@@ -33,6 +50,7 @@ function SocketsProvider(props: any) {
     const [rooms, setRooms] = useState({});
     const [messages, setMessages] = useState<Array<{ message: any; name: any; time: any, avatar: any }>>([]);
     const [currentUseronline, setcurrentUseronline] = useState({})
+    const [userinChat, setUserInChat] = useState<string[]>([])
 
 
     useEffect(() => {
@@ -68,8 +86,10 @@ function SocketsProvider(props: any) {
 
     })
 
+    socket.on(EVENTS.SERVER.IN_CHAT, ({ inChat }: { inChat: string[] }) => setUserInChat(inChat))
 
-    return <SocketContext.Provider value={{ socket, rooms, roomId, messages, setMessages, currentUseronline, setRoomId }} {...props} />
+
+    return <SocketContext.Provider value={{ socket, rooms, roomId, messages, setMessages, currentUseronline, setRoomId, userinChat }} {...props} />
 }
 
 

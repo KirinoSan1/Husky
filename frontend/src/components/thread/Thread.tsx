@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ThreadPage from "../threadpage/ThreadPage";
 import { Alert, Button } from "react-bootstrap";
 import LoadingIndicator from "../util/LoadingIndicator";
@@ -8,6 +8,7 @@ import { Location, NavigateFunction, useLocation, useNavigate, useParams } from 
 import Icon from "../util/Icon";
 import { useSockets } from "../../Socket/context/socket.context";
 import EVENTS from "../livechat/events";
+import { UserContext } from "../settings/UserContext";
 
 export const ThreadContext = React.createContext([] as any);
 export const ThreadPageContext = React.createContext([] as any);
@@ -26,6 +27,7 @@ export default function Thread() {
     const [searchInput, setSearchInput] = useState('');
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const { rooms, socket, currentUseronline } = useSockets();
+    const [userInfo] = useContext(UserContext);
 
     const setCurrentPageNum = (page: number) => {
         const currentPath: string = route.pathname;
@@ -107,7 +109,7 @@ export default function Thread() {
         }
 
         navigate(`/chats`);
-        socket.emit(EVENTS.CLIENT.JOIN_ROOM, key);
+        socket.emit(EVENTS.CLIENT.JOIN_ROOM, key, userInfo.id);
     };
 
 
