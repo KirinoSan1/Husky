@@ -32,7 +32,7 @@ export function CreateThreadPage() {
         try {
             const response = await createThread(userInfo.id, title, subForum, content);
             setSuccess(true);
-            setTimeout(() => { navigate(`/threads/${response.id}`); }, 5000);
+            setTimeout(() => { navigate(`/threads/${response.id}`); }, 3000);
         } catch (error) {
             setError(String(error));
         }
