@@ -38,7 +38,7 @@ export default function Thread() {
     useEffect(() => {
         if (thread) {
             setSearchInput(thread.title);
-            const threadtitle = thread.title.trim().split(" ")
+            const threadtitle = thread.title.trim().split(" ").filter((key) => { return key.length > 3; });
 
             const filteredSuggestions = Object.keys(rooms).filter((key) => {
                 const room = rooms[key];
@@ -113,7 +113,7 @@ export default function Thread() {
     };
 
 
-    const handleClose = ()=>{
+    const handleClose = () => {
         setError("")
     }
 
@@ -131,12 +131,19 @@ export default function Thread() {
                     )}
                     {suggestions && suggestions.length > 0 && (
                         <Alert key="primary" variant="primary">
-                            You might be interested in those Livechats :
-                            {suggestions.map((key) => (
-                                <React.Fragment key={key} >
-                                    <Button style={{ marginLeft: '10px' }} onClick={() => handleJoinRoom(key)}>{rooms[key].name}</Button>
-                                </React.Fragment>
-                            ))}
+                            <>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    You might be interested in these LiveChats:
+                                    <br></br>
+                                </div>
+                                {suggestions.map((key) => (
+                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                        <React.Fragment key={key}>
+                                            <Button style={{ marginLeft: '10px' }} onClick={() => handleJoinRoom(key)}>{rooms[key].name}</Button>
+                                        </React.Fragment>
+                                    </div>
+                                ))}
+                            </>
                         </Alert>
                     )}
                     <div id="thread-div">

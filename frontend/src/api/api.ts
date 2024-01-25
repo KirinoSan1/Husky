@@ -371,7 +371,7 @@ export const updateUserProfilePicture = async (user: UserResource, myFile: strin
     try {
         const instance = axios.create({
             baseURL: `${BASE_URL}/api/user/image/${user.id}`,
-            timeout: 1000,
+            timeout: 5000,
         });
 
         const response = await instance.put(``, {

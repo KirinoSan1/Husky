@@ -20,7 +20,7 @@ export default function Confirmation() {
             setSuccess(true);
             setTimeout(() => {
                 navigate("/");
-            }, 5000);
+            }, 3000);
         } else {
             setError("Confirmation failed");
         }
