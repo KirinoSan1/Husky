@@ -12,7 +12,7 @@ EXPOSE 443
 
 COPY . .
 
-ENV BASE_URL=https://127.0.0.1
+ENV FRONTEND_URL=http://127.0.0.1:3000
 
 ENV DB_URL=mongodb://mongoDB/Husky
 

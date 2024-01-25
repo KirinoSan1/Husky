@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 export default function Confirmation() {
     const params = useParams();
     const id = params.id;
     const token = params.token;
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
-    const url = `https://localhost:443/api/user/${id}/verify/${token}`;
+    const url = `${BASE_URL}/api/user/${id}/verify/${token}`;
     const navigate = useNavigate();
 
     const handleClick = async () => {

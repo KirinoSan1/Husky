@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Express } from "express";
 
 import userRouter from "../endpoints/user/UserRoute";
