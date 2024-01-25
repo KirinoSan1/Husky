@@ -18,17 +18,19 @@ const SERVER_PORT = Number(process.env.SERVER_PORT);
 
 const app: Express = express();
 
+const origins = [
+    "https://127.0.0.1:3000",
+    "https://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+    "https://husky.lehre.ris.bht-berlin.de",
+    "http://husky.lehre.ris.bht-berlin.de",
+    "https://husky.lehre.ris.bht-berlin.de:3000",
+    "http://husky.lehre.ris.bht-berlin.de:3000"
+];
+
 app.use("*", cors({
-    origin: [
-        "https://127.0.0.1:3000",
-        "https://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3000",
-        "https://husky.lehre.ris.bht-berlin.de",
-        "http://husky.lehre.ris.bht-berlin.de",
-        "https://husky.lehre.ris.bht-berlin.de:3000",
-        "http://husky.lehre.ris.bht-berlin.de:3000"
-    ]
+    origin: origins
 }));
 app.use(function (request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
@@ -56,15 +58,6 @@ const server = serverModul.start(app, SERVER_PORT, USE_HTTPS, () => {
 app.get("/", (_, res) => { res.send('Server is up and running.') })
 
 const io = new Server(server, {
-    cors: { origin: [
-        "https://127.0.0.1:3000",
-        "https://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3000",
-        "http://husky.lehre.ris.bht-berlin.de",
-        "https://husky.lehre.ris.bht-berlin.de",
-        "http://husky.lehre.ris.bht-berlin.de:3000",
-        "https://husky.lehre.ris.bht-berlin.de:3000"
-    ] }
+    cors: { origin: origins }
 })
 

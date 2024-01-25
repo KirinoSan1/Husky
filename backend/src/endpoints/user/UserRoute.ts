@@ -101,7 +101,7 @@ userRouter.post("/",
             const userResource = matchedData(req) as UserResource;
             const newUser = await createUser(userResource);
             const token = await new Token({ userid: newUser.id, token: crypto.randomBytes(32).toString("hex") }).save();
-            const url = `${process.env.BASE_URL}/api/user/${newUser.id}/verify/${token.token}`;
+            const url = `${process.env.FRONTEND_URL}/api/user/${newUser.id}/verify/${token.token}`;
             await sendEmail(newUser.email, "Verify Email", url);
             res.status(201).send({ message: "An Email has been sent to your account, please verify." });
         } catch (err) {
