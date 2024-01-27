@@ -1,95 +1,106 @@
 # Husky
 
-## Projektname
+## Project name
 
-Das Projekt heißt "Husky".
+The project is called "Husky".
 
-## Projektbeschreibung
+## Project description
 
-Im Rahmen des Projektes wird ein Diskussionsforum für den
-Wissensaustausch umgesetzt. Die Nutzer können auf klassische Art
-Posts in Threads verfassen oder sich über eine Live-Chat Funktion
-direkt miteinander austauschen. Das Forum wird von entsprechenden
-Akteuren moderiert und administriert. Die Nutzer können fachliche
-Diskussionen führen sowie konkrete Fragen stellen und beantworten.
+As part of the project, a discussion forum for the exchange of
+knowledge gets realized. Users will be able to create
+posts in threads in the traditional way or exchange information
+directly with each other via a live chat. The forum is moderated
+and administered by appropriate stakeholders. Users can hold
+technical discussions as well as ask and answer specific questions.
 
-Nutzer, die beispielsweise vor dem Kauf eines Autos stehen, können im Forum Fragen zu verschiedenen Modellen, Preisen und Eigenschaften stellen. Andere Nutzer können daraufhin ihre Empfehlungen, basierend auf eigenen Kenntnissen und Erfahrungen mitteilen.
+Users who are about to buy a car, for example, can ask questions about various models, prices and features in the forum.
+Other users can then share their recommendations based on their own knowledge and experience.
 
-## Teammitglieder
+## Team members
 
 - Alexander Suesskind (UI/UX, Frontend)
-    - Matrikelnummer: 933780
+    - Matric. number: 933780
     - E-Mail: s87424@bht-berlin.de
 - Can Pala (UI/UX, Backend)
-    - Matrikelnummer: 938092
+    - Matric. number: 938092
     - E-Mail: s88011@bht-berlin.de
-- Dominik Henning (Maintainer, Frontend, Schnittstelle Client/Server)
-    - Matrikelnummer: 934954
+- Dominik Henning (Maintainer, Frontend, Client/Server interface)
+    - Matric. number: 934954
     - E-Mail: s88126@bht-berlin.de
-- Maximilian Diek (Maintainer, UML-Diagramme, Frontend, Schnittstelle Client/Server)
-    - Matrikelnummer: 928836
+- Maximilian Diek (Maintainer, UML diagrams, Frontend, Client/Server interface)
+    - Matric. number: 928836
     - E-Mail: s87999@bht-berlin.de
 - Mohammad Hammad (Backend)
-    - Matrikelnummer: 929184
+    - Matric. number: 929184
     - E-Mail: s88475@bht-berlin.de
 - Umut Can Aydin (Backend)
-    - Matrikelnummer: 929104
+    - Matric. number: 929104
     - E-Mail: s87720@bht-berlin.de
 
 ## Tech-Stack
 
-### Allgemein
-- JavaScript / TypeScript
-- Node.js
+### General
+- [TypeScript](https://www.typescriptlang.org/)
+- [Node.js](https://nodejs.org/)
 
 ### Frontend
-- React
-- Sass
+- [React](https://react.dev/)
+- [SCSS](https://sass-lang.com/documentation/syntax/)
 
 ### Backend
-- Express.js
-- HTML WebSockets
-- Mongoose
-- MongoDB
+- [Express.js](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [Socket.IO](https://socket.io/)
+
+### User authentication
+- [bcrypt](https://de.wikipedia.org/wiki/Bcrypt)
+- [JWT](https://jwt.io/)
 
 ### Testing
-- Jest
-- Selenium oder Playwright
+- [Jest](https://jestjs.io/)
 
-## Erste Schritte
+### Documentation
+- [Swagger](https://swagger.io/)
 
-### Anforderungsanalyse
+### Deployment
+- [Docker](https://www.docker.com/)
+- [Kubernetes](https://kubernetes.io/)
 
-Um die Anforderungen an unsere Anwendung zu ermitteln wird ein Use-Case-Diagramm erstellt.
+## First steps
 
-Des Weiteren wird die Struktur der Anwendung anhand eines Klassendiagramms skizziert.
+### Requirements analysis
 
-Basierend auf dem Klassendiagramm werden Tickets für die Implementierung ausgearbeitet.
+To determine the requirements for our application a use case diagram is created.
 
-Parallel dazu werden die Projekte für Frontend und Backend im GitLab aufgesetzt.
+Furthermore, the structure of the application is outlined using a class diagram.
+
+Based on the class diagramm tickets for the implementation are getting developed.
+
+At the same time, the frontend and backend projects are set up in GitLab.
 
 ## Tools
 
-Das Use-Case-Diagramm und das Klassendiagramm werden mit draw.io erstellt.
+The use case diagram and the class diagram are created with [draw.io](https://app.diagrams.net/).
 
-Als Entwicklungsumgebung wird Visual Studio Code oder ggf. WebStorm verwendet.
+[Visual Studio Code](https://code.visualstudio.com/) or alternatively [WebStorm](https://www.jetbrains.com/webstorm/) is used as [IDEA](https://en.wikipedia.org/wiki/Integrated_development_environment).
 
-Für die Visualisierung der Daten aus der Datenbank soll MongoDB Compass verwendet werden.
+To visualize the data from the database [MongoDB Compass](https://www.mongodb.com/products/tools/compass) will be used.
 
-## Verzeichnisstruktur
+## Project structure
 
-Es gibt einen Ordner "frontend", in dem sich sämtliche Quellcodedateien und Tests für das Frontend befinden.
+There is a "frontend" directory containing all source code files for the frontend.
 
-Es gibt einen Ordner "backend", in dem sich sämtliche Quellcodedateien und Tests für das Backend befinden.
+There is a "backend" directory containing all source code and test files for the backend.
 
-In beiden Ordnern gibt es jeweils zwei Unterordner mit dem Namen "src" und "test". In "src" befinden sich die Quellcodedateien, in "test" befinden sich die Tests.
+The naming of the subdirectories follows a generally known structure. The source code, for example, is located in a directory named "src".
 
-## Coding-Standards
+## Coding standards
 
-Im Wesentlichen halten wir uns an die Java-Code-Conventions:<br>
+Essentially, we adhere to the Java code conventions:<br>
 https://www.oracle.com/java/technologies/javase/codeconventions-introduction.html
 
-Außerdem verwenden wir das Prinzip der Guard Clauses, um den Code möglichst von überflüssigen Schachtelungen zu befreien:<br>
+We also use the principle of guard clauses, if possible, to free the code from superfluous nesting:<br>
 https://en.wikipedia.org/wiki/Guard_(computer_science)
 
-Vorgesehen ist, dass die Jest-Tests für das Backend stets eine Code-Coverage von 100 Prozent aufweisen.
+It is intended that the Jest tests for the backend will always feature a code coverage of 100 percent.
