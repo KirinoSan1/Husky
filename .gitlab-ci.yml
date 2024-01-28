@@ -20,11 +20,11 @@ build-job:
     script:
         - cd backend
         - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
-        - docker build -t registry.bht-berlin.de:443/macmud/husky:backend-new .
-        - docker push registry.bht-berlin.de:443/macmud/husky:backend-new
+        - docker build -t registry.bht-berlin.de:443/macmud/husky:backend .
+        - docker push registry.bht-berlin.de:443/macmud/husky:backend
         - cd ../frontend
-        - docker build -t registry.bht-berlin.de:443/macmud/husky:frontend-new .
-        - docker push registry.bht-berlin.de:443/macmud/husky:frontend-new
+        - docker build -t registry.bht-berlin.de:443/macmud/husky:frontend .
+        - docker push registry.bht-berlin.de:443/macmud/husky:frontend
     dependencies:
         - test-job
     only:
