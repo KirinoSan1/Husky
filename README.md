@@ -1,12 +1,12 @@
-# Husky
+# Husky 🐾
 
-## Project name
+## Project name 🏷️
 
-The project is called "Husky". Here is an early version of the application:
+The project is called "**Husky**". It was developed during an university project to gain experience in web-development with an bigger team. Here is an early version of the application:
 
 ![real](https://github.com/user-attachments/assets/1c6ddea4-55c0-45ff-960f-298901e9e144)
 
-## Project description
+## Project description 📖
 
 As part of the project, a discussion forum for the exchange of
 knowledge gets realized. Users will be able to create
@@ -18,58 +18,58 @@ technical discussions as well as ask and answer specific questions.
 Users who are about to buy a car, for example, can ask questions about various models, prices and features in the forum.
 Other users can then share their recommendations based on their own knowledge and experience.
 
-## Team members
+## Team members 👥
 
 - Alexander Suesskind (UI/UX, Frontend)
-    - Matric. number: 933780
-    - E-Mail: s87424@bht-berlin.de
+    - 📖 Matric. number: 933780
+    - ✉️ E-Mail: s87424@bht-berlin.de
 - Can Pala (UI/UX, Backend)
-    - Matric. number: 938092
-    - E-Mail: s88011@bht-berlin.de
+    - 📖 Matric. number: 938092
+    - ✉️ E-Mail: s88011@bht-berlin.de
 - Dominik Henning (Maintainer, Frontend, Client/Server interface)
-    - Matric. number: 934954
-    - E-Mail: s88126@bht-berlin.de
+    - 📖 Matric. number: 934954
+    - ✉️ E-Mail: s88126@bht-berlin.de
 - Maximilian Diek (Maintainer, UML diagrams, Frontend, Client/Server interface)
-    - Matric. number: 928836
-    - E-Mail: s87999@bht-berlin.de
+    - 📖 Matric. number: 928836
+    - ✉️ E-Mail: s87999@bht-berlin.de
 - Mohammad Hammad (Backend)
-    - Matric. number: 929184
-    - E-Mail: s88475@bht-berlin.de
+    - 📖 Matric. number: 929184
+    - ✉️ E-Mail: s88475@bht-berlin.de
 - Umut Can Aydin (Backend)
-    - Matric. number: 929104
-    - E-Mail: s87720@bht-berlin.de
+    - 📖 Matric. number: 929104
+    - ✉️ E-Mail: s87720@bht-berlin.de
 
-## Tech-Stack
+## Tech-Stack ⚙️
 
 ### General
-- [TypeScript](https://www.typescriptlang.org/)
-- [Node.js](https://nodejs.org/)
+- 💻 [TypeScript](https://www.typescriptlang.org/)
+- 🌐 [Node.js](https://nodejs.org/)
 
 ### Frontend
-- [React](https://react.dev/)
-- [SCSS](https://sass-lang.com/documentation/syntax/)
+- ⚛️ [React](https://react.dev/)
+- 🎨 [SCSS](https://sass-lang.com/documentation/syntax/)
 
 ### Backend
-- [Express.js](https://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/)
-- [Mongoose](https://mongoosejs.com/)
-- [Socket.IO](https://socket.io/)
+- 🚀 [Express.js](https://expressjs.com/)
+- 🗄️ [MongoDB](https://www.mongodb.com/)
+- 📂 [Mongoose](https://mongoosejs.com/)
+- 📡 [Socket.IO](https://socket.io/)
 
 ### User authentication
-- [bcrypt](https://de.wikipedia.org/wiki/Bcrypt)
-- [JWT](https://jwt.io/)
+- 🔒 [bcrypt](https://de.wikipedia.org/wiki/Bcrypt)
+- 🔑 [JWT](https://jwt.io/)
 
 ### Testing
-- [Jest](https://jestjs.io/)
+- ✅ [Jest](https://jestjs.io/)
 
 ### Documentation
-- [Swagger](https://swagger.io/)
+- 📚 [Swagger](https://swagger.io/)
 
 ### Deployment
-- [Docker](https://www.docker.com/)
-- [Kubernetes](https://kubernetes.io/)
+- 🐳 [Docker](https://www.docker.com/)
+- 📦 [Kubernetes](https://kubernetes.io/)
 
-## First steps
+## First steps 🚀
 
 ### Requirements analysis
 
@@ -81,7 +81,7 @@ Based on the class diagramm tickets for the implementation are getting developed
 
 At the same time, the frontend and backend projects are set up in GitLab.
 
-## Tools
+## Tools 🛠️
 
 The use case diagram and the class diagram are created with [draw.io](https://app.diagrams.net/).
 
@@ -89,7 +89,7 @@ The use case diagram and the class diagram are created with [draw.io](https://ap
 
 To visualize the data from the database [MongoDB Compass](https://www.mongodb.com/products/tools/compass) will be used.
 
-## Project structure
+## Project structure 📂
 
 There is a "frontend" directory containing all source code files for the frontend.
 
@@ -97,18 +97,16 @@ There is a "backend" directory containing all source code and test files for the
 
 The naming of the subdirectories follows a generally known structure. The source code, for example, is located in a directory named "src".
 
-## Code Coverage
+## Code Coverage 📈
 
 In every backend endpoint file, we have successfully achieved a code coverage of 100%.
 
 ![code coverage](https://github.com/user-attachments/assets/11bfa093-e5ac-4f60-a3bd-832719708c80)
 
-## Coding standards
+## Coding standards 📏
 
 Essentially, we adhere to the Java code conventions:<br>
 https://www.oracle.com/java/technologies/javase/codeconventions-introduction.html
 
 We also use the principle of guard clauses, if possible, to free the code from superfluous nesting:<br>
 https://en.wikipedia.org/wiki/Guard_(computer_science)
-
-It is intended that the Jest tests for the backend will always feature a code coverage of 100 percent.
