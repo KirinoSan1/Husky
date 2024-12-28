@@ -2,7 +2,9 @@
 
 ## Project name
 
-The project is called "Husky".
+The project is called "Husky". Here is an early version of the application:
+
+![real](https://github.com/user-attachments/assets/1c6ddea4-55c0-45ff-960f-298901e9e144)
 
 ## Project description
 
@@ -94,6 +96,12 @@ There is a "frontend" directory containing all source code files for the fronten
 There is a "backend" directory containing all source code and test files for the backend.
 
 The naming of the subdirectories follows a generally known structure. The source code, for example, is located in a directory named "src".
+
+## Code Coverage
+
+In every backend endpoint file, we have successfully achieved a code coverage of 100%.
+
+![code coverage](https://github.com/user-attachments/assets/11bfa093-e5ac-4f60-a3bd-832719708c80)
 
 ## Coding standards
 
